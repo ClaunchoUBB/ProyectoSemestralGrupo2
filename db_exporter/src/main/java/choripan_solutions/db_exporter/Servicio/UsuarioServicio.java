@@ -1,7 +1,8 @@
 package choripan_solutions.db_exporter.Servicio;
 
 import choripan_solutions.db_exporter.Modelo.Usuario;
-import choripan_solutions.db_exporter.Modelo.UsuarioRepositorio;
+import choripan_solutions.db_exporter.Repositorio.UsuarioRepositorio;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +32,9 @@ public class UsuarioServicio {
             throw new RuntimeException("Error: Ya existe un usuario con el RUT: " + usuario.getRut());
         }
 
-        // --- ¡ESTA ES LA LÍNEA MÁGICA! ---
-        // 'merge' es la operación correcta para guardar un objeto "detached"
-        // (un objeto con un ID que no está siendo gestionado por la sesión).
-        // Si el RUT no existe, 'merge' hará un INSERT.
-        // Si el RUT ya existe, 'merge' hará un UPDATE.
-        Usuario managedUsuario = entityManager.merge(usuario);
-        
-        return managedUsuario;
+            // Usar save para crear un nuevo usuario
+            Usuario managedUsuario = usuarioRepositorio.save(usuario);
+            return managedUsuario;
     }
 
     // --- READ ---

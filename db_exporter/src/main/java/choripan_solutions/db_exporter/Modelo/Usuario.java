@@ -12,7 +12,6 @@ import java.util.List;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rut")
     private Integer rut;
 
