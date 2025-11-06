@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 public class UsuarioServicio {
-
+    
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
 
@@ -68,6 +68,27 @@ public class UsuarioServicio {
 
         // 'save' aquí funciona bien porque el objeto 'usuario' fue
         // cargado de la BD y está "managed"
+        return usuarioRepositorio.save(usuario);
+    }
+    
+
+    // --- PATCH --- pa actualizar a media
+    @Transactional
+    public Usuario actualizarUsuarioParcial(Integer rut, Usuario usuarioDetalles) {
+        Usuario usuario = usuarioRepositorio.findById(rut)
+                .orElseThrow(() -> new RuntimeException("No se encontró el usuario con rut: " + rut));
+
+        if (usuarioDetalles.getNombre1() != null) usuario.setNombre1(usuarioDetalles.getNombre1());
+        if (usuarioDetalles.getNombre2() != null) usuario.setNombre2(usuarioDetalles.getNombre2());
+        if (usuarioDetalles.getApellido1() != null) usuario.setApellido1(usuarioDetalles.getApellido1());
+        if (usuarioDetalles.getApellido2() != null) usuario.setApellido2(usuarioDetalles.getApellido2());
+        if (usuarioDetalles.getRol() != null) usuario.setRol(usuarioDetalles.getRol());
+        if (usuarioDetalles.getNumero() != null) usuario.setNumero(usuarioDetalles.getNumero());
+        if (usuarioDetalles.getCorreo() != null) usuario.setCorreo(usuarioDetalles.getCorreo());
+        if (usuarioDetalles.getPasswordHash() != null && !usuarioDetalles.getPasswordHash().isEmpty()) {
+            usuario.setPasswordHash(usuarioDetalles.getPasswordHash());
+        }
+
         return usuarioRepositorio.save(usuario);
     }
 

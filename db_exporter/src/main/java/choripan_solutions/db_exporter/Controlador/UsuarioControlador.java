@@ -62,4 +62,16 @@ public class UsuarioControlador {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // --- PATCH (Actualizar parcialmente) ---
+    // Responde a peticiones PATCH en /api/usuarios/12345678
+    @PatchMapping("/{rut}")
+    public ResponseEntity<Usuario> actualizarUsuarioParcial(@PathVariable Integer rut, @RequestBody Usuario usuarioDetalles) {
+        try {
+            Usuario usuarioActualizado = usuarioServicio.actualizarUsuarioParcial(rut, usuarioDetalles);
+            return ResponseEntity.ok(usuarioActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
