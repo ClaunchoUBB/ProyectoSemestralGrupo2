@@ -27,6 +27,7 @@ public class Usuario {
     @Column(name = "apellido2")
     private String apellido2;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "rol")   
     private Integer rol;
 

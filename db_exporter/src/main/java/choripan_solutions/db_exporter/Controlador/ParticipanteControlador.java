@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import choripan_solutions.db_exporter.Modelo.Participante;
 import choripan_solutions.db_exporter.Servicio.ParticipanteServicio;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/participantes")
@@ -41,7 +42,7 @@ public class ParticipanteControlador {
     }
 
     @PostMapping
-    public Participante crearParticipante(@RequestBody Participante participante) {
+    public Participante crearParticipante(@Valid @RequestBody Participante participante) {
         return participanteServicio.crearParticipante(participante);
     }
 

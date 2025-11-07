@@ -1,6 +1,11 @@
 package choripan_solutions.db_exporter.Modelo;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+
 import java.util.Date;
 
 @Entity
@@ -44,6 +49,8 @@ public class Participante {
     private Date fechaInclusion;
 
     // Datos sociodemográficos
+    @Min(value = 18, message = "La edad mínima permitida es 18 años")
+    @Max(value = 110, message = "La edad máxima permitida es 110 años")
     @Column(name = "edad")
     private Integer edad;
 
@@ -53,6 +60,7 @@ public class Participante {
     @Column(name = "direccion", length = 100)
     private String direccion;
 
+    
     @Column(name = "sexo")
     private Integer sexo;
 
@@ -92,6 +100,8 @@ public class Participante {
     private Integer cirugiaGastricaPrevia;
 
     // Variables antropomórficas
+    @DecimalMin(value = "40.0", message = "El peso mínimo permitido es 40 kg")
+    @DecimalMax(value = "150.0", message = "El peso máximo permitido es 150 kg")
     @Column(name = "peso")
     private Float peso;
 
