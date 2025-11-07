@@ -42,7 +42,7 @@ public class ParticipanteControlador {
 
     @PostMapping
     public Participante crearParticipante(@RequestBody Participante participante) {
-        return participanteServicio.guardarParticipante(participante);
+        return participanteServicio.crearParticipante(participante);
     }
 
     @PutMapping("/{codigo}")

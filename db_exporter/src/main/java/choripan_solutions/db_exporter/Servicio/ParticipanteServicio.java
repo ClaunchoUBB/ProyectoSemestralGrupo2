@@ -30,7 +30,22 @@ public class ParticipanteServicio {
         return participanteRepositorio.findById(codigo);
     }
 
-    public Participante guardarParticipante(Participante participante) {
+    public Participante crearParticipante(Participante participante) {
+        if (participante.getGrupo() == null) {
+            throw new IllegalArgumentException("El grupo (0 = control, 1 = caso) es obligatorio.");
+        }
+
+        // Determinar prefijo según el grupo
+        String prefijo = participante.getGrupo() == 1 ? "K" : "C";
+
+        // Contar cuántos hay en ese grupo
+        long count = participanteRepositorio.countByGrupo(participante.getGrupo());
+
+        // Generar el código (p.ej. C-001)
+        String codigo = String.format("%s-%03d", prefijo, count + 1);
+        participante.setCodigo(codigo);
+
+        // Guardar el participante
         return participanteRepositorio.save(participante);
     }
 

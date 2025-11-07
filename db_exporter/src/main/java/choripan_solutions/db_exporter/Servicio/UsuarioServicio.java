@@ -15,12 +15,12 @@ import java.util.Optional;
 
 @Service
 public class UsuarioServicio {
-    
+
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
 
-
-    //private final BcryptPasswordEncoder passwordEncoder = new BcryptPasswordEncoder();
+    // private final BcryptPasswordEncoder passwordEncoder = new
+    // BcryptPasswordEncoder();
 
     // Inyectamos el EntityManager (lo necesitamos para 'merge')
     @PersistenceContext
@@ -29,15 +29,15 @@ public class UsuarioServicio {
     // --- CREATE ---
     @Transactional
     public Usuario crearUsuario(Usuario usuario) {
-        
+
         // (Buena práctica) Verificar si el usuario ya existe.
         if (usuario.getRut() != null && usuarioRepositorio.existsById(usuario.getRut())) {
             throw new RuntimeException("Error: Ya existe un usuario con el RUT: " + usuario.getRut());
         }
 
-            // Usar save para crear un nuevo usuario
-            Usuario managedUsuario = usuarioRepositorio.save(usuario);
-            return managedUsuario;
+        // Usar save para crear un nuevo usuario
+        Usuario managedUsuario = usuarioRepositorio.save(usuario);
+        return managedUsuario;
     }
 
     // --- READ ---
@@ -64,7 +64,7 @@ public class UsuarioServicio {
         usuario.setRol(usuarioDetalles.getRol());
         usuario.setNumero(usuarioDetalles.getNumero());
         usuario.setCorreo(usuarioDetalles.getCorreo());
-        
+
         if (usuarioDetalles.getPasswordHash() != null && !usuarioDetalles.getPasswordHash().isEmpty()) {
             usuario.setPasswordHash(usuarioDetalles.getPasswordHash());
         }
@@ -73,7 +73,6 @@ public class UsuarioServicio {
         // cargado de la BD y está "managed"
         return usuarioRepositorio.save(usuario);
     }
-    
 
     // --- PATCH --- pa actualizar a media
     @Transactional
@@ -81,13 +80,20 @@ public class UsuarioServicio {
         Usuario usuario = usuarioRepositorio.findById(rut)
                 .orElseThrow(() -> new RuntimeException("No se encontró el usuario con rut: " + rut));
 
-        if (usuarioDetalles.getNombre1() != null) usuario.setNombre1(usuarioDetalles.getNombre1());
-        if (usuarioDetalles.getNombre2() != null) usuario.setNombre2(usuarioDetalles.getNombre2());
-        if (usuarioDetalles.getApellido1() != null) usuario.setApellido1(usuarioDetalles.getApellido1());
-        if (usuarioDetalles.getApellido2() != null) usuario.setApellido2(usuarioDetalles.getApellido2());
-        if (usuarioDetalles.getRol() != null) usuario.setRol(usuarioDetalles.getRol());
-        if (usuarioDetalles.getNumero() != null) usuario.setNumero(usuarioDetalles.getNumero());
-        if (usuarioDetalles.getCorreo() != null) usuario.setCorreo(usuarioDetalles.getCorreo());
+        if (usuarioDetalles.getNombre1() != null)
+            usuario.setNombre1(usuarioDetalles.getNombre1());
+        if (usuarioDetalles.getNombre2() != null)
+            usuario.setNombre2(usuarioDetalles.getNombre2());
+        if (usuarioDetalles.getApellido1() != null)
+            usuario.setApellido1(usuarioDetalles.getApellido1());
+        if (usuarioDetalles.getApellido2() != null)
+            usuario.setApellido2(usuarioDetalles.getApellido2());
+        if (usuarioDetalles.getRol() != null)
+            usuario.setRol(usuarioDetalles.getRol());
+        if (usuarioDetalles.getNumero() != null)
+            usuario.setNumero(usuarioDetalles.getNumero());
+        if (usuarioDetalles.getCorreo() != null)
+            usuario.setCorreo(usuarioDetalles.getCorreo());
         if (usuarioDetalles.getPasswordHash() != null && !usuarioDetalles.getPasswordHash().isEmpty()) {
             usuario.setPasswordHash(usuarioDetalles.getPasswordHash());
         }
@@ -117,7 +123,7 @@ public class UsuarioServicio {
     public void eliminarUsuario(Integer rut) {
         Usuario usuario = usuarioRepositorio.findById(rut)
                 .orElseThrow(() -> new RuntimeException("No se encontró el usuario con rut: " + rut));
-        
+
         usuarioRepositorio.delete(usuario);
     }
 }
