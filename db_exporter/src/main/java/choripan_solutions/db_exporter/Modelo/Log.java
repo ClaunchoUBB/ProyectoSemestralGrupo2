@@ -3,6 +3,8 @@ package choripan_solutions.db_exporter.Modelo;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
@@ -28,7 +30,7 @@ public class Log {
     // Muchos Logs pertenecen a un Usuario
     @ManyToOne(fetch = FetchType.LAZY) // LAZY: solo carga el usuario cuando se pide
     @JoinColumn(name = "rut_usuario") // Esta es la columna FOREIGN KEY
-    @JsonIgnore // Evita bucles infinitos al convertir a JSON
+    @JsonBackReference // Evita bucles infinitos al convertir a JSON
     private Usuario usuario;
 
     public Integer getIdLog() {

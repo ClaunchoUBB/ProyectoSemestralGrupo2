@@ -1,5 +1,6 @@
 package choripan_solutions.db_exporter.Modelo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -59,6 +60,7 @@ public class Usuario {
     //Relaciones
     //Un usuario puede tener muchos Logs
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Log> logs;
 
     //Un usuario puede tener muchos Participantes
