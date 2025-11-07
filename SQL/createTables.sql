@@ -7,6 +7,7 @@ CREATE TABLE Usuarios (
     apellido1 VARCHAR(40),
     apellido2 VARCHAR(40),
     rol INT,
+    activo BOOLEAN DEFAULT TRUE,
     numero VARCHAR(15),
     correo VARCHAR(30),
     password_hash VARCHAR(255) NOT NULL,

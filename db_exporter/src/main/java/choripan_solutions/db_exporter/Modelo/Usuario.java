@@ -36,6 +36,9 @@ public class Usuario {
     @Column(name = "correo")
     private String correo;
 
+    @Column(name = "activo")
+    private Boolean activo;
+
     //Esta anotación evita que el hash de la contraseña se envíe en los JSON de respuesta (por seguridad)
     //pero sí permite que se reciba en peticiones POST o PUT.
     @Column(name = "password_hash", nullable = false)

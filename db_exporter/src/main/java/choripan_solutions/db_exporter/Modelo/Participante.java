@@ -1,44 +1,792 @@
 package choripan_solutions.db_exporter.Modelo;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Date;
 
-@Data
 @Entity
 @Table(name = "Participante")
 public class Participante {
 
-    @Id // La clave primaria es "codigo" (String)
+    @Id
     @Column(name = "codigo", length = 10)
     private String codigo;
 
-    @Column(name = "nombre1")
+    @Column(name = "nombre1", length = 40)
     private String nombre1;
 
-    @Column(name = "nombre2")
+    @Column(name = "nombre2", length = 200)
     private String nombre2;
 
-    @Column(name = "apellido1")
+    @Column(name = "apellido1", length = 40)
     private String apellido1;
 
-    @Column(name = "apellido2")
+    @Column(name = "apellido2", length = 40)
     private String apellido2;
 
-    @Column(name = "correo")
+    @Column(name = "correo", length = 30)
     private String correo;
 
-    @Column(name = "numero")
+    @Column(name = "numero", length = 15)
     private String numero;
 
-    @Column(name = "estado", nullable = false)
+    @Column(name = "estado")
     private Boolean estado;
 
-    // --- Relación ---
-
-    // Muchos Participantes pertenecen a un Usuario
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rut_usuario") // Esta es la columna FOREIGN KEY
-    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "rut_usuario")
     private Usuario usuario;
+
+    @Column(name = "grupo")
+    private Integer grupo;
+
+    @Column(name = "fecha_inclusion")
+    @Temporal(TemporalType.DATE)
+    private Date fechaInclusion;
+
+    // Datos sociodemográficos
+    @Column(name = "edad")
+    private Integer edad;
+
+    @Column(name = "nacionalidad", length = 20)
+    private String nacionalidad;
+
+    @Column(name = "direccion", length = 100)
+    private String direccion;
+
+    @Column(name = "sexo")
+    private Integer sexo;
+
+    @Column(name = "zona")
+    private Integer zona;
+
+    @Column(name = "años_vivienda")
+    private Integer añosVivienda;
+
+    @Column(name = "nivel_educacional")
+    private Integer nivelEducacional;
+
+    @Column(name = "ocupacion", length = 50)
+    private String ocupacion;
+
+    // Antecedentes clínicos
+    @Column(name = "fecha_diagnostico")
+    @Temporal(TemporalType.DATE)
+    private Date fechaDiagnostico;
+
+    @Column(name = "ant_cancer_gastrico")
+    private Integer antCancerGastrico;
+
+    @Column(name = "ant_cancer_otro")
+    private Integer antCancerOtro;
+
+    @Column(name = "cancer_otro", length = 50)
+    private String cancerOtro;
+
+    @Column(name = "otras_enfermedades", length = 100)
+    private String otrasEnfermedades;
+
+    @Column(name = "medicamentos_cronicos", length = 100)
+    private String medicamentosCronicos;
+
+    @Column(name = "cirugia_gastrica_previa")
+    private Integer cirugiaGastricaPrevia;
+
+    // Variables antropomórficas
+    @Column(name = "peso")
+    private Float peso;
+
+    @Column(name = "estatura")
+    private Float estatura;
+
+    @Column(name = "imc")
+    private Float imc;
+
+    // Tabaquismo y alcohol
+    @Column(name = "nunca_fumo")
+    private Integer nuncaFumo;
+
+    @Column(name = "ex_fumador")
+    private Integer exFumador;
+
+    @Column(name = "ex_annos_sin_fumar")
+    private Integer exAnnosSinFumar;
+
+    @Column(name = "fuma_actualmente")
+    private Integer fumaActualmente;
+
+    @Column(name = "edad_inicio_fuma")
+    private Integer edadInicioFuma;
+
+    @Column(name = "promedio_fuma_diario")
+    private Integer promedioFumaDiario;
+
+    @Column(name = "años_fumador")
+    private Integer añosFumador;
+
+    @Column(name = "nunca_bebio")
+    private Integer nuncaBebio;
+
+    @Column(name = "ex_bebedor")
+    private Integer exBebedor;
+
+    @Column(name = "ex_annos_sin_beber")
+    private Integer exAnnosSinBeber;
+
+    @Column(name = "bebe_actualmente")
+    private Integer bebeActualmente;
+
+    @Column(name = "edad_inicio_bebe")
+    private Integer edadInicioBebe;
+
+    @Column(name = "frecuencia")
+    private Integer frecuencia;
+
+    @Column(name = "cantidad_x_ocasion")
+    private Integer cantidadXOcasion;
+
+    @Column(name = "annos_consumo")
+    private Integer annosConsumo;
+
+    // Factores dieta
+    @Column(name = "carnes_procesadas")
+    private Integer carnesProcesadas;
+
+    @Column(name = "alimentos_salados")
+    private Integer alimentosSalados;
+
+    @Column(name = "frutas_verduras")
+    private Integer frutasVerduras;
+
+    @Column(name = "frituras")
+    private Integer frituras;
+
+    @Column(name = "bebida_caliente")
+    private Integer bebidaCaliente;
+
+    // Exposiciones
+    @Column(name = "pesticidas")
+    private Integer pesticidas;
+
+    @Column(name = "otros_chemicos")
+    private Integer otrosChemicos;
+
+    @Column(name = "tipo_chemicos", length = 100)
+    private String tipoChemicos;
+
+    @Column(name = "humo_lenna")
+    private Integer humoLenna;
+
+    @Column(name = "agua", length = 20)
+    private String agua;
+
+    @Column(name = "tratamiento_agua")
+    private Integer tratamientoAgua;
+
+    // Datos Helicobacter pylori
+    @Column(name = "prueba_hel")
+    private Integer pruebaHel;
+
+    @Column(name = "resultado_hel")
+    private Integer resultadoHel;
+
+    @Column(name = "tiempo_test")
+    private Integer tiempoTest;
+
+    // Muestras biológicas y genéticas
+    @Column(name = "fecha_toma_sangre")
+    @Temporal(TemporalType.DATE)
+    private Date fechaTomaSangre;
+
+    @Column(name = "TLR9_rs5743836")
+    private Integer tlr9Rs5743836;
+
+    @Column(name = "TLR9_rs187084")
+    private Integer tlr9Rs187084;
+
+    @Column(name = "miR_146a_rs2910164")
+    private Integer mir146aRs2910164;
+
+    @Column(name = "miR_196a2_rs11614913")
+    private Integer mir196a2Rs11614913;
+
+    @Column(name = "MTHFR_rs1801133")
+    private Integer mthfrRs1801133;
+
+    @Column(name = "DNMT3B_rs1569686")
+    private Integer dnmt3bRs1569686;
+
+    // Histopatología
+    @Column(name = "tipo")
+    private Integer tipo;
+
+    @Column(name = "otro", length = 50)
+    private String otro;
+
+    @Column(name = "tumor_ubicacion")
+    private Integer tumorUbicacion;
+
+    @Column(name = "estadio_clinico", length = 30)
+    private String estadioClinico;
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNombre1() {
+        return nombre1;
+    }
+
+    public void setNombre1(String nombre1) {
+        this.nombre1 = nombre1;
+    }
+
+    public String getNombre2() {
+        return nombre2;
+    }
+
+    public void setNombre2(String nombre2) {
+        this.nombre2 = nombre2;
+    }
+
+    public String getApellido1() {
+        return apellido1;
+    }
+
+    public void setApellido1(String apellido1) {
+        this.apellido1 = apellido1;
+    }
+
+    public String getApellido2() {
+        return apellido2;
+    }
+
+    public void setApellido2(String apellido2) {
+        this.apellido2 = apellido2;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Integer getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Integer grupo) {
+        this.grupo = grupo;
+    }
+
+    public Date getFechaInclusion() {
+        return fechaInclusion;
+    }
+
+    public void setFechaInclusion(Date fechaInclusion) {
+        this.fechaInclusion = fechaInclusion;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
+
+    public String getNacionalidad() {
+        return nacionalidad;
+    }
+
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Integer getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Integer sexo) {
+        this.sexo = sexo;
+    }
+
+    public Integer getZona() {
+        return zona;
+    }
+
+    public void setZona(Integer zona) {
+        this.zona = zona;
+    }
+
+    public Integer getAñosVivienda() {
+        return añosVivienda;
+    }
+
+    public void setAñosVivienda(Integer añosVivienda) {
+        this.añosVivienda = añosVivienda;
+    }
+
+    public Integer getNivelEducacional() {
+        return nivelEducacional;
+    }
+
+    public void setNivelEducacional(Integer nivelEducacional) {
+        this.nivelEducacional = nivelEducacional;
+    }
+
+    public String getOcupacion() {
+        return ocupacion;
+    }
+
+    public void setOcupacion(String ocupacion) {
+        this.ocupacion = ocupacion;
+    }
+
+    public Date getFechaDiagnostico() {
+        return fechaDiagnostico;
+    }
+
+    public void setFechaDiagnostico(Date fechaDiagnostico) {
+        this.fechaDiagnostico = fechaDiagnostico;
+    }
+
+    public Integer getAntCancerGastrico() {
+        return antCancerGastrico;
+    }
+
+    public void setAntCancerGastrico(Integer antCancerGastrico) {
+        this.antCancerGastrico = antCancerGastrico;
+    }
+
+    public Integer getAntCancerOtro() {
+        return antCancerOtro;
+    }
+
+    public void setAntCancerOtro(Integer antCancerOtro) {
+        this.antCancerOtro = antCancerOtro;
+    }
+
+    public String getCancerOtro() {
+        return cancerOtro;
+    }
+
+    public void setCancerOtro(String cancerOtro) {
+        this.cancerOtro = cancerOtro;
+    }
+
+    public String getOtrasEnfermedades() {
+        return otrasEnfermedades;
+    }
+
+    public void setOtrasEnfermedades(String otrasEnfermedades) {
+        this.otrasEnfermedades = otrasEnfermedades;
+    }
+
+    public String getMedicamentosCronicos() {
+        return medicamentosCronicos;
+    }
+
+    public void setMedicamentosCronicos(String medicamentosCronicos) {
+        this.medicamentosCronicos = medicamentosCronicos;
+    }
+
+    public Integer getCirugiaGastricaPrevia() {
+        return cirugiaGastricaPrevia;
+    }
+
+    public void setCirugiaGastricaPrevia(Integer cirugiaGastricaPrevia) {
+        this.cirugiaGastricaPrevia = cirugiaGastricaPrevia;
+    }
+
+    public Float getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Float peso) {
+        this.peso = peso;
+    }
+
+    public Float getEstatura() {
+        return estatura;
+    }
+
+    public void setEstatura(Float estatura) {
+        this.estatura = estatura;
+    }
+
+    public Float getImc() {
+        return imc;
+    }
+
+    public void setImc(Float imc) {
+        this.imc = imc;
+    }
+
+    public Integer getNuncaFumo() {
+        return nuncaFumo;
+    }
+
+    public void setNuncaFumo(Integer nuncaFumo) {
+        this.nuncaFumo = nuncaFumo;
+    }
+
+    public Integer getExFumador() {
+        return exFumador;
+    }
+
+    public void setExFumador(Integer exFumador) {
+        this.exFumador = exFumador;
+    }
+
+    public Integer getExAnnosSinFumar() {
+        return exAnnosSinFumar;
+    }
+
+    public void setExAnnosSinFumar(Integer exAnnosSinFumar) {
+        this.exAnnosSinFumar = exAnnosSinFumar;
+    }
+
+    public Integer getFumaActualmente() {
+        return fumaActualmente;
+    }
+
+    public void setFumaActualmente(Integer fumaActualmente) {
+        this.fumaActualmente = fumaActualmente;
+    }
+
+    public Integer getEdadInicioFuma() {
+        return edadInicioFuma;
+    }
+
+    public void setEdadInicioFuma(Integer edadInicioFuma) {
+        this.edadInicioFuma = edadInicioFuma;
+    }
+
+    public Integer getPromedioFumaDiario() {
+        return promedioFumaDiario;
+    }
+
+    public void setPromedioFumaDiario(Integer promedioFumaDiario) {
+        this.promedioFumaDiario = promedioFumaDiario;
+    }
+
+    public Integer getAñosFumador() {
+        return añosFumador;
+    }
+
+    public void setAñosFumador(Integer añosFumador) {
+        this.añosFumador = añosFumador;
+    }
+
+    public Integer getNuncaBebio() {
+        return nuncaBebio;
+    }
+
+    public void setNuncaBebio(Integer nuncaBebio) {
+        this.nuncaBebio = nuncaBebio;
+    }
+
+    public Integer getExBebedor() {
+        return exBebedor;
+    }
+
+    public void setExBebedor(Integer exBebedor) {
+        this.exBebedor = exBebedor;
+    }
+
+    public Integer getExAnnosSinBeber() {
+        return exAnnosSinBeber;
+    }
+
+    public void setExAnnosSinBeber(Integer exAnnosSinBeber) {
+        this.exAnnosSinBeber = exAnnosSinBeber;
+    }
+
+    public Integer getBebeActualmente() {
+        return bebeActualmente;
+    }
+
+    public void setBebeActualmente(Integer bebeActualmente) {
+        this.bebeActualmente = bebeActualmente;
+    }
+
+    public Integer getEdadInicioBebe() {
+        return edadInicioBebe;
+    }
+
+    public void setEdadInicioBebe(Integer edadInicioBebe) {
+        this.edadInicioBebe = edadInicioBebe;
+    }
+
+    public Integer getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(Integer frecuencia) {
+        this.frecuencia = frecuencia;
+    }
+
+    public Integer getCantidadXOcasion() {
+        return cantidadXOcasion;
+    }
+
+    public void setCantidadXOcasion(Integer cantidadXOcasion) {
+        this.cantidadXOcasion = cantidadXOcasion;
+    }
+
+    public Integer getAnnosConsumo() {
+        return annosConsumo;
+    }
+
+    public void setAnnosConsumo(Integer annosConsumo) {
+        this.annosConsumo = annosConsumo;
+    }
+
+    public Integer getCarnesProcesadas() {
+        return carnesProcesadas;
+    }
+
+    public void setCarnesProcesadas(Integer carnesProcesadas) {
+        this.carnesProcesadas = carnesProcesadas;
+    }
+
+    public Integer getAlimentosSalados() {
+        return alimentosSalados;
+    }
+
+    public void setAlimentosSalados(Integer alimentosSalados) {
+        this.alimentosSalados = alimentosSalados;
+    }
+
+    public Integer getFrutasVerduras() {
+        return frutasVerduras;
+    }
+
+    public void setFrutasVerduras(Integer frutasVerduras) {
+        this.frutasVerduras = frutasVerduras;
+    }
+
+    public Integer getFrituras() {
+        return frituras;
+    }
+
+    public void setFrituras(Integer frituras) {
+        this.frituras = frituras;
+    }
+
+    public Integer getBebidaCaliente() {
+        return bebidaCaliente;
+    }
+
+    public void setBebidaCaliente(Integer bebidaCaliente) {
+        this.bebidaCaliente = bebidaCaliente;
+    }
+
+    public Integer getPesticidas() {
+        return pesticidas;
+    }
+
+    public void setPesticidas(Integer pesticidas) {
+        this.pesticidas = pesticidas;
+    }
+
+    public Integer getOtrosChemicos() {
+        return otrosChemicos;
+    }
+
+    public void setOtrosChemicos(Integer otrosChemicos) {
+        this.otrosChemicos = otrosChemicos;
+    }
+
+    public String getTipoChemicos() {
+        return tipoChemicos;
+    }
+
+    public void setTipoChemicos(String tipoChemicos) {
+        this.tipoChemicos = tipoChemicos;
+    }
+
+    public Integer getHumoLenna() {
+        return humoLenna;
+    }
+
+    public void setHumoLenna(Integer humoLenna) {
+        this.humoLenna = humoLenna;
+    }
+
+    public String getAgua() {
+        return agua;
+    }
+
+    public void setAgua(String agua) {
+        this.agua = agua;
+    }
+
+    public Integer getTratamientoAgua() {
+        return tratamientoAgua;
+    }
+
+    public void setTratamientoAgua(Integer tratamientoAgua) {
+        this.tratamientoAgua = tratamientoAgua;
+    }
+
+    public Integer getPruebaHel() {
+        return pruebaHel;
+    }
+
+    public void setPruebaHel(Integer pruebaHel) {
+        this.pruebaHel = pruebaHel;
+    }
+
+    public Integer getResultadoHel() {
+        return resultadoHel;
+    }
+
+    public void setResultadoHel(Integer resultadoHel) {
+        this.resultadoHel = resultadoHel;
+    }
+
+    public Integer getTiempoTest() {
+        return tiempoTest;
+    }
+
+    public void setTiempoTest(Integer tiempoTest) {
+        this.tiempoTest = tiempoTest;
+    }
+
+    public Date getFechaTomaSangre() {
+        return fechaTomaSangre;
+    }
+
+    public void setFechaTomaSangre(Date fechaTomaSangre) {
+        this.fechaTomaSangre = fechaTomaSangre;
+    }
+
+    public Integer getTlr9Rs5743836() {
+        return tlr9Rs5743836;
+    }
+
+    public void setTlr9Rs5743836(Integer tlr9Rs5743836) {
+        this.tlr9Rs5743836 = tlr9Rs5743836;
+    }
+
+    public Integer getTlr9Rs187084() {
+        return tlr9Rs187084;
+    }
+
+    public void setTlr9Rs187084(Integer tlr9Rs187084) {
+        this.tlr9Rs187084 = tlr9Rs187084;
+    }
+
+    public Integer getMir146aRs2910164() {
+        return mir146aRs2910164;
+    }
+
+    public void setMir146aRs2910164(Integer mir146aRs2910164) {
+        this.mir146aRs2910164 = mir146aRs2910164;
+    }
+
+    public Integer getMir196a2Rs11614913() {
+        return mir196a2Rs11614913;
+    }
+
+    public void setMir196a2Rs11614913(Integer mir196a2Rs11614913) {
+        this.mir196a2Rs11614913 = mir196a2Rs11614913;
+    }
+
+    public Integer getMthfrRs1801133() {
+        return mthfrRs1801133;
+    }
+
+    public void setMthfrRs1801133(Integer mthfrRs1801133) {
+        this.mthfrRs1801133 = mthfrRs1801133;
+    }
+
+    public Integer getDnmt3bRs1569686() {
+        return dnmt3bRs1569686;
+    }
+
+    public void setDnmt3bRs1569686(Integer dnmt3bRs1569686) {
+        this.dnmt3bRs1569686 = dnmt3bRs1569686;
+    }
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getOtro() {
+        return otro;
+    }
+
+    public void setOtro(String otro) {
+        this.otro = otro;
+    }
+
+    public Integer getTumorUbicacion() {
+        return tumorUbicacion;
+    }
+
+    public void setTumorUbicacion(Integer tumorUbicacion) {
+        this.tumorUbicacion = tumorUbicacion;
+    }
+
+    public String getEstadioClinico() {
+        return estadioClinico;
+    }
+
+    public void setEstadioClinico(String estadioClinico) {
+        this.estadioClinico = estadioClinico;
+    }
+
+    
+
+
+
+
+
 }
+
+
+

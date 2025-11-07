@@ -1,6 +1,7 @@
 package choripan_solutions.db_exporter.Controlador;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +26,15 @@ public class ParticipanteControlador {
     private ParticipanteServicio participanteServicio;
 
     @GetMapping
-    public List<Participante> getParticipantes() {
-        return participanteServicio.getParticipantes();
+    public List<Participante> findAllParticipantes() {
+        return participanteServicio.findAllParticipantes();
     }
 
     @GetMapping("/{codigo}")
-    public ResponseEntity<Participante> getParticipante(@PathVariable String codigo) {
-        Participante participante = participanteServicio.obtenerParticipantePorRut(codigo);
-        if (participante != null) {
-            return ResponseEntity.ok(participante);
+    public ResponseEntity<Participante> findParticipante(@PathVariable String codigo) {
+        Optional<Participante> participante = participanteServicio.findByCodigo(codigo);
+        if (participante.isPresent()) {
+            return ResponseEntity.ok(participante.get());
         } else {
             return ResponseEntity.notFound().build();
         }

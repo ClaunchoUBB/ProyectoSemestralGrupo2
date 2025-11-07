@@ -92,6 +92,23 @@ public class UsuarioServicio {
         return usuarioRepositorio.save(usuario);
     }
 
+    private Usuario actualizarUsuarioActivo(Integer rut, Boolean activo) {
+        Usuario usuario = usuarioRepositorio.findById(rut)
+                .orElseThrow(() -> new RuntimeException("No se encontró el usuario con rut: " + rut));
+
+        usuario.setActivo(activo);
+
+        return usuarioRepositorio.save(usuario);
+    }
+
+    public Usuario desactivUsuario(Integer rut) {
+        return actualizarUsuarioActivo(rut, false);
+    }
+
+    public Usuario activarUsuario(Integer rut) {
+        return actualizarUsuarioActivo(rut, true);
+    }
+
     // --- DELETE ---
     @Transactional
     public void eliminarUsuario(Integer rut) {
