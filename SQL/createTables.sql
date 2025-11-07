@@ -1,6 +1,7 @@
+CREATE IF NOT EXISTS DATABASE choripan_solutions;
 USE choripan_solutions;
 
-CREATE TABLE Usuarios (
+CREATE TABLE IF NOT EXISTS Usuarios (
     rut INT NOT NULL,
     nombre1 VARCHAR(40),
     nombre2 VARCHAR(200),
@@ -15,7 +16,7 @@ CREATE TABLE Usuarios (
 );
 
 
-CREATE TABLE Log (
+CREATE TABLE IF NOT EXISTS Log (
     id_log INT NOT NULL AUTO_INCREMENT,
     detalle TEXT,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -26,7 +27,7 @@ CREATE TABLE Log (
 );
 
 
-CREATE TABLE Participante (
+CREATE TABLE IF NOT EXISTS Participante (
     codigo VARCHAR(10),
     nombre1 VARCHAR(40),
     nombre2 VARCHAR(200),

@@ -5,7 +5,7 @@ import choripan_solutions.db_exporter.Repositorio.UsuarioRepositorio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import jakarta.persistence.EntityManager; // Asegúrate que sea "jakarta.persistence"
 import jakarta.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +18,9 @@ public class UsuarioServicio {
     
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
+
+
+    //private final BcryptPasswordEncoder passwordEncoder = new BcryptPasswordEncoder();
 
     // Inyectamos el EntityManager (lo necesitamos para 'merge')
     @PersistenceContext

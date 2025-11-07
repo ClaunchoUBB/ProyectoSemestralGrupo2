@@ -30,4 +30,37 @@ public class Log {
     @JoinColumn(name = "rut_usuario") // Esta es la columna FOREIGN KEY
     @JsonIgnore // Evita bucles infinitos al convertir a JSON
     private Usuario usuario;
+
+    public Integer getIdLog() {
+        return idLog;
+    }
+
+    public void setIdLog(Integer idLog) {
+        this.idLog = idLog;
+    }
+
+    public String getDetalle() {
+        return detalle;
+    }   
+
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+
+    public Timestamp getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Timestamp fecha) {
+        this.fecha = fecha;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
 }

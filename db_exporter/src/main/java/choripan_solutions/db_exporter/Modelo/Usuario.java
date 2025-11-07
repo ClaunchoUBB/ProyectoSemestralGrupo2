@@ -27,7 +27,7 @@ public class Usuario {
     @Column(name = "apellido2")
     private String apellido2;
 
-    @Column(name = "rol")
+    @Column(name = "rol")   
     private Integer rol;
 
     @Column(name = "numero")
@@ -55,27 +55,10 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participante> participantes;
     
-    /* 
-    // Constructor por defecto
-    public Usuario(int rut, String nombre1, String nombre2, String apellido1, String apellido2, int rol, String numero,
-            String correo, String contrasena) {
-        this.rut = rut;
-        this.nombre1 = nombre1;
-        this.nombre2 = nombre2;
-        this.apellido1 = apellido1;
-        this.apellido2 = apellido2;
-        this.rol = rol;
-        this.numero = numero;
-        this.correo = correo;
-        this.contrasena = contrasena;
-    }
 
-    public Usuario(int rut) {
-        this.rut = rut;
-    }
 
     // Getters y Setters
-    public int getRut() {
+    public Integer getRut() {
         return rut;
     }
     public void setRut(int rut) {
@@ -110,10 +93,10 @@ public class Usuario {
         this.apellido2 = apellido2;
     }
 
-    public int getRol() {
+    public Integer getRol() {
         return rol;
     }
-    public void setRol(int rol) {
+    public void setRol(Integer rol) {
         this.rol = rol;
     }
 
@@ -130,14 +113,23 @@ public class Usuario {
     public void setCorreo(String correo) {
         this.correo = correo;
     } 
-    
-    public String getContrasena() {
-        return contrasena;
-    }
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public Boolean getActivo() {
+        return activo;
     }
 
-    */
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+    public void setRut(Integer rut) {
+        this.rut = rut;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
 }
