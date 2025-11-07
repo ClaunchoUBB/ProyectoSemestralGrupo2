@@ -37,14 +37,16 @@ CREATE TABLE Participante (
     rut_usuario INT,
     grupo int, /* 0 = control, 1 = caso*/
     fecha_inclusion DATE,
+
     /* datos sociodemograficos */
+
     edad int,
     nacionalidad VARCHAR(20),
     direccion VARCHAR(100),
     sexo int, /* 0 = femenino, 1 = masculino */
     zona int, /* 0 = urbana, 1 = rural */
     años_vivienda int,
-    nivel_educacional int, 
+    nivel_educacional int, /* 1 =basica, 2 =media,3 =superior*/
     ocupacion VARCHAR(50),
 
     /*antecedentes clinicos */
@@ -71,7 +73,7 @@ CREATE TABLE Participante (
     fuma_actualmente int, /* 0 = no, 1 = si */
     edad_inicio_fuma int,
     promedio_fuma_diario int,
-    años_fumador int,
+    annos_fumador int,
 
     nunca_bebio int, /* 0 = no, 1 = si */
     ex_bebedor int, /* 0 = no, 1 = si */
