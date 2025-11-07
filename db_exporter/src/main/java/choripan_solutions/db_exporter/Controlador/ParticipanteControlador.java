@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -41,13 +43,30 @@ public class ParticipanteControlador {
         }
     }
 
-    @PostMapping
-    public Participante crearParticipante(@Valid @RequestBody Participante participante) {
-        return participanteServicio.crearParticipante(participante);
+    @PreAuthorize("hasAnyRole('MEDICO', 'ADMINISTRADOR')")
+    @PostMapping("/participantes")
+    public ResponseEntity<?> crearParticipante(@Valid @RequestBody Participante participante) {
+        Participante nuevo = participanteServicio.crearParticipante(participante);
+        return ResponseEntity.ok(nuevo);
     }
 
+    @PreAuthorize("hasAnyRole('RECLUTADOR', 'MEDICO', 'ADMINISTRADOR')")
+    @GetMapping("/participantes/excel")
+    public ResponseEntity<?> generarExcel() {
+        return ResponseEntity.ok("Generando Excel...");
+    }
+
+    @PreAuthorize("hasAnyRole('INVESTIGADOR', 'ADMINISTRADOR')")
+    @GetMapping("/participantes/datos")
+    public ResponseEntity<?> verDatos() {
+        return ResponseEntity.ok("Acceso a datos permitidos");
+    }
+
+
+    @PreAuthorize("hasAnyRole('MEDICO', 'ADMINISTRADOR')")
     @PutMapping("/{codigo}")
-    public ResponseEntity<Participante> actualizarParticipante(@PathVariable String codigo, @RequestBody Participante detalles) {
+    public ResponseEntity<Participante> actualizarParticipante(@PathVariable String codigo,
+            @RequestBody Participante detalles) {
         try {
             Participante actualizado = participanteServicio.actualizarParticipante(codigo, detalles);
             return ResponseEntity.ok(actualizado);
@@ -56,8 +75,11 @@ public class ParticipanteControlador {
         }
     }
 
+
+    @PreAuthorize("hasAnyRole('MEDICO', 'ADMINISTRADOR')")
     @PatchMapping("/{codigo}")
-    public ResponseEntity<Participante> actualizarParticipanteParcial(@PathVariable String codigo, @RequestBody Participante detalles) {
+    public ResponseEntity<Participante> actualizarParticipanteParcial(@PathVariable String codigo,
+            @RequestBody Participante detalles) {
         try {
             Participante actualizado = participanteServicio.actualizarParticipanteParcial(codigo, detalles);
             return ResponseEntity.ok(actualizado);
@@ -66,6 +88,7 @@ public class ParticipanteControlador {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
     @DeleteMapping("/{codigo}")
     public ResponseEntity<?> eliminarParticipante(@PathVariable String codigo) {
         participanteServicio.eliminarParticipante(codigo);

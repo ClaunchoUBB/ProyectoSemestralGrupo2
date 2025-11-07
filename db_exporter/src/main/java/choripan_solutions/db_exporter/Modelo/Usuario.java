@@ -2,6 +2,10 @@ package choripan_solutions.db_exporter.Modelo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.util.List;
 
@@ -27,9 +31,14 @@ public class Usuario {
     @Column(name = "apellido2")
     private String apellido2;
 
-    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Min(1) @Max(4)
+    //1: ADMIN, 2: INVESTIGADOR, 3: RECLUTADOR, 4:MEDICO
     @Column(name = "rol")   
     private Integer rol;
+
+
+
 
     @Column(name = "numero")
     private String numero;
@@ -132,5 +141,10 @@ public class Usuario {
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
+    public Object findByRut(String rut2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByRut'");
+    }
+
 
 }
