@@ -1,4 +1,7 @@
-package choripan_solutions.db_exporter.Modelo;
+package choripan_solutions.db_exporter.Usuario;
+import choripan_solutions.db_exporter.Logs.Log;
+import choripan_solutions.db_exporter.Participante.Participante;
+
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;

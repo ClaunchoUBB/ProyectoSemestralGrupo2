@@ -1,4 +1,4 @@
-package choripan_solutions.db_exporter.Modelo;
+package choripan_solutions.db_exporter.Logs;
 
 import jakarta.persistence.*;
 import lombok.Data;

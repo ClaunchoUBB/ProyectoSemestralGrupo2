@@ -1,4 +1,4 @@
-package choripan_solutions.db_exporter.Controlador;
+package choripan_solutions.db_exporter.Participante;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import choripan_solutions.db_exporter.Modelo.Participante;
-import choripan_solutions.db_exporter.Servicio.ParticipanteServicio;
+import choripan_solutions.db_exporter.Participante.Participante;
+import choripan_solutions.db_exporter.Participante.ParticipanteServicio;
 import jakarta.validation.Valid;
 
 @RestController

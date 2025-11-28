@@ -1,6 +1,6 @@
 package choripan_solutions.db_exporter.Repositorio;
 
-import choripan_solutions.db_exporter.Modelo.Usuario;
+import choripan_solutions.db_exporter.Usuario.Usuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

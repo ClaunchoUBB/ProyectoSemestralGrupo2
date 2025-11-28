@@ -1,11 +1,11 @@
-package choripan_solutions.db_exporter.Servicio;
+package choripan_solutions.db_exporter.Logs;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import choripan_solutions.db_exporter.Modelo.Log;
-import choripan_solutions.db_exporter.Repositorio.LogRepo;
+import choripan_solutions.db_exporter.Logs.Log;
+import choripan_solutions.db_exporter.Logs.LogRepo;
 
 @Service
 public class LogServicio {

@@ -1,4 +1,4 @@
-package choripan_solutions.db_exporter.Servicio;
+package choripan_solutions.db_exporter.Usuario;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import choripan_solutions.db_exporter.Modelo.Usuario;
-import choripan_solutions.db_exporter.Repositorio.UsuarioRepositorio;
+import choripan_solutions.db_exporter.Usuario.Usuario;
+import choripan_solutions.db_exporter.Usuario.UsuarioRepositorio;
 
 public class CustomUserDetails implements UserDetailsService{
 

@@ -1,7 +1,7 @@
-package choripan_solutions.db_exporter.Controlador;
+package choripan_solutions.db_exporter.Usuario;
 
-import choripan_solutions.db_exporter.Modelo.Usuario;
-import choripan_solutions.db_exporter.Servicio.UsuarioServicio;
+import choripan_solutions.db_exporter.Usuario.Usuario;
+import choripan_solutions.db_exporter.Usuario.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

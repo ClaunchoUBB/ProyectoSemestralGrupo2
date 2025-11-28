@@ -1,11 +1,11 @@
-package choripan_solutions.db_exporter.Repositorio;
+package choripan_solutions.db_exporter.Usuario;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import choripan_solutions.db_exporter.Modelo.Usuario;
+import choripan_solutions.db_exporter.Usuario.Usuario;
 
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {

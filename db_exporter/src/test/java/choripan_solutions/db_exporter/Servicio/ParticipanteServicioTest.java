@@ -1,5 +1,7 @@
 package choripan_solutions.db_exporter.Servicio;
 
+import choripan_solutions.db_exporter.Participante.ParticipanteServicio;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

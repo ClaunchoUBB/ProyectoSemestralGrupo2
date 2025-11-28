@@ -1,4 +1,4 @@
-package choripan_solutions.db_exporter.Controlador;
+package choripan_solutions.db_exporter.Logs;
 
 import java.util.List;
 
@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import choripan_solutions.db_exporter.Modelo.Log;
-import choripan_solutions.db_exporter.Servicio.LogServicio;
+// classes referenced below are in the same package - imports are not required
 
 @RestController
 @RequestMapping("/api/logs")

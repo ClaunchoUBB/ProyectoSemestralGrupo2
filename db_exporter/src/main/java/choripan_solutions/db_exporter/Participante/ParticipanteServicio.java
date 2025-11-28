@@ -1,10 +1,10 @@
-package choripan_solutions.db_exporter.Servicio;
+package choripan_solutions.db_exporter.Participante;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import choripan_solutions.db_exporter.Modelo.Participante;
-import choripan_solutions.db_exporter.Repositorio.ParticipanteRepo;
+import choripan_solutions.db_exporter.Participante.Participante;
+import choripan_solutions.db_exporter.Participante.ParticipanteRepo;
 
 import java.util.*;
 import java.util.stream.Collectors;

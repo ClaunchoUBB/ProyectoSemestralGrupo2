@@ -1,4 +1,7 @@
-package choripan_solutions.db_exporter.Modelo;
+package choripan_solutions.db_exporter.Participante;
+import choripan_solutions.db_exporter.Usuario.Usuario;
+
+
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
