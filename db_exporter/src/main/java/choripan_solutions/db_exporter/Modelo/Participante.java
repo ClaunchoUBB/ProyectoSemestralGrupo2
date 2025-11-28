@@ -315,4 +315,8 @@ public class Participante {
 
 
     public Participante() {}
+
+    public void setIMC(){
+        this.imc = this.peso / (this.estatura * this.estatura);
+    }
 }
