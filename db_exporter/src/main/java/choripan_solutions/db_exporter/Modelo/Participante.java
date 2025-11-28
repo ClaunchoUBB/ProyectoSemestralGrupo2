@@ -96,15 +96,20 @@ public class Participante {
 
 
     // Antecedentes clínicos-------------------------------------------------------------------------------------------------------------|
+    //SOLO CASOS
+    @Column(name = "diagnostico_histologico_adenocarcinoma_gastrico")
+    private Boolean diagnosticoHistologicoAdenocarcinomaGastrico;
+
+    //SOLO CASOS
     @Column(name = "fecha_diagnostico")
     @Temporal(TemporalType.DATE)
     private Date fechaDiagnostico;
 
-    @Column(name = "ant_cancer_gastrico")
-    private Integer antCancerGastrico;
+    @Column(name = "ant_fam_cancer_gastrico")
+    private boolean antCancerGastrico;
 
-    @Column(name = "ant_cancer_otro")
-    private Integer antCancerOtro;
+    @Column(name = "ant_fam_cancer_otro")
+    private boolean antCancerOtro;
 
     @Column(name = "cancer_otro", length = 50)
     private String cancerOtro;
@@ -112,11 +117,14 @@ public class Participante {
     @Column(name = "otras_enfermedades", length = 100)
     private String otrasEnfermedades;
 
-    @Column(name = "medicamentos_cronicos", length = 100)
-    private String medicamentosCronicos;
+    @Column(name = "uso_cronico_medicametos_gastrolesivos")
+    private Boolean usoCronicoMedicamentosGastrolesivos;
+
+    @Column(name = "medicamento_gastrolesivo", length = 100)
+    private String medicamentosGastroLesivos;
 
     @Column(name = "cirugia_gastrica_previa")
-    private Integer cirugiaGastricaPrevia;
+    private boolean cirugiaGastricaPrevia;
 
     // Variables antropomórficas
     @DecimalMin(value = "40.0", message = "El peso mínimo permitido es 40 kg")

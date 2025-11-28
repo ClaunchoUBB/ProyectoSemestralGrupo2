@@ -54,14 +54,15 @@ CREATE TABLE IF NOT EXISTS Participante (
     otra_prevision VARCHAR(50),
 
     /*antecedentes clinicos */
-
+    diagnostico_histologico_adenocarcinoma_gastrico BOOLEAN, /* 0 = no, 1 = si - SOLO CASOS*/
     fecha_diagnostico DATE, /*solo casos*/
-    ant_cancer_gastrico int, /* 0 = no, 1 = si */
-    ant_cancer_otro int, /* 0 = no, 1 = si */
+    ant_fam_cancer_gastrico BOOLEAN, /* 0 = no, 1 = si */
+    ant_fam_cancer_otro BOOLEAN, /* 0 = no, 1 = si */
     cancer_otro VARCHAR(50),/* detalle tipo de cancer */
     otras_enfermedades VARCHAR(100 ),
-    medicamentos_cronicos VARCHAR(100),
-    cirugia_gastrica_previa int, /* 0 = no, 1 = si */
+    uso_cronico_medicametos_gastrolesivos BOOLEAN, /* 0 = no, 1 = si */
+    medicamento_gastrolesivo VARCHAR(100),
+    cirugia_gastrica_previa BOOLEAN, /* 0 = no, 1 = si */
    
     /*Variables antropomorficas */
 
