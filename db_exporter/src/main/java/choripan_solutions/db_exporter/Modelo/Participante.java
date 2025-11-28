@@ -165,31 +165,27 @@ public class Participante {
     private Integer exAnnosSinFumar;
 
     //Consumo de alcohol----------------------
-    @Column(name = "nunca_bebio")
-    private Integer nuncaBebio;
+    @Column(name = "estado_consumo_alcohol")
+    private Integer estadoConsumoAlcohol;
 
-    @Column(name = "ex_bebedor")
-    private Integer exBebedor;
+    // 0 = ocasional, 2 = regular,3 = frecuente
+    @Column(name = "frecuencia_consumo_alcohol")
+    private Integer frecuenciaConsumoAlcohol;
 
-    @Column(name = "ex_annos_sin_beber")
-    private Integer exAnnosSinBeber;
-
-    @Column(name = "bebe_actualmente")
-    private Integer bebeActualmente;
-
-    @Column(name = "edad_inicio_bebe")
-    private Integer edadInicioBebe;
-
-    @Column(name = "frecuencia")
-    private Integer frecuencia;
-
+    //0 = 1-2 bebidas (poco), 1 = 3-4 bebidas (moderado), 2 = más de 5 bebidas (mucho)
     @Column(name = "cantidad_x_ocasion")
     private Integer cantidadXOcasion;
 
-    @Column(name = "annos_consumo")
+    //0 = menos de 10 años, 1 = entre 5 a 10 años, 2 = más de 10 años
+    @Column(name = "annos_consumo_habitual")
     private Integer annosConsumo;
 
-    // Factores dieta
+    //0 = menos de 5 años, 1 = entre 5 a 10 años, 2 = más de 10 años*
+    @Column(name = "ex_annos_sin_beber")
+    private Integer exAnnosSinBeber;
+
+
+    // Factores dieta-------------------------------------------------------------------------------------------------------------|
     @Column(name = "carnes_procesadas")
     private Integer carnesProcesadas;
 

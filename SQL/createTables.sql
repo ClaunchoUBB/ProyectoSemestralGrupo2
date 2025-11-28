@@ -79,14 +79,14 @@ CREATE TABLE IF NOT EXISTS Participante (
     tiempo_total_fumador int, /* 0 = menor a 10 años, 1 = entre 10 y 20 años, 2 = más de 20 años */
     ex_annos_sin_fumar int, /* 0 = menos de 5 años, 1 = entre 5 y 10 años, 2 = más de 10 años */
 
-    nunca_bebio int, /* 0 = no, 1 = si */
-    ex_bebedor int, /* 0 = no, 1 = si */
-    ex_annos_sin_beber int,
-    bebe_actualmente int, /* 0 = no, 1 = si */
-    edad_inicio_bebe int,
-    frecuencia int, /* 0 = ocasional, 2 = regular,3 = frecuente */
-    cantidad_x_ocasion int, /*desde el 0: 1-2, 3-4, >=5*/
-    annos_consumo int,
+    estado_consumo_alcohol int, /* 0 = nunca bebio, 1 = ex bebedor, 2 = bebe actualmente */
+    frecuencia_consumo_alcohol int, /* 0 = ocasional, 2 = regular,3 = frecuente */
+    cantidad_x_ocasion int, /*0 = 1-2 bebidas (poco), 1 = 3-4 bebidas (moderado), 2 = más de 5 bebidas (mucho)*/
+    annos_consumo_habitual int, /* 0 = menos de 10 años, 1 = entre 5 a 10 años, 2 = más de 10 años*/
+    ex_annos_sin_beber int, /* 0 = menos de 5 años, 1 = entre 5 a 10 años, 2 = más de 10 años*/
+    
+    
+    
 
     /*factores dieta */
 
