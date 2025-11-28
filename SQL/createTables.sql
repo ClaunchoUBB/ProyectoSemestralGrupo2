@@ -1,4 +1,4 @@
-CREATE IF NOT EXISTS DATABASE choripan_solutions;
+CREATE DATABASE IF NOT EXISTS choripan_solutions;
 USE choripan_solutions;
 
 CREATE TABLE IF NOT EXISTS Usuarios (
@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS Usuarios (
     PRIMARY KEY (rut)
 );
 
-
 CREATE TABLE IF NOT EXISTS Log (
     id_log INT NOT NULL AUTO_INCREMENT,
     detalle TEXT,
@@ -25,7 +24,6 @@ CREATE TABLE IF NOT EXISTS Log (
     FOREIGN KEY (rut_usuario)
         REFERENCES Usuarios (rut)
 );
-
 
 CREATE TABLE IF NOT EXISTS Participante (
     codigo VARCHAR(10),
@@ -43,21 +41,26 @@ CREATE TABLE IF NOT EXISTS Participante (
     edad int,
     nacionalidad VARCHAR(20),
     direccion VARCHAR(100),
-    sexo int, /* 0 = femenino, 1 = masculino */
-    zona int, /* 0 = urbana, 1 = rural */
-    años_vivienda int,
-    nivel_educacional int, 
-    ocupacion VARCHAR(50),
+    comuna VARCHAR(50),
+    ciudad VARCHAR(50),
+    sexo BOOLEAN, /* 0 = femenino, 1 = masculino */
+    zona BOOLEAN, /* 0 = urbana, 1 = rural */
+    vive_hace_5_annos BOOLEAN, /* 0 = no, 1 = si */
+    nivel_educacional int, /* 0 = básico, 1 = medio, 2 = universitario */
+    ocupacion_actual VARCHAR(50),
+    prevision_salud int, /* 0 = ninguna, 1 = fonasa, 2 = isapre, 3 = capredema/Dipreca, 4 = otra */
+    otra_prevision VARCHAR(50),
 
     /*antecedentes clinicos */
-
+    diagnostico_histologico_adenocarcinoma_gastrico BOOLEAN, /* 0 = no, 1 = si - SOLO CASOS*/
     fecha_diagnostico DATE, /*solo casos*/
-    ant_cancer_gastrico int, /* 0 = no, 1 = si */
-    ant_cancer_otro int, /* 0 = no, 1 = si */
+    ant_fam_cancer_gastrico BOOLEAN, /* 0 = no, 1 = si */
+    ant_fam_cancer_otro BOOLEAN, /* 0 = no, 1 = si */
     cancer_otro VARCHAR(50),/* detalle tipo de cancer */
     otras_enfermedades VARCHAR(100 ),
-    medicamentos_cronicos VARCHAR(100),
-    cirugia_gastrica_previa int, /* 0 = no, 1 = si */
+    uso_cronico_medicametos_gastrolesivos BOOLEAN, /* 0 = no, 1 = si */
+    medicamento_gastrolesivo VARCHAR(100),
+    cirugia_gastrica_previa BOOLEAN, /* 0 = no, 1 = si */
    
     /*Variables antropomorficas */
 
@@ -67,60 +70,61 @@ CREATE TABLE IF NOT EXISTS Participante (
 
     /*Tabaquismo y alcohol */
 
-    nunca_fumo int, /* 0 = no, 1 = si */
-    ex_fumador int, /* 0 = no, 1 = si */
-    ex_annos_sin_fumar int,
-    fuma_actualmente int, /* 0 = no, 1 = si */
-    edad_inicio_fuma int,
-    promedio_fuma_diario int,
-    años_fumador int,
+    nunca_fumo BOOLEAN, /* 0 = no, 1 = si */
+    ex_fumador BOOLEAN, /* 0 = no, 1 = si */
+    fuma_actualmente BOOLEAN, /* 0 = no, 1 = si */
+    promedio_fuma_diario int, /* 0 = 1-9 (poco), 1 = 10-19 (moderado), 2 = más de 20 (mucho)*/
+    tiempo_total_fumador int, /* 0 = menor a 10 años, 1 = entre 10 y 20 años, 2 = más de 20 años */
+    ex_annos_sin_fumar int, /* 0 = menos de 5 años, 1 = entre 5 y 10 años, 2 = más de 10 años */
 
-    nunca_bebio int, /* 0 = no, 1 = si */
-    ex_bebedor int, /* 0 = no, 1 = si */
-    ex_annos_sin_beber int,
-    bebe_actualmente int, /* 0 = no, 1 = si */
-    edad_inicio_bebe int,
-    frecuencia int, /* 0 = ocasional, 2 = regular,3 = frecuente */
-    cantidad_x_ocasion int, /*desde el 0: 1-2, 3-4, >=5*/
-    annos_consumo int,
-
+    estado_consumo_alcohol int, /* 0 = nunca bebio, 1 = ex bebedor, 2 = bebe actualmente */
+    frecuencia_consumo_alcohol int, /* 0 = ocasional, 2 = regular,3 = frecuente */
+    cantidad_x_ocasion int, /*0 = 1-2 bebidas (poco), 1 = 3-4 bebidas (moderado), 2 = más de 5 bebidas (mucho)*/
+    annos_consumo_habitual int, /* 0 = menos de 10 años, 1 = entre 5 a 10 años, 2 = más de 10 años*/
+    ex_annos_sin_beber int, /* 0 = menos de 5 años, 1 = entre 5 a 10 años, 2 = más de 10 años*/
+   
     /*factores dieta */
 
-    carnes_procesadas int, /* frecuencia consumo semanal */
-    alimentos_salados int, /*0=no, 1=si*/
-    frutas_verduras int, /* frecuencia diario */
-    frituras int, /* >=3 veces x semana.  0 = no, 1 = si */
+    carnes_procesadas int, /* consumo sem - 0 = <= 1, 1 = 2, 2 = >=3 */
+    alimentos_salados BOOLEAN, /*0=no, 1=si*/
+    frutas_verduras int, /* 0 = <= 2 porciones, 1 = 3-4 porciones, 2 = >=5 porciones*/
+    frituras BOOLEAN, /* >=3 veces x semana.  0 = no, 1 = si */
+    consumo_alimentos_muy_condimentados int, /* 0 = nunca/raramente, 1 = 1-2 sem, 2 = >=3 sem */
     bebida_caliente int, /* 0 = nunca, 1 = 1-2 sem, 2 = >=3 sem */
-    
+   
     /*exposiciones*/
 
-    pesticidas int, /* 0 = no, 1 = si */
-    otros_chemicos int, /* 0 = no, 1 = si */
+    pesticidas BOOLEAN, /* 0 = no, 1 = si */
+    otros_chemicos BOOLEAN, /* 0 = no, 1 = si */
     tipo_chemicos VARCHAR(100), /* detalle */
     humo_lenna int, /* 0 = no, 1 = estacional, 2 = diario */
-    agua VARCHAR(20), 
+    fuente_principal_agua int, /* 0 = red pública, 1 = pozo, 2 = camión aljibe, 3 = otro */
+    otra_fuente_agua VARCHAR(30), 
     tratamiento_agua int, /* 0 = ninguno, 1 = hervir, 2= filtro, 3 = cloro */
 
     /*datos helicobacter pylori*/
-    prueba_hel INT, /* 0 = aliento, 1 = antigeno, 2= endoscopia/biopsia */
-    resultado_hel INT, /* 0 = negativo, 1 = positivo */
-    tiempo_test int;
+    /*prueba_hel INT, *//* 0 = negativo, 1 = positivo, 2 = desconocido */
+    resultado_hel INT, /* 0 = negativo, 1 = positivo, 2 = desconocido */
+    result_positiv_hel_pasado int, /* 0 = no, 1 = si, 2 = no recuerda */
+    anno_aprox_examen_pasado_hel INT,
+    tipo_examen_pasado_hel VARCHAR(20), 
+    recibio_tratamiento_errad_hel INT, /* 0 = no, 1 = si, 2 = no recuerda */
+    anno_tratamiento_hel INT,
+    esquema_tratamiento_hel VARCHAR(100),
+    tipo_test_hel INT, /* 0 = aliento, 1 = antigeno, 2 = Serología, 3 = test rápido ureasa, 4 = histología/Biopsia, 5 otro*/
+    otro_test_hel VARCHAR(50),
+    tiempo_test int, /* // (años) 0 = < 1, 1 = 1-5, 2 = > 5 */
 
-    /*muestras biologicas y geneticas*/
+    /*Uso de antibióticos o inhibidores de bomba de protones (IBP) en las 4 semanas previas al examen*/
+    uso_ibp int, /* 0 = no, 1 = si, 2 = no recuerda */
+    repitio_examen_anteriormente BOOLEAN,
+    fecha_examen_anterior DATE,
+    resultado_examen_anterior VARCHAR(50),
 
-    fecha_toma_sangre DATE,
+    /*Histopatología  (solo casos)*/
 
-    TLR9_rs5743836 int, /* 0= tt, 1= tc, 2= cc */
-    TLR9_rs187084 int, /* 0= tt, 1= tc, 2= cc */
-    miR-146a_rs2910164 int, /* 0= gg, 1= gc, 2= cc */
-    miR-196a2_rs11614913 int, /* 0= cc, 1= ct, 2= tt */
-    MTHFR_rs1801133 int, /* 0= cc, 1= ct, 2= tt */
-    DNMT3B rs1569686 int, /* 0= gg, 1= gt, 2= tt */
-
-    /*hispopatologia (solo casos)*/
-
-    tipo int, /* 0 = intestinal, 1 = difuso, 2 = mixto, 3 = otro */
-    otro VARCHAR(50), /* detalle otro tipo */
+    tipo_histologico int, /* 0 = intestinal, 1 = difuso, 2 = mixto, 3 = otro */
+    otro_tipo_histologico VARCHAR(50), /* detalle otro tipo */
     tumor_ubicacion int, /* 0 = cardias, 1 = cuerpo, 2 = antro, 3 = difuso*/
     estadio_clinico VARCHAR(30),
 
