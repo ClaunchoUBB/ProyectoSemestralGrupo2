@@ -210,69 +210,105 @@ public class Participante {
     private Integer bebidaCaliente;
 
     // Exposiciones---------------------------
+    //nivel ocupacional
     @Column(name = "pesticidas")
-    private Integer pesticidas;
+    private boolean pesticidas;
 
+    //nivel ocupacional
     @Column(name = "otros_chemicos")
-    private Integer otrosChemicos;
+    private boolean otrosChemicos;
 
     @Column(name = "tipo_chemicos", length = 100)
     private String tipoChemicos;
 
+    // 0 = no, 1 = estacional, 2 = diario
     @Column(name = "humo_lenna")
     private Integer humoLenna;
 
-    @Column(name = "agua", length = 20)
-    private String agua;
+    // 0 = red pública, 1 = pozo, 2 = camión aljibe, 3 = otro
+    @Column(name = "fuente_principal_agua")
+    private Integer fuentePrincipalAgua;
 
+    @Column(name = "otra_fuente_agua", length = 30)
+    private String otraFuenteAgua;
+
+    // 0 = ninguno, 1 = hervir, 2= filtro, 3 = cloro
     @Column(name = "tratamiento_agua")
     private Integer tratamientoAgua;
 
-    // Datos Helicobacter pylori
-    @Column(name = "prueba_hel")
+    //Infección por Helicobacter pylori-------------------------------------------------------------------------------------------------------------|
+    // Datos Helicobacter pylori (hel)
+    /*@Column(name = "prueba_hel")
     private Integer pruebaHel;
-
+    */
+    // 0 = no, 1 = si, 2 = desconocido
     @Column(name = "resultado_hel")
     private Integer resultadoHel;
 
+    // 0 = no, 1 = si, 2 = no recuerda
+    @Column(name = "result_positiv_hel_pasado")
+    private Integer resultPositivHelPasado;
+
+    @Column(name = "anno_aprox_examen_pasado_hel")
+    private Integer annoAproxExamenPasadoHel;
+
+    @Column(name = "tipo_examen_pasado_hel", length = 20)
+    private String tipoExamenPasadoHel;
+
+    // 0 = no, 1 = si, 2 = no recuerda
+    @Column(name = "recibio_tratamiento_errad_hel")
+    private Integer recibioTratamientoErradHel;
+
+    @Column(name = "anno_tratamiento_hel")
+    private Integer annoTratamientoHel;
+
+    @Column(name = "esquema_tratamiento_hel", length = 100)
+    private String esquemaTratamientoHel;
+
+    // 0 = aliento, 1 = antigeno, 2 = Serología, 3 = test rápido ureasa, 4 = histología/Biopsia, 5 otro*/
+    @Column(name = "tipo_test_hel")
+    private Integer tipoTestHel;
+
+    @Column(name = "otro_test_hel", length = 50)
+    private String otroTestHel;
+
+
+    // (años) 0 = < 1, 1 = 1-5, 2 = > 5
     @Column(name = "tiempo_test")
     private Integer tiempoTest;
 
-    // Muestras biológicas y genéticas
-    @Column(name = "fecha_toma_sangre")
+    // Uso de antibióticos o inhibidores de bomba de protones (IBP) en las 4 semanas previas al examen
+    // 0 = no, 1 = si, 2 = no recuerda
+    @Column(name = "uso_ibp")
+    private Integer usoIbp;
+
+    @Column(name = "repitio_examen_anteriormente")
+    private Boolean repitioExamenAnteriormente;
+
+    @Column(name = "fecha_examen_anterior")
     @Temporal(TemporalType.DATE)
-    private Date fechaTomaSangre;
+    private Date fechaExamenAnterior;
 
-    @Column(name = "TLR9_rs5743836")
-    private Integer tlr9Rs5743836;
+    @Column(name = "resultado_examen_anterior", length = 50)
+    private String resultadoExamenAnterior;
 
-    @Column(name = "TLR9_rs187084")
-    private Integer tlr9Rs187084;
+    //Histopatología (solo casos)-------------------------------------------------------------------------------------------------------------|
 
-    @Column(name = "miR_146a_rs2910164")
-    private Integer mir146aRs2910164;
+    // 0 = intestinal, 1 = difuso, 2 = mixto, 3 = otro
+    @Column(name = "tipo_histologico")
+    private Integer tipoHistologico;
 
-    @Column(name = "miR_196a2_rs11614913")
-    private Integer mir196a2Rs11614913;
+    @Column(name = "otro_tipo_histologico", length = 50)
+    private String otroTipoHistologico;
 
-    @Column(name = "MTHFR_rs1801133")
-    private Integer mthfrRs1801133;
-
-    @Column(name = "DNMT3B_rs1569686")
-    private Integer dnmt3bRs1569686;
-
-    // Histopatología
-    @Column(name = "tipo")
-    private Integer tipo;
-
-    @Column(name = "otro", length = 50)
-    private String otro;
-
+    // 0 = cardias, 1 = cuerpo, 2 = antro, 3 = difuso
     @Column(name = "tumor_ubicacion")
     private Integer tumorUbicacion;
 
     @Column(name = "estadio_clinico", length = 30)
     private String estadioClinico;
+
+
 
     public String getCodigo() {
         return codigo;

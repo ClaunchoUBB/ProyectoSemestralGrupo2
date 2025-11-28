@@ -99,33 +99,37 @@ CREATE TABLE IF NOT EXISTS Participante (
     
     /*exposiciones*/
 
-    pesticidas int, /* 0 = no, 1 = si */
-    otros_chemicos int, /* 0 = no, 1 = si */
+    pesticidas BOOLEAN, /* 0 = no, 1 = si */
+    otros_chemicos BOOLEAN, /* 0 = no, 1 = si */
     tipo_chemicos VARCHAR(100), /* detalle */
     humo_lenna int, /* 0 = no, 1 = estacional, 2 = diario */
-    agua VARCHAR(20), 
+    fuente_principal_agua int, /* 0 = red pública, 1 = pozo, 2 = camión aljibe, 3 = otro */
+    otra_fuente_agua VARCHAR(30), 
     tratamiento_agua int, /* 0 = ninguno, 1 = hervir, 2= filtro, 3 = cloro */
 
     /*datos helicobacter pylori*/
-    prueba_hel INT, /* 0 = aliento, 1 = antigeno, 2= endoscopia/biopsia */
-    resultado_hel INT, /* 0 = negativo, 1 = positivo */
-    tiempo_test int;
+    /*prueba_hel INT, *//* 0 = negativo, 1 = positivo, 2 = desconocido */
+    resultado_hel INT, /* 0 = negativo, 1 = positivo, 2 = desconocido */
+    result_positiv_hel_pasado int, /* 0 = no, 1 = si, 2 = no recuerda */
+    anno_aprox_examen_pasado_hel INT,
+    tipo_examen_pasado_hel VARCHAR(20), 
+    recibio_tratamiento_errad_hel INT, /* 0 = no, 1 = si, 2 = no recuerda */
+    anno_tratamiento_hel INT,
+    esquema_tratamiento_hel VARCHAR(100),
+    tipo_test_hel INT, /* 0 = aliento, 1 = antigeno, 2 = Serología, 3 = test rápido ureasa, 4 = histología/Biopsia, 5 otro*/
+    otro_test_hel VARCHAR(50),
+    tiempo_test int; /* // (años) 0 = < 1, 1 = 1-5, 2 = > 5 */
 
-    /*muestras biologicas y geneticas*/
+    /*Uso de antibióticos o inhibidores de bomba de protones (IBP) en las 4 semanas previas al examen*/
+    uso_ibp int, /* 0 = no, 1 = si, 2 = no recuerda */
+    repitio_examen_anteriormente BOOLEAN,
+    fecha_examen_anterior DATE,
+    resultado_examen_anterior VARCHAR(50),
 
-    fecha_toma_sangre DATE,
+    /*Histopatología  (solo casos)*/
 
-    TLR9_rs5743836 int, /* 0= tt, 1= tc, 2= cc */
-    TLR9_rs187084 int, /* 0= tt, 1= tc, 2= cc */
-    miR-146a_rs2910164 int, /* 0= gg, 1= gc, 2= cc */
-    miR-196a2_rs11614913 int, /* 0= cc, 1= ct, 2= tt */
-    MTHFR_rs1801133 int, /* 0= cc, 1= ct, 2= tt */
-    DNMT3B rs1569686 int, /* 0= gg, 1= gt, 2= tt */
-
-    /*hispopatologia (solo casos)*/
-
-    tipo int, /* 0 = intestinal, 1 = difuso, 2 = mixto, 3 = otro */
-    otro VARCHAR(50), /* detalle otro tipo */
+    tipo_histologico int, /* 0 = intestinal, 1 = difuso, 2 = mixto, 3 = otro */
+    otro_tipo_histologico VARCHAR(50), /* detalle otro tipo */
     tumor_ubicacion int, /* 0 = cardias, 1 = cuerpo, 2 = antro, 3 = difuso*/
     estadio_clinico VARCHAR(30),
 
