@@ -12,6 +12,7 @@ import java.util.Date;
 @Table(name = "Participante")
 public class Participante {
 
+    //Identificador Participante-----------------------------------------------------------------------------------------------------------------------------|
     @Id
     @Column(name = "codigo", length = 10)
     private String codigo;
@@ -48,11 +49,15 @@ public class Participante {
     @Temporal(TemporalType.DATE)
     private Date fechaInclusion;
 
-    // Datos sociodemográficos
+    // Datos sociodemográficos-------------------------------------------------------------------------------------------------------------|
     @Min(value = 18, message = "La edad mínima permitida es 18 años")
     @Max(value = 110, message = "La edad máxima permitida es 110 años")
     @Column(name = "edad")
     private Integer edad;
+
+    // 0 = femenino, 1 = masculino
+    @Column(name = "sexo")
+    private boolean sexo;
 
     @Column(name = "nacionalidad", length = 20)
     private String nacionalidad;
@@ -60,23 +65,37 @@ public class Participante {
     @Column(name = "direccion", length = 100)
     private String direccion;
 
-    
-    @Column(name = "sexo")
-    private Integer sexo;
+    @Column(name = "comuna", length = 50)
+    private String comuna;
 
+    @Column(name = "ciudad", length = 50)
+    private String ciudad;
+
+    // 0 = urbana, 1 = rural
     @Column(name = "zona")
-    private Integer zona;
+    private boolean zona;
 
-    @Column(name = "años_vivienda")
-    private Integer añosVivienda;
+    // 0 = no, 1 = si
+    @Column(name = "vive_hace_5_annos")
+    private boolean viveHace5annos;
 
+    // 0 = básico, 1 = medio, 2 = universitario
     @Column(name = "nivel_educacional")
     private Integer nivelEducacional;
 
-    @Column(name = "ocupacion", length = 50)
-    private String ocupacion;
+    @Column(name = "ocupacion_actual", length = 50)
+    private String ocupacionActual;
 
-    // Antecedentes clínicos
+    // 0 = ninguna, 1 = fonasa, 2 = isapre, 3 = capredema/Dipreca, 4 = otra
+    @Column(name = "prevision_salud")
+    private Integer previsionSalud;
+
+    @Column(name = "otra_prevision", length = 50)
+    private String otraPrevision;
+
+
+
+    // Antecedentes clínicos-------------------------------------------------------------------------------------------------------------|
     @Column(name = "fecha_diagnostico")
     @Temporal(TemporalType.DATE)
     private Date fechaDiagnostico;

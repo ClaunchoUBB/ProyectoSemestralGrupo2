@@ -16,6 +16,8 @@ import java.util.List;
 
 public class Usuario {
 
+    
+    
     @Id
     @Column(name = "rut")
     private Integer rut;

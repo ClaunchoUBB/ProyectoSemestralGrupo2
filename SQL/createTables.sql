@@ -43,11 +43,15 @@ CREATE TABLE IF NOT EXISTS Participante (
     edad int,
     nacionalidad VARCHAR(20),
     direccion VARCHAR(100),
-    sexo int, /* 0 = femenino, 1 = masculino */
-    zona int, /* 0 = urbana, 1 = rural */
-    años_vivienda int,
-    nivel_educacional int, 
-    ocupacion VARCHAR(50),
+    comuna VARCHAR(50),
+    ciudad VARCHAR(50),
+    sexo BOOLEAN, /* 0 = femenino, 1 = masculino */
+    zona BOOLEAN, /* 0 = urbana, 1 = rural */
+    vive_hace_5_annos BOOLEAN, /* 0 = no, 1 = si */
+    nivel_educacional int, /* 0 = básico, 1 = medio, 2 = universitario */
+    ocupacion_actual VARCHAR(50),
+    prevision_salud int, /* 0 = ninguna, 1 = fonasa, 2 = isapre, 3 = capredema/Dipreca, 4 = otra */
+    otra_prevision VARCHAR(50),
 
     /*antecedentes clinicos */
 
