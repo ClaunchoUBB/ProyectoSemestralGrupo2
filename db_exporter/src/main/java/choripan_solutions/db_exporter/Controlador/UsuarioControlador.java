@@ -3,6 +3,7 @@ package choripan_solutions.db_exporter.Controlador;
 import choripan_solutions.db_exporter.Modelo.Usuario;
 import choripan_solutions.db_exporter.Servicio.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -16,6 +17,7 @@ public class UsuarioControlador {
 
     // --- CREATE ---
     // Responde a peticiones POST en /api/usuarios
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PostMapping
     public Usuario crearUsuario(@RequestBody Usuario usuario) {
         // @RequestBody convierte el JSON de la petición en un objeto Usuario
@@ -24,6 +26,7 @@ public class UsuarioControlador {
 
     // --- READ (Todos) ---
     // Responde a peticiones GET en /api/usuarios
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @GetMapping
     public List<Usuario> obtenerTodosLosUsuarios() {
         return usuarioServicio.obtenerTodosLosUsuarios();
@@ -31,6 +34,7 @@ public class UsuarioControlador {
 
     // --- READ (Uno por RUT) ---
     // Responde a peticiones GET en /api/usuarios/12345678
+    @PreAuthorize("hasRole('ADMINISTRADOR') or #rut == authentication.principal.rut")
     @GetMapping("/{rut}")
     public ResponseEntity<Usuario> obtenerUsuarioPorRut(@PathVariable Integer rut) {
         // @PathVariable toma el "rut" de la URL
@@ -41,6 +45,7 @@ public class UsuarioControlador {
 
     // --- UPDATE ---
     // Responde a peticiones PUT en /api/usuarios/12345678
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PutMapping("/{rut}")
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Integer rut, @RequestBody Usuario usuarioDetalles) {
         try {
@@ -53,6 +58,7 @@ public class UsuarioControlador {
 
     // --- DELETE ---
     // Responde a peticiones DELETE en /api/usuarios/12345678
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @DeleteMapping("/{rut}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable Integer rut) {
         try {
@@ -65,6 +71,7 @@ public class UsuarioControlador {
 
     // --- PATCH (Actualizar parcialmente) ---
     // Responde a peticiones PATCH en /api/usuarios/12345678
+    @PreAuthorize("hasRole('ADMINISTRADOR') or #rut == authentication.principal.rut")
     @PatchMapping("/{rut}")
     public ResponseEntity<Usuario> actualizarUsuarioParcial(@PathVariable Integer rut, @RequestBody Usuario usuarioDetalles) {
         try {

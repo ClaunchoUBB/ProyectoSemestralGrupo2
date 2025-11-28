@@ -33,12 +33,13 @@ public class CustomUserDetails implements UserDetailsService{
         Usuario usuario = usuarioRepo.findByRut(rutInt)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con RUT: " + rutR));
 
+        // El rol es un Integer, así que lo comparamos con números.
         String roleName = switch (usuario.getRol()) {
-            case 1 -> "ADMIN";
+            case 1 -> "ADMINISTRADOR";
             case 2 -> "INVESTIGADOR";
             case 3 -> "RECLUTADOR";
             case 4 -> "MEDICO";
-            default -> "UNKNOWN";
+            default -> "UNKNOWN"; // Si el rol no es ninguno de los esperados
         };
 
         return User.builder()

@@ -1,154 +1,105 @@
 package choripan_solutions.db_exporter.Modelo;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.List;
 
-@Data
 @Entity
-@Table(name = "usuarios")
+@Table(name = "usuarios") // Asegúrate que el nombre de la tabla sea correcto
+@Getter
+@Setter
+public class Usuario implements UserDetails { // <-- ¡Implementamos UserDetails!
 
-public class Usuario {
-
-    
-    
     @Id
-    @Column(name = "rut")
+    @Column(name = "rut", nullable = false, unique = true)
     private Integer rut;
 
-    @Column(name = "nombre1")
+    @Column(name = "nombre1", length = 40)
     private String nombre1;
 
-    @Column(name = "nombre2")
+    @Column(name = "nombre2", length = 200)
     private String nombre2;
 
-    @Column(name = "apellido1")
+    @Column(name = "apellido1", length = 40)
     private String apellido1;
 
-    @Column(name = "apellido2")
+    @Column(name = "apellido2", length = 40)
     private String apellido2;
 
-    @NotNull
-    @Min(1) @Max(4)
-    //1: ADMIN, 2: INVESTIGADOR, 3: RECLUTADOR, 4:MEDICO
-    @Column(name = "rol")   
+    @Column(name = "rol", length = 20)
     private Integer rol;
 
-
-
-
-    @Column(name = "numero")
+    @Column(name = "numero", length = 15)
     private String numero;
 
-    @Column(name = "correo")
+    @Column(name = "correo", length = 30)
     private String correo;
+
+    @Column(name = "password_hash", length = 60)
+    private String passwordHash;
 
     @Column(name = "activo")
     private Boolean activo;
 
-    //Esta anotación evita que el hash de la contraseña se envíe en los JSON de respuesta (por seguridad)
-    //pero sí permite que se reciba en peticiones POST o PUT.
-    @Column(name = "password_hash", nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String passwordHash;
-
-   
-    //Relaciones
-    //Un usuario puede tener muchos Logs
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Log> logs;
-
-    //Un usuario puede tener muchos Participantes
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Participante> participantes;
-    
-
-
-    // Getters y Setters
-    public Integer getRut() {
-        return rut;
-    }
-    public void setRut(int rut) {
-        this.rut = rut;
+    public Usuario() {
     }
 
-    public String getNombre1() {
-        return nombre1;
-    }
-    public void setNombre1(String nombre1) {
-        this.nombre1 = nombre1;
+    // --- MÉTODOS DE LA INTERFAZ UserDetails ---
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Creamos una autoridad basada en el rol, añadiendo el prefijo "ROLE_"
+        // que Spring Security espera.
+        String roleName = switch (this.rol) {
+            case 1 -> "ADMINISTRADOR";
+            case 2 -> "INVESTIGADOR";
+            case 3 -> "RECLUTADOR";
+            case 4 -> "MEDICO";
+            default -> "UNKNOWN";
+        };
+
+        return List.of(new SimpleGrantedAuthority("ROLE_" + roleName));
     }
 
-    public String getNombre2() {
-        return nombre2;
-    }
-    public void setNombre2(String nombre2) {
-        this.nombre2 = nombre2;
-    }
-
-    public String getApellido1() {
-        return apellido1;
-    }
-    public void setApellido1(String apellido1) {
-        this.apellido1 = apellido1;
+    @Override
+    public String getPassword() {
+        // Devuelve el hash de la contraseña.
+        return this.passwordHash;
     }
 
-    public String getApellido2() {
-        return apellido2;
-    }
-    public void setApellido2(String apellido2) {
-        this.apellido2 = apellido2;
-    }
-
-    public Integer getRol() {
-        return rol;
-    }
-    public void setRol(Integer rol) {
-        this.rol = rol;
+    @Override
+    public String getUsername() {
+        // Devuelve el identificador único del usuario (en nuestro caso, el RUT).
+        return this.rut.toString();
     }
 
-    public String getNumero() {
-        return numero;
-    }
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    } 
-    public Boolean getActivo() {
-        return activo;
+    @Override
+    public boolean isAccountNonExpired() {
+        // Podemos devolver 'true' si no manejamos la expiración de cuentas.
+        return true;
     }
 
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
-    }
-    public void setRut(Integer rut) {
-        this.rut = rut;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
+    @Override
+    public boolean isAccountNonLocked() {
+        // Podemos devolver 'true' si no manejamos el bloqueo de cuentas.
+        return true;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-    public Object findByRut(String rut2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByRut'");
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // Podemos devolver 'true' si no manejamos la expiración de credenciales.
+        return true;
     }
 
-
+    @Override
+    public boolean isEnabled() {
+        // Devuelve si la cuenta está activa o no.
+        return this.activo;
+    }
 }

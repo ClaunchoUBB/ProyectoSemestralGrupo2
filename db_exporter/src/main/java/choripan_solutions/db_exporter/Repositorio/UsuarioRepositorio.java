@@ -12,4 +12,6 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
     public  Optional<Usuario> findByCorreo(String correo);
 
     public Optional <Usuario> findByRut(Integer rut);
+    public boolean existsByRol(Integer rol);
+
 }

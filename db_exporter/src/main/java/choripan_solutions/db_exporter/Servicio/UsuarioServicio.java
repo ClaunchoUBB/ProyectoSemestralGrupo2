@@ -27,6 +27,7 @@ public class UsuarioServicio {
     private EntityManager entityManager;
 
     // --- CREATE ---
+    @SuppressWarnings("null")
     @Transactional
     public Usuario crearUsuario(Usuario usuario) {
 
@@ -45,12 +46,14 @@ public class UsuarioServicio {
         return usuarioRepositorio.findAll();
     }
 
+    @SuppressWarnings("null")
     public Optional<Usuario> obtenerUsuarioPorRut(Integer rut) {
         return usuarioRepositorio.findById(rut);
     }
 
     // --- UPDATE ---
     // (Este método ya usaba 'save' correctamente)
+    @SuppressWarnings("null")
     @Transactional
     public Usuario actualizarUsuario(Integer rut, Usuario usuarioDetalles) {
         Usuario usuario = usuarioRepositorio.findById(rut)
@@ -75,6 +78,7 @@ public class UsuarioServicio {
     }
 
     // --- PATCH --- pa actualizar a media
+    @SuppressWarnings("null")
     @Transactional
     public Usuario actualizarUsuarioParcial(Integer rut, Usuario usuarioDetalles) {
         Usuario usuario = usuarioRepositorio.findById(rut)
@@ -101,6 +105,7 @@ public class UsuarioServicio {
         return usuarioRepositorio.save(usuario);
     }
 
+    @SuppressWarnings("null")
     private Usuario actualizarUsuarioActivo(Integer rut, Boolean activo) {
         Usuario usuario = usuarioRepositorio.findById(rut)
                 .orElseThrow(() -> new RuntimeException("No se encontró el usuario con rut: " + rut));
@@ -119,6 +124,7 @@ public class UsuarioServicio {
     }
 
     // --- DELETE ---
+    @SuppressWarnings("null")
     @Transactional
     public void eliminarUsuario(Integer rut) {
         Usuario usuario = usuarioRepositorio.findById(rut)

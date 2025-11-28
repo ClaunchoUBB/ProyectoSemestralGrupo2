@@ -61,7 +61,7 @@ public class Participante {
 
     // 0 = femenino, 1 = masculino
     @Column(name = "sexo")
-    private boolean sexo;
+    private Boolean sexo;
 
     @Column(name = "nacionalidad", length = 20)
     private String nacionalidad;
@@ -77,11 +77,11 @@ public class Participante {
 
     // 0 = urbana, 1 = rural
     @Column(name = "zona")
-    private boolean zona;
+    private Boolean zona;
 
     // 0 = no, 1 = si
     @Column(name = "vive_hace_5_annos")
-    private boolean viveHace5annos;
+    private Boolean viveHace5annos;
 
     // 0 = básico, 1 = medio, 2 = universitario
     @Column(name = "nivel_educacional")
@@ -111,10 +111,10 @@ public class Participante {
     private Date fechaDiagnostico;
 
     @Column(name = "ant_fam_cancer_gastrico")
-    private boolean antCancerGastrico;
+    private Boolean antCancerGastrico;
 
     @Column(name = "ant_fam_cancer_otro")
-    private boolean antCancerOtro;
+    private Boolean antCancerOtro;
 
     @Column(name = "cancer_otro", length = 50)
     private String cancerOtro;
@@ -129,7 +129,7 @@ public class Participante {
     private String medicamentosGastroLesivos;
 
     @Column(name = "cirugia_gastrica_previa")
-    private boolean cirugiaGastricaPrevia;
+    private Boolean cirugiaGastricaPrevia;
 
     // Variables antropomórficas-------------------------------------------------------------------------------------------------------------|
     @DecimalMin(value = "40.0", message = "El peso mínimo permitido es 40 kg")
@@ -147,15 +147,15 @@ public class Participante {
     //Tabaquismo--------------------------
     // 0 = no, 1 = si
     @Column(name = "nunca_fumo")
-    private boolean nuncaFumo;
+    private Boolean nuncaFumo;
 
     // 0 = no, 1 = si
     @Column(name = "ex_fumador")
-    private boolean exFumador;
+    private Boolean exFumador;
 
     // 0 = no, 1 = si
     @Column(name = "fuma_actualmente")
-    private boolean fumadorActual;
+    private Boolean fumadorActual;
 
     // 0 = 1-9 (poco), 1 = 10-19 (moderado), 2 = más de 20 (mucho)
     @Column(name = "promedio_fuma_diario")
@@ -197,14 +197,14 @@ public class Participante {
 
     //Agrega sal a la comida sin probar
     @Column(name = "alimentos_salados")
-    private boolean alimentosSalados;
+    private Boolean alimentosSalados;
 
     // 0 = <= 2 porciones, 1 = 3-4 porciones, 2 = >=5 porciones
     @Column(name = "frutas_verduras")
     private Integer frutasVerduras;
 
     @Column(name = "frituras")
-    private boolean frituras;
+    private Boolean frituras;
 
     // 0 = nunca/raramente, 1 = 1-2 sem, 2 = >=3 sem
     @Column(name = "consumo_alimentos_muy_condimentados")
@@ -217,11 +217,11 @@ public class Participante {
     // Exposiciones---------------------------
     //nivel ocupacional
     @Column(name = "pesticidas")
-    private boolean pesticidas;
+    private Boolean pesticidas;
 
     //nivel ocupacional
     @Column(name = "otros_chemicos")
-    private boolean otrosChemicos;
+    private Boolean otrosChemicos;
 
     @Column(name = "tipo_chemicos", length = 100)
     private String tipoChemicos;
@@ -317,6 +317,8 @@ public class Participante {
     public Participante() {}
 
     public void setIMC(){
-        this.imc = this.peso / (this.estatura * this.estatura);
+        if (this.peso != null && this.estatura != null && this.estatura > 0) {
+            this.imc = this.peso / (this.estatura * this.estatura);
+        }
     }
 }

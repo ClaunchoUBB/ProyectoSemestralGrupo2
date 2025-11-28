@@ -19,6 +19,7 @@ public class LogServicio {
     }
 
     //Guardar un log
+    @SuppressWarnings("null")
     public Log guardarLog(Log log) {
         return logRepo.save(log);
     }

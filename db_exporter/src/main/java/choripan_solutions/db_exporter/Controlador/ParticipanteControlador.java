@@ -35,16 +35,17 @@ public class ParticipanteControlador {
 
     @GetMapping("/{codigo}")
     public ResponseEntity<Participante> findParticipante(@PathVariable String codigo) {
-        Optional<Participante> participante = participanteServicio.findByCodigo(codigo);
-        if (participante.isPresent()) {
-            return ResponseEntity.ok(participante.get());
-        } else {
+        try {
+            Participante participante = participanteServicio.findByCodigo(codigo)
+                .orElseThrow(() -> new RuntimeException("Participante no encontrado"));
+            return ResponseEntity.ok(participante);
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PreAuthorize("hasAnyRole('MEDICO', 'ADMINISTRADOR')")
-    @PostMapping("/participantes")
+    @PostMapping
     public ResponseEntity<?> crearParticipante(@Valid @RequestBody Participante participante) {
         Participante nuevo = participanteServicio.crearParticipante(participante);
         return ResponseEntity.ok(nuevo);
