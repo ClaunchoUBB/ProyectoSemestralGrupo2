@@ -72,13 +72,12 @@ CREATE TABLE IF NOT EXISTS Participante (
 
     /*Tabaquismo y alcohol */
 
-    nunca_fumo int, /* 0 = no, 1 = si */
-    ex_fumador int, /* 0 = no, 1 = si */
-    ex_annos_sin_fumar int,
-    fuma_actualmente int, /* 0 = no, 1 = si */
-    edad_inicio_fuma int,
-    promedio_fuma_diario int,
-    años_fumador int,
+    nunca_fumo BOOLEAN, /* 0 = no, 1 = si */
+    ex_fumador BOOLEAN, /* 0 = no, 1 = si */
+    fuma_actualmente BOOLEAN, /* 0 = no, 1 = si */
+    promedio_fuma_diario int, /* 0 = 1-9 (poco), 1 = 10-19 (moderado), 2 = más de 20 (mucho)*/
+    tiempo_total_fumador int, /* 0 = menor a 10 años, 1 = entre 10 y 20 años, 2 = más de 20 años */
+    ex_annos_sin_fumar int, /* 0 = menos de 5 años, 1 = entre 5 y 10 años, 2 = más de 10 años */
 
     nunca_bebio int, /* 0 = no, 1 = si */
     ex_bebedor int, /* 0 = no, 1 = si */

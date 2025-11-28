@@ -126,7 +126,7 @@ public class Participante {
     @Column(name = "cirugia_gastrica_previa")
     private boolean cirugiaGastricaPrevia;
 
-    // Variables antropomórficas
+    // Variables antropomórficas-------------------------------------------------------------------------------------------------------------|
     @DecimalMin(value = "40.0", message = "El peso mínimo permitido es 40 kg")
     @DecimalMax(value = "150.0", message = "El peso máximo permitido es 150 kg")
     @Column(name = "peso")
@@ -138,28 +138,33 @@ public class Participante {
     @Column(name = "imc")
     private Float imc;
 
-    // Tabaquismo y alcohol
+    // Tabaquismo y alcohol-------------------------------------------------------------------------------------------------------------|
+    //Tabaquismo--------------------------
+    // 0 = no, 1 = si
     @Column(name = "nunca_fumo")
-    private Integer nuncaFumo;
+    private boolean nuncaFumo;
 
+    // 0 = no, 1 = si
     @Column(name = "ex_fumador")
-    private Integer exFumador;
+    private boolean exFumador;
 
-    @Column(name = "ex_annos_sin_fumar")
-    private Integer exAnnosSinFumar;
-
+    // 0 = no, 1 = si
     @Column(name = "fuma_actualmente")
-    private Integer fumaActualmente;
+    private boolean fumadorActual;
 
-    @Column(name = "edad_inicio_fuma")
-    private Integer edadInicioFuma;
-
+    // 0 = 1-9 (poco), 1 = 10-19 (moderado), 2 = más de 20 (mucho)
     @Column(name = "promedio_fuma_diario")
     private Integer promedioFumaDiario;
 
-    @Column(name = "años_fumador")
-    private Integer añosFumador;
+    // 0 = menor a 10 años, 1 = entre 10 y 20 años, 2 = más de 20 años
+    @Column(name = "tiempo_total_fumador")
+    private Integer tiempoTotalFumador;
 
+    // 0 = menos de 5 años, 1 = entre 5 y 10 años, 2 = más de 10 años
+    @Column(name = "ex_annos_sin_fumar")
+    private Integer exAnnosSinFumar;
+
+    //Consumo de alcohol----------------------
     @Column(name = "nunca_bebio")
     private Integer nuncaBebio;
 
