@@ -1,4 +1,4 @@
-CREATE IF NOT EXISTS DATABASE choripan_solutions;
+CREATE DATABASE IF NOT EXISTS choripan_solutions;
 USE choripan_solutions;
 
 CREATE TABLE IF NOT EXISTS Usuarios (
@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS Usuarios (
     PRIMARY KEY (rut)
 );
 
-
 CREATE TABLE IF NOT EXISTS Log (
     id_log INT NOT NULL AUTO_INCREMENT,
     detalle TEXT,
@@ -25,7 +24,6 @@ CREATE TABLE IF NOT EXISTS Log (
     FOREIGN KEY (rut_usuario)
         REFERENCES Usuarios (rut)
 );
-
 
 CREATE TABLE IF NOT EXISTS Participante (
     codigo VARCHAR(10),
@@ -84,10 +82,7 @@ CREATE TABLE IF NOT EXISTS Participante (
     cantidad_x_ocasion int, /*0 = 1-2 bebidas (poco), 1 = 3-4 bebidas (moderado), 2 = más de 5 bebidas (mucho)*/
     annos_consumo_habitual int, /* 0 = menos de 10 años, 1 = entre 5 a 10 años, 2 = más de 10 años*/
     ex_annos_sin_beber int, /* 0 = menos de 5 años, 1 = entre 5 a 10 años, 2 = más de 10 años*/
-    
-    
-    
-
+   
     /*factores dieta */
 
     carnes_procesadas int, /* consumo sem - 0 = <= 1, 1 = 2, 2 = >=3 */
@@ -96,7 +91,7 @@ CREATE TABLE IF NOT EXISTS Participante (
     frituras BOOLEAN, /* >=3 veces x semana.  0 = no, 1 = si */
     consumo_alimentos_muy_condimentados int, /* 0 = nunca/raramente, 1 = 1-2 sem, 2 = >=3 sem */
     bebida_caliente int, /* 0 = nunca, 1 = 1-2 sem, 2 = >=3 sem */
-    
+   
     /*exposiciones*/
 
     pesticidas BOOLEAN, /* 0 = no, 1 = si */
@@ -118,7 +113,7 @@ CREATE TABLE IF NOT EXISTS Participante (
     esquema_tratamiento_hel VARCHAR(100),
     tipo_test_hel INT, /* 0 = aliento, 1 = antigeno, 2 = Serología, 3 = test rápido ureasa, 4 = histología/Biopsia, 5 otro*/
     otro_test_hel VARCHAR(50),
-    tiempo_test int; /* // (años) 0 = < 1, 1 = 1-5, 2 = > 5 */
+    tiempo_test int, /* // (años) 0 = < 1, 1 = 1-5, 2 = > 5 */
 
     /*Uso de antibióticos o inhibidores de bomba de protones (IBP) en las 4 semanas previas al examen*/
     uso_ibp int, /* 0 = no, 1 = si, 2 = no recuerda */
