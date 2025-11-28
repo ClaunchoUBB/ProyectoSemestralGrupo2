@@ -186,22 +186,30 @@ public class Participante {
 
 
     // Factores dieta-------------------------------------------------------------------------------------------------------------|
+    //consumo sem - 0 = <= 1, 1 = 2, 2 = >=3
     @Column(name = "carnes_procesadas")
     private Integer carnesProcesadas;
 
+    //Agrega sal a la comida sin probar
     @Column(name = "alimentos_salados")
-    private Integer alimentosSalados;
+    private boolean alimentosSalados;
 
+    // 0 = <= 2 porciones, 1 = 3-4 porciones, 2 = >=5 porciones
     @Column(name = "frutas_verduras")
     private Integer frutasVerduras;
 
     @Column(name = "frituras")
-    private Integer frituras;
+    private boolean frituras;
 
+    // 0 = nunca/raramente, 1 = 1-2 sem, 2 = >=3 sem
+    @Column(name = "consumo_alimentos_muy_condimentados")
+    private Integer consumoAlimentosMuyCondimentados;
+
+    // 0 = nunca, 1 = 1-2 sem, 2 = >=3 sem
     @Column(name = "bebida_caliente")
     private Integer bebidaCaliente;
 
-    // Exposiciones
+    // Exposiciones---------------------------
     @Column(name = "pesticidas")
     private Integer pesticidas;
 

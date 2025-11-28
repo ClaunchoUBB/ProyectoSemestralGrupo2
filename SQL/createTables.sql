@@ -90,10 +90,11 @@ CREATE TABLE IF NOT EXISTS Participante (
 
     /*factores dieta */
 
-    carnes_procesadas int, /* frecuencia consumo semanal */
-    alimentos_salados int, /*0=no, 1=si*/
-    frutas_verduras int, /* frecuencia diario */
-    frituras int, /* >=3 veces x semana.  0 = no, 1 = si */
+    carnes_procesadas int, /* consumo sem - 0 = <= 1, 1 = 2, 2 = >=3 */
+    alimentos_salados BOOLEAN, /*0=no, 1=si*/
+    frutas_verduras int, /* 0 = <= 2 porciones, 1 = 3-4 porciones, 2 = >=5 porciones*/
+    frituras BOOLEAN, /* >=3 veces x semana.  0 = no, 1 = si */
+    consumo_alimentos_muy_condimentados int, /* 0 = nunca/raramente, 1 = 1-2 sem, 2 = >=3 sem */
     bebida_caliente int, /* 0 = nunca, 1 = 1-2 sem, 2 = >=3 sem */
     
     /*exposiciones*/
