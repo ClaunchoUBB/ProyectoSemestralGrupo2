@@ -97,6 +97,7 @@ public class Participante {
 
     // Antecedentes clínicos-------------------------------------------------------------------------------------------------------------|
     //SOLO CASOS
+    //perdón por lo largo de la variable :(
     @Column(name = "diagnostico_histologico_adenocarcinoma_gastrico")
     private Boolean diagnosticoHistologicoAdenocarcinomaGastrico;
 
@@ -309,11 +310,12 @@ public class Participante {
     private String estadioClinico;
 
 
+    public Participante() {}
 
+    // Getters and Setters ----------------------------------------------------------------------------------------------------------------------------------------------|
     public String getCodigo() {
         return codigo;
     }
-
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
@@ -321,7 +323,6 @@ public class Participante {
     public String getNombre1() {
         return nombre1;
     }
-
     public void setNombre1(String nombre1) {
         this.nombre1 = nombre1;
     }
@@ -329,7 +330,6 @@ public class Participante {
     public String getNombre2() {
         return nombre2;
     }
-
     public void setNombre2(String nombre2) {
         this.nombre2 = nombre2;
     }
@@ -337,7 +337,6 @@ public class Participante {
     public String getApellido1() {
         return apellido1;
     }
-
     public void setApellido1(String apellido1) {
         this.apellido1 = apellido1;
     }
@@ -345,7 +344,6 @@ public class Participante {
     public String getApellido2() {
         return apellido2;
     }
-
     public void setApellido2(String apellido2) {
         this.apellido2 = apellido2;
     }
@@ -353,7 +351,6 @@ public class Participante {
     public String getCorreo() {
         return correo;
     }
-
     public void setCorreo(String correo) {
         this.correo = correo;
     }
@@ -361,7 +358,6 @@ public class Participante {
     public String getNumero() {
         return numero;
     }
-
     public void setNumero(String numero) {
         this.numero = numero;
     }
@@ -369,7 +365,6 @@ public class Participante {
     public Boolean getEstado() {
         return estado;
     }
-
     public void setEstado(Boolean estado) {
         this.estado = estado;
     }
@@ -377,7 +372,6 @@ public class Participante {
     public Usuario getUsuario() {
         return usuario;
     }
-
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
@@ -385,7 +379,6 @@ public class Participante {
     public Integer getGrupo() {
         return grupo;
     }
-
     public void setGrupo(Integer grupo) {
         this.grupo = grupo;
     }
@@ -393,23 +386,28 @@ public class Participante {
     public Date getFechaInclusion() {
         return fechaInclusion;
     }
-
     public void setFechaInclusion(Date fechaInclusion) {
         this.fechaInclusion = fechaInclusion;
     }
 
+    // Datos sociodemográficos-------------------------------------------------------------------------------------------------------------|
     public Integer getEdad() {
         return edad;
     }
-
     public void setEdad(Integer edad) {
         this.edad = edad;
+    }
+
+    public boolean isSexo() {
+        return sexo;
+    }
+    public void setSexo(boolean sexo) {
+        this.sexo = sexo;
     }
 
     public String getNacionalidad() {
         return nacionalidad;
     }
-
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
@@ -417,79 +415,98 @@ public class Participante {
     public String getDireccion() {
         return direccion;
     }
-
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
-    public Integer getSexo() {
-        return sexo;
+    public String getComuna() {
+        return comuna;
+    }
+    public void setComuna(String comuna) {
+        this.comuna = comuna;
     }
 
-    public void setSexo(Integer sexo) {
-        this.sexo = sexo;
+    public String getCiudad() {
+        return ciudad;
+    }
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 
-    public Integer getZona() {
+    public boolean isZona() {
         return zona;
     }
-
-    public void setZona(Integer zona) {
+    public void setZona(boolean zona) {
         this.zona = zona;
     }
 
-    public Integer getAñosVivienda() {
-        return añosVivienda;
+    public boolean isViveHace5annos() {
+        return viveHace5annos;
     }
-
-    public void setAñosVivienda(Integer añosVivienda) {
-        this.añosVivienda = añosVivienda;
+    public void setViveHace5annos(boolean viveHace5annos) {
+        this.viveHace5annos = viveHace5annos;
     }
 
     public Integer getNivelEducacional() {
         return nivelEducacional;
     }
-
     public void setNivelEducacional(Integer nivelEducacional) {
         this.nivelEducacional = nivelEducacional;
     }
 
-    public String getOcupacion() {
-        return ocupacion;
+    public String getOcupacionActual() {
+        return ocupacionActual;
+    }
+    public void setOcupacionActual(String ocupacionActual) {
+        this.ocupacionActual = ocupacionActual;
     }
 
-    public void setOcupacion(String ocupacion) {
-        this.ocupacion = ocupacion;
+    public Integer getPrevisionSalud() {
+        return previsionSalud;
+    }
+    public void setPrevisionSalud(Integer previsionSalud) {
+        this.previsionSalud = previsionSalud;
+    }
+
+    public String getOtraPrevision() {
+        return otraPrevision;
+    }
+    public void setOtraPrevision(String otraPrevision) {
+        this.otraPrevision = otraPrevision;
+    }
+
+    // Antecedentes clínicos-------------------------------------------------------------------------------------------------------------|
+    public Boolean getDiagnosticoHistologicoAdenocarcinomaGastrico() {
+        return diagnosticoHistologicoAdenocarcinomaGastrico;
+    }
+    public void setDiagnosticoHistologicoAdenocarcinomaGastrico(Boolean diagnosticoHistologicoAdenocarcinomaGastrico) {
+        this.diagnosticoHistologicoAdenocarcinomaGastrico = diagnosticoHistologicoAdenocarcinomaGastrico;
     }
 
     public Date getFechaDiagnostico() {
         return fechaDiagnostico;
     }
-
     public void setFechaDiagnostico(Date fechaDiagnostico) {
         this.fechaDiagnostico = fechaDiagnostico;
     }
 
-    public Integer getAntCancerGastrico() {
+    public boolean isAntCancerGastrico() {
         return antCancerGastrico;
     }
-
-    public void setAntCancerGastrico(Integer antCancerGastrico) {
+    public void setAntCancerGastrico(boolean antCancerGastrico) {
         this.antCancerGastrico = antCancerGastrico;
     }
 
-    public Integer getAntCancerOtro() {
+    public boolean isAntCancerOtro() {
         return antCancerOtro;
     }
-
-    public void setAntCancerOtro(Integer antCancerOtro) {
+    public void setAntCancerOtro(boolean antCancerOtro) {
         this.antCancerOtro = antCancerOtro;
     }
 
     public String getCancerOtro() {
         return cancerOtro;
     }
-
     public void setCancerOtro(String cancerOtro) {
         this.cancerOtro = cancerOtro;
     }
@@ -497,31 +514,36 @@ public class Participante {
     public String getOtrasEnfermedades() {
         return otrasEnfermedades;
     }
-
     public void setOtrasEnfermedades(String otrasEnfermedades) {
         this.otrasEnfermedades = otrasEnfermedades;
     }
 
-    public String getMedicamentosCronicos() {
-        return medicamentosCronicos;
+    public Boolean getUsoCronicoMedicamentosGastrolesivos() {
+        return usoCronicoMedicamentosGastrolesivos;
+    }
+    public void setUsoCronicoMedicamentosGastrolesivos(Boolean usoCronicoMedicamentosGastrolesivos) {
+        this.usoCronicoMedicamentosGastrolesivos = usoCronicoMedicamentosGastrolesivos;
     }
 
-    public void setMedicamentosCronicos(String medicamentosCronicos) {
-        this.medicamentosCronicos = medicamentosCronicos;
+    public String getMedicamentosGastroLesivos() {
+        return medicamentosGastroLesivos;
+    }
+    public void setMedicamentosGastroLesivos(String medicamentosGastroLesivos) {
+        this.medicamentosGastroLesivos = medicamentosGastroLesivos;
     }
 
-    public Integer getCirugiaGastricaPrevia() {
+    public boolean isCirugiaGastricaPrevia() {
         return cirugiaGastricaPrevia;
     }
-
-    public void setCirugiaGastricaPrevia(Integer cirugiaGastricaPrevia) {
+    public void setCirugiaGastricaPrevia(boolean cirugiaGastricaPrevia) {
         this.cirugiaGastricaPrevia = cirugiaGastricaPrevia;
     }
 
+
+    // Variables antropomórficas-------------------------------------------------------------------------------------------------------------|
     public Float getPeso() {
         return peso;
     }
-
     public void setPeso(Float peso) {
         this.peso = peso;
     }
@@ -529,7 +551,6 @@ public class Participante {
     public Float getEstatura() {
         return estatura;
     }
-
     public void setEstatura(Float estatura) {
         this.estatura = estatura;
     }
@@ -537,119 +558,71 @@ public class Participante {
     public Float getImc() {
         return imc;
     }
-
-    public void setImc(Float imc) {
-        this.imc = imc;
+    public void setImc() {
+        this.imc = this.peso / (this.estatura * this.estatura);
     }
 
-    public Integer getNuncaFumo() {
+    // Tabaquismo-------------------------------------------------------------------------------------------------------------|
+    public boolean isNuncaFumo() {
         return nuncaFumo;
     }
-
-    public void setNuncaFumo(Integer nuncaFumo) {
+    public void setNuncaFumo(boolean nuncaFumo) {
         this.nuncaFumo = nuncaFumo;
     }
 
-    public Integer getExFumador() {
+    public boolean isExFumador() {
         return exFumador;
     }
-
-    public void setExFumador(Integer exFumador) {
+    public void setExFumador(boolean exFumador) {
         this.exFumador = exFumador;
     }
 
-    public Integer getExAnnosSinFumar() {
-        return exAnnosSinFumar;
+    public boolean isFumadorActual() {
+        return fumadorActual;
     }
-
-    public void setExAnnosSinFumar(Integer exAnnosSinFumar) {
-        this.exAnnosSinFumar = exAnnosSinFumar;
-    }
-
-    public Integer getFumaActualmente() {
-        return fumaActualmente;
-    }
-
-    public void setFumaActualmente(Integer fumaActualmente) {
-        this.fumaActualmente = fumaActualmente;
-    }
-
-    public Integer getEdadInicioFuma() {
-        return edadInicioFuma;
-    }
-
-    public void setEdadInicioFuma(Integer edadInicioFuma) {
-        this.edadInicioFuma = edadInicioFuma;
+    public void setFumadorActual(boolean fumadorActual) {
+        this.fumadorActual = fumadorActual;
     }
 
     public Integer getPromedioFumaDiario() {
         return promedioFumaDiario;
     }
-
     public void setPromedioFumaDiario(Integer promedioFumaDiario) {
         this.promedioFumaDiario = promedioFumaDiario;
     }
 
-    public Integer getAñosFumador() {
-        return añosFumador;
+    public Integer getTiempoTotalFumador() {
+        return tiempoTotalFumador;
+    }
+    public void setTiempoTotalFumador(Integer tiempoTotalFumador) {
+        this.tiempoTotalFumador = tiempoTotalFumador;
     }
 
-    public void setAñosFumador(Integer añosFumador) {
-        this.añosFumador = añosFumador;
+    public Integer getExAnnosSinFumar() {
+        return exAnnosSinFumar;
+    }
+    public void setExAnnosSinFumar(Integer exAnnosSinFumar) {
+        this.exAnnosSinFumar = exAnnosSinFumar;
     }
 
-    public Integer getNuncaBebio() {
-        return nuncaBebio;
+    // Consumo de alcohol-------------------------------------------------------------------------------------------------------------|
+    public Integer getEstadoConsumoAlcohol() {
+        return estadoConsumoAlcohol;
+    }
+    public void setEstadoConsumoAlcohol(Integer estadoConsumoAlcohol) {
+        this.estadoConsumoAlcohol = estadoConsumoAlcohol;
     }
 
-    public void setNuncaBebio(Integer nuncaBebio) {
-        this.nuncaBebio = nuncaBebio;
+    public Integer getFrecuenciaConsumoAlcohol() {
+        return frecuenciaConsumoAlcohol;
     }
-
-    public Integer getExBebedor() {
-        return exBebedor;
-    }
-
-    public void setExBebedor(Integer exBebedor) {
-        this.exBebedor = exBebedor;
-    }
-
-    public Integer getExAnnosSinBeber() {
-        return exAnnosSinBeber;
-    }
-
-    public void setExAnnosSinBeber(Integer exAnnosSinBeber) {
-        this.exAnnosSinBeber = exAnnosSinBeber;
-    }
-
-    public Integer getBebeActualmente() {
-        return bebeActualmente;
-    }
-
-    public void setBebeActualmente(Integer bebeActualmente) {
-        this.bebeActualmente = bebeActualmente;
-    }
-
-    public Integer getEdadInicioBebe() {
-        return edadInicioBebe;
-    }
-
-    public void setEdadInicioBebe(Integer edadInicioBebe) {
-        this.edadInicioBebe = edadInicioBebe;
-    }
-
-    public Integer getFrecuencia() {
-        return frecuencia;
-    }
-
-    public void setFrecuencia(Integer frecuencia) {
-        this.frecuencia = frecuencia;
+    public void setFrecuenciaConsumoAlcohol(Integer frecuenciaConsumoAlcohol) {
+        this.frecuenciaConsumoAlcohol = frecuenciaConsumoAlcohol;
     }
 
     public Integer getCantidadXOcasion() {
         return cantidadXOcasion;
     }
-
     public void setCantidadXOcasion(Integer cantidadXOcasion) {
         this.cantidadXOcasion = cantidadXOcasion;
     }
@@ -657,71 +630,78 @@ public class Participante {
     public Integer getAnnosConsumo() {
         return annosConsumo;
     }
-
     public void setAnnosConsumo(Integer annosConsumo) {
         this.annosConsumo = annosConsumo;
     }
 
+    public Integer getExAnnosSinBeber() {
+        return exAnnosSinBeber;
+    }
+    public void setExAnnosSinBeber(Integer exAnnosSinBeber) {
+        this.exAnnosSinBeber = exAnnosSinBeber;
+    }
+
+    // Factores dieta-------------------------------------------------------------------------------------------------------------|
     public Integer getCarnesProcesadas() {
         return carnesProcesadas;
     }
-
     public void setCarnesProcesadas(Integer carnesProcesadas) {
         this.carnesProcesadas = carnesProcesadas;
     }
 
-    public Integer getAlimentosSalados() {
+    public boolean isAlimentosSalados() {
         return alimentosSalados;
     }
-
-    public void setAlimentosSalados(Integer alimentosSalados) {
+    public void setAlimentosSalados(boolean alimentosSalados) {
         this.alimentosSalados = alimentosSalados;
     }
 
     public Integer getFrutasVerduras() {
         return frutasVerduras;
     }
-
     public void setFrutasVerduras(Integer frutasVerduras) {
         this.frutasVerduras = frutasVerduras;
     }
 
-    public Integer getFrituras() {
+    public boolean isFrituras() {
         return frituras;
     }
-
-    public void setFrituras(Integer frituras) {
+    public void setFrituras(boolean frituras) {
         this.frituras = frituras;
+    }
+
+    public Integer getConsumoAlimentosMuyCondimentados() {
+        return consumoAlimentosMuyCondimentados;
+    }
+    public void setConsumoAlimentosMuyCondimentados(Integer consumoAlimentosMuyCondimentados) {
+        this.consumoAlimentosMuyCondimentados = consumoAlimentosMuyCondimentados;
     }
 
     public Integer getBebidaCaliente() {
         return bebidaCaliente;
     }
-
     public void setBebidaCaliente(Integer bebidaCaliente) {
         this.bebidaCaliente = bebidaCaliente;
     }
 
-    public Integer getPesticidas() {
+    // Exposiciones-------------------------------------------------------------------------------------------------------------|
+    public boolean isPesticidas() {
         return pesticidas;
     }
-
-    public void setPesticidas(Integer pesticidas) {
+    public void setPesticidas(boolean pesticidas) {
         this.pesticidas = pesticidas;
     }
 
-    public Integer getOtrosChemicos() {
+    public boolean isOtrosChemicos() {
         return otrosChemicos;
     }
-
-    public void setOtrosChemicos(Integer otrosChemicos) {
+    public void setOtrosChemicos(boolean otrosChemicos) {
         this.otrosChemicos = otrosChemicos;
     }
 
     public String getTipoChemicos() {
         return tipoChemicos;
     }
-
     public void setTipoChemicos(String tipoChemicos) {
         this.tipoChemicos = tipoChemicos;
     }
@@ -729,127 +709,148 @@ public class Participante {
     public Integer getHumoLenna() {
         return humoLenna;
     }
-
     public void setHumoLenna(Integer humoLenna) {
         this.humoLenna = humoLenna;
     }
 
-    public String getAgua() {
-        return agua;
+    public Integer getFuentePrincipalAgua() {
+        return fuentePrincipalAgua;
+    }
+    public void setFuentePrincipalAgua(Integer fuentePrincipalAgua) {
+        this.fuentePrincipalAgua = fuentePrincipalAgua;
     }
 
-    public void setAgua(String agua) {
-        this.agua = agua;
+    public String getOtraFuenteAgua() {
+        return otraFuenteAgua;
+    }
+    public void setOtraFuenteAgua(String otraFuenteAgua) {
+        this.otraFuenteAgua = otraFuenteAgua;
     }
 
     public Integer getTratamientoAgua() {
         return tratamientoAgua;
     }
-
     public void setTratamientoAgua(Integer tratamientoAgua) {
         this.tratamientoAgua = tratamientoAgua;
     }
 
-    public Integer getPruebaHel() {
-        return pruebaHel;
-    }
-
-    public void setPruebaHel(Integer pruebaHel) {
-        this.pruebaHel = pruebaHel;
-    }
-
+    //Infección por Helicobacter pylori-------------------------------------------------------------------------------------------------------------|
     public Integer getResultadoHel() {
         return resultadoHel;
     }
-
     public void setResultadoHel(Integer resultadoHel) {
         this.resultadoHel = resultadoHel;
+    }
+
+    public Integer getResultPositivHelPasado() {
+        return resultPositivHelPasado;
+    }
+    public void setResultPositivHelPasado(Integer resultPositivHelPasado) {
+        this.resultPositivHelPasado = resultPositivHelPasado;
+    }
+
+    public Integer getAnnoAproxExamenPasadoHel() {
+        return annoAproxExamenPasadoHel;
+    }
+    public void setAnnoAproxExamenPasadoHel(Integer annoAproxExamenPasadoHel) {
+        this.annoAproxExamenPasadoHel = annoAproxExamenPasadoHel;
+    }
+
+    public String getTipoExamenPasadoHel() {
+        return tipoExamenPasadoHel;
+    }
+    public void setTipoExamenPasadoHel(String tipoExamenPasadoHel) {
+        this.tipoExamenPasadoHel = tipoExamenPasadoHel;
+    }
+
+    public Integer getRecibioTratamientoErradHel() {
+        return recibioTratamientoErradHel;
+    }
+    public void setRecibioTratamientoErradHel(Integer recibioTratamientoErradHel) {
+        this.recibioTratamientoErradHel = recibioTratamientoErradHel;
+    }
+
+    public Integer getAnnoTratamientoHel() {
+        return annoTratamientoHel;
+    }
+    public void setAnnoTratamientoHel(Integer annoTratamientoHel) {
+        this.annoTratamientoHel = annoTratamientoHel;
+    }
+
+    public String getEsquemaTratamientoHel() {
+        return esquemaTratamientoHel;
+    }
+    public void setEsquemaTratamientoHel(String esquemaTratamientoHel) {
+        this.esquemaTratamientoHel = esquemaTratamientoHel;
+    }
+
+    public Integer getTipoTestHel() {
+        return tipoTestHel;
+    }
+    public void setTipoTestHel(Integer tipoTestHel) {
+        this.tipoTestHel = tipoTestHel;
+    }
+
+    public String getOtroTestHel() {
+        return otroTestHel;
+    }
+    public void setOtroTestHel(String otroTestHel) {
+        this.otroTestHel = otroTestHel;
     }
 
     public Integer getTiempoTest() {
         return tiempoTest;
     }
-
     public void setTiempoTest(Integer tiempoTest) {
         this.tiempoTest = tiempoTest;
     }
 
-    public Date getFechaTomaSangre() {
-        return fechaTomaSangre;
+    public Integer getUsoIbp() {
+        return usoIbp;
+    }
+    public void setUsoIbp(Integer usoIbp) {
+        this.usoIbp = usoIbp;
     }
 
-    public void setFechaTomaSangre(Date fechaTomaSangre) {
-        this.fechaTomaSangre = fechaTomaSangre;
+    public Boolean getRepitioExamenAnteriormente() {
+        return repitioExamenAnteriormente;
+    }
+    public void setRepitioExamenAnteriormente(Boolean repitioExamenAnteriormente) {
+        this.repitioExamenAnteriormente = repitioExamenAnteriormente;
     }
 
-    public Integer getTlr9Rs5743836() {
-        return tlr9Rs5743836;
+    public Date getFechaExamenAnterior() {
+        return fechaExamenAnterior;
+    }
+    public void setFechaExamenAnterior(Date fechaExamenAnterior) {
+        this.fechaExamenAnterior = fechaExamenAnterior;
     }
 
-    public void setTlr9Rs5743836(Integer tlr9Rs5743836) {
-        this.tlr9Rs5743836 = tlr9Rs5743836;
+    public String getResultadoExamenAnterior() {
+        return resultadoExamenAnterior;
+    }
+    public void setResultadoExamenAnterior(String resultadoExamenAnterior) {
+        this.resultadoExamenAnterior = resultadoExamenAnterior;
     }
 
-    public Integer getTlr9Rs187084() {
-        return tlr9Rs187084;
+    //Histopatología (solo casos)-------------------------------------------------------------------------------------------------------------|
+    public Integer getTipoHistologico() {
+        return tipoHistologico;
+    }
+    public void setTipoHistologico(Integer tipoHistologico) {
+        this.tipoHistologico = tipoHistologico;
     }
 
-    public void setTlr9Rs187084(Integer tlr9Rs187084) {
-        this.tlr9Rs187084 = tlr9Rs187084;
+    public String getOtroTipoHistologico() {
+        return otroTipoHistologico;
     }
-
-    public Integer getMir146aRs2910164() {
-        return mir146aRs2910164;
-    }
-
-    public void setMir146aRs2910164(Integer mir146aRs2910164) {
-        this.mir146aRs2910164 = mir146aRs2910164;
-    }
-
-    public Integer getMir196a2Rs11614913() {
-        return mir196a2Rs11614913;
-    }
-
-    public void setMir196a2Rs11614913(Integer mir196a2Rs11614913) {
-        this.mir196a2Rs11614913 = mir196a2Rs11614913;
-    }
-
-    public Integer getMthfrRs1801133() {
-        return mthfrRs1801133;
-    }
-
-    public void setMthfrRs1801133(Integer mthfrRs1801133) {
-        this.mthfrRs1801133 = mthfrRs1801133;
-    }
-
-    public Integer getDnmt3bRs1569686() {
-        return dnmt3bRs1569686;
-    }
-
-    public void setDnmt3bRs1569686(Integer dnmt3bRs1569686) {
-        this.dnmt3bRs1569686 = dnmt3bRs1569686;
-    }
-
-    public Integer getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getOtro() {
-        return otro;
-    }
-
-    public void setOtro(String otro) {
-        this.otro = otro;
+    public void setOtroTipoHistologico(String otroTipoHistologico) {
+        this.otroTipoHistologico = otroTipoHistologico;
     }
 
     public Integer getTumorUbicacion() {
         return tumorUbicacion;
     }
-
     public void setTumorUbicacion(Integer tumorUbicacion) {
         this.tumorUbicacion = tumorUbicacion;
     }
@@ -857,17 +858,9 @@ public class Participante {
     public String getEstadioClinico() {
         return estadioClinico;
     }
-
     public void setEstadioClinico(String estadioClinico) {
         this.estadioClinico = estadioClinico;
     }
-
-    
-
-
-
-
-
 }
 
 
