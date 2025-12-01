@@ -155,5 +155,25 @@ Para acceder a los siguientes endpoints, debes incluir el token JWT en la cabece
   curl --location 'http://localhost:{{PORT}}/api/participantes' \
   --header 'Authorization: Bearer <TU_TOKEN_JWT>'
   ```
+### Gestión de Reportes
+#### 1. Exportar Participantes a Excel
+
+- **Endpoint:** ` GET http://localhost:{{PORT}}/api/reportes/participantes/export/excel`
+- **Descripción:** Genera y descarga un archivo .xlsx que contiene la lista completa de todos los participantes registrados en la base de datos.
+- **Headers:** `Authorization: Bearer <TU_TOKEN_JWT> +- Respuesta Exitosa: La API devolverá un archivo para descargar. En Postman, verás un botón "Save Response" para guardarlo en tu disco.` 
+
+- **Ejemplo con cURL:**
+    ```bash
+    curl --location 'http://localhost:{{PORT}}/api/reportes/participantes/export/excel' \
+    --header 'Authorization: Bearer <TU_TOKEN_JWT>' \
+    --output participantes.xlsx
+    plaintext
+  ```
+
+#### ¿Cómo personalizar el archivo Excel? 
+Toda la lógica para la creación del archivo Excel se encuentra en la clase ExcelService.java (src/main/java/choripan_solutions/db_exporter/Servicio/ExcelService.java). +> +> Si necesitas cambiar las columnas, añadir más datos, aplicar estilos (como colores o negritas) o modificar el contenido del archivo, simplemente debes editar el método crearExcelDeParticipantes() en esa clase. La librería utilizada es Apache POI, que ofrece un control total sobre la estructura y el estilo del documento.
+
+
+  
 
 > **Nota:** Los endpoints como `/auth/register` y `/auth/login` son ejemplos comunes. La ruta exacta (`/auth`, `/api/auth`, etc.) y los campos requeridos en el body pueden variar según la implementación final en los controladores. Adapta los ejemplos a tu código.
