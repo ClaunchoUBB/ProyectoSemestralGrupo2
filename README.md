@@ -171,7 +171,9 @@ Para acceder a los siguientes endpoints, debes incluir el token JWT en la cabece
   ```
 
 #### ¿Cómo personalizar el archivo Excel? 
-Toda la lógica para la creación del archivo Excel se encuentra en la clase ExcelService.java (src/main/java/choripan_solutions/db_exporter/Servicio/ExcelService.java). +> +> Si necesitas cambiar las columnas, añadir más datos, aplicar estilos (como colores o negritas) o modificar el contenido del archivo, simplemente debes editar el método crearExcelDeParticipantes() en esa clase. La librería utilizada es Apache POI, que ofrece un control total sobre la estructura y el estilo del documento.
+Toda la lógica para la creación del archivo Excel se encuentra en la clase ExcelService.java (src/main/java/choripan_solutions/db_exporter/Servicio/ExcelService.java).
+
+Si necesitas cambiar las columnas, añadir más datos, aplicar estilos (como colores o negritas) o modificar el contenido del archivo, simplemente debes editar el método crearExcelDeParticipantes() en esa clase. La librería utilizada es Apache POI, que ofrece un control total sobre la estructura y el estilo del documento.
 
 
   
