@@ -25,7 +25,7 @@ public class ExcelService {
 
     public ByteArrayInputStream crearExcelDeParticipantes() throws IOException {
         // Nombres de las columnas
-        String[] columns = {"ID", "Nombre", "Apellido", "Email", "Fecha de Registro"};
+        String[] columns = {"ID", "Edad", "Edad_promedio", "Edad_mediana", "Edad_50", "Edad_60", "Sexo","Residencia_Urbana5a", "Residencia_Rural5a", "NivelEduc_Basico", "NivelEduc_BasicoMedio", "Prevension_FonasaVsOtro", "Prevension_IsapreVsOtros", "CA_FamiliaGastrico", "CA_FamiliaOtros", "EnfermedadesRelevantes", "UsoCronico_Medicamento", "CirugiaGastricaPrevia", "Peso", "peso_promedio", "peso_mediana", "Estatura", "estatura_promedio", "estatura_mediana","IMC", "imc_promedio", "imc_mediana", "IMC_Menor25", "Tabaco_nunca_vs_otros", "tabaco_actual_o_reciente","tabaco_reciente_agudo","tabaco_moderada_carga","tabaco_grave_carga","tabaco_cronico","tabaco_leve_cronico","tabaco:reciente_alta_carga", "alcohol_alguna_vez","alcohol_actual_o_reciente","alcohol_reciente_agudo","alcohol_moderada_carga","alcohol_grave_carga","alcohol_cronico","alcohol_leve_cronico","alcohol_intenso_cronico"};
 
         // Creamos un nuevo libro de trabajo de Excel (formato .xlsx)
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream();) {
@@ -54,14 +54,14 @@ public class ExcelService {
                 row.createCell(1).setCellValue(participante.getNombre1());
                 row.createCell(2).setCellValue(participante.getApellido1());
                 row.createCell(3).setCellValue(participante.getCorreo());
-                // Asumiendo que tienes un campo fechaRegistro. Si no, ajústalo.
+     
                 // row.createCell(4).setCellValue(participante.getFechaRegistro().toString());
             }
 
-            // Escribimos el libro de trabajo en el ByteArrayOutputStream
+            
             workbook.write(out);
             
-            // Devolvemos un ByteArrayInputStream a partir del contenido del ByteArrayOutputStream
+            // Se devuelve un ByteArrayInputStream a partir del contenido del ByteArrayOutputStream
             return new ByteArrayInputStream(out.toByteArray());
         }
     }
