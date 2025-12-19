@@ -2,6 +2,7 @@ package choripan_solutions.db_exporter.Servicio;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,7 +63,7 @@ public class UsuarioServicioTest{
     }
 
     @Test
-    void crearUsuarioRutRepetido(){
+    void testCrearUsuarioRutRepetido(){
         Usuario usrRepeat = new Usuario();
         usrRepeat.setRut(2222222);
         usrRepeat.setNombre1("Kurt");
@@ -72,13 +73,21 @@ public class UsuarioServicioTest{
         usrRepeat.setCorreo("nirvana@test.cl");
         usrRepeat.setActivo(false);
 
-        assertThrows(RuntimeException.class, ()->service.crearUsuario(usrRepeat));
-
+        Exception ax = assertThrows(RuntimeException.class, ()->service.crearUsuario(usrRepeat));
+        assertEquals(ax.getMessage(), "Error: Ya existe un usuario con el RUT: 2222222");
 
         List<Usuario> list = service.obtenerTodosLosUsuarios();
         
         Exception ex = assertThrows(RuntimeException.class,()->list.get(67));
         assertEquals(ex.getMessage(), "Index 67 out of bounds for length 2");
+
+    }
+
+
+
+    @Test
+    void testBuscarUsuarioPorRut(){
+        Optional<Usuario> usr = service.obtenerUsuarioPorRut(1111111);
 
     }
 }
