@@ -93,6 +93,8 @@
     </div>
 
     <script>
+        const DEV_MODE = true;
+
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
         const submitBtn = document.getElementById('submitBtn');
@@ -105,9 +107,23 @@
             setLoading(true);
 
             const rutRaw = document.getElementById('rut').value;
-            // El Backend espera un Integer (ej: 11111111), limpiamos puntos y guion
             const rutClean = parseInt(rutRaw.replace(/[^0-9]/g, ''));
             const password = document.getElementById('password').value;
+
+            if (DEV_MODE) {
+                console.warn("LOGIN EN MODO DEV");
+
+                setTimeout(() => {
+                    localStorage.setItem('jwt_token', 'DEV_FAKE_TOKEN');
+                    localStorage.setItem('user_rut', rutClean || 11111111);
+                    localStorage.setItem('user_role', 'ADMIN'); // si lo necesitas
+
+                    window.location.href = 'dashboard.html';
+                }, 600);
+
+                return;
+            }
+
 
             try {
                 const response = await fetch('http://localhost:8080/api/auth/login', {

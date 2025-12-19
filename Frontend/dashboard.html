@@ -94,64 +94,99 @@
     </main>
 
     <script>
-        // CONFIGURACIÓN:
-        // Ajusta esto con la lógica real de tu backend.
-        // Asumiremos que el Login guardó: 'jwt_token', 'user_role' (ej: 'MEDICO', 'ADMIN'), y 'user_name'.
-        
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('jwt_token');
-            const rut = localStorage.getItem('user_rut');
+            const rol   = localStorage.getItem('user_role');
+            const rut   = localStorage.getItem('user_rut');
 
-            if (!token) {
-                window.location.href = 'Login.html'; // Protege la ruta
+            // 1️⃣ Protección de ruta
+            if (!token || !rol) {
+                window.location.href = 'Login.html';
                 return;
             }
 
-            // Mostrar el RUT del usuario en el panel
-            document.getElementById('userNameDisplay').textContent = "Usuario " + rut;
+            // 2️⃣ Mostrar info del usuario
+            document.getElementById('userNameDisplay').textContent = `Usuario ${rut ?? ''}`;
+            document.getElementById('userRoleDisplay').textContent = rol;
+
+            // 3️⃣ Referencias a tarjetas
+            const cards = {
+                caso: document.getElementById('card-caso'),
+                control: document.getElementById('card-control'),
+                misRegistros: document.getElementById('card-mis-registros'),
+                admin: document.getElementById('card-admin'),
+                excel: document.getElementById('card-excel')
+            };
+
+            // 4️⃣ Ocultar todo
+            Object.values(cards).forEach(card => card.classList.add('hidden'));
+
+            // 5️⃣ Mostrar según rol
+            switch (rol) {
+                case 'MEDICO':
+                    show(cards.caso);
+                    show(cards.control);
+                    show(cards.misRegistros);
+                    break;
+
+                case 'RECLUTADOR':
+                    show(cards.control);
+                    show(cards.misRegistros);
+                    show(cards.excel);
+                    break;
+
+                case 'INVESTIGADOR':
+                    show(cards.excel);
+                    break;
+
+                case 'ADMIN':
+                    show(cards.caso);
+                    show(cards.control);
+                    show(cards.misRegistros);
+                    show(cards.admin);
+                    show(cards.excel);
+                    break;
+            }
         });
+
+        // Helpers
+        function show(element) {
+            if (element) element.classList.remove('hidden');
+        }
 
         function logout() {
             localStorage.clear();
             window.location.href = 'Login.html';
         }
 
-        function show(element) {
-            element.classList.remove('hidden');
-        }
-
+        // Excel
         async function descargarExcel() {
-            // Lógica para descargar el Excel llamando a tu ExcelService
             const token = localStorage.getItem('jwt_token');
+            if (!token) return;
+
+            const card = document.getElementById('card-excel');
+
             try {
-                // Efecto visual de carga
-                const card = document.getElementById('card-excel');
                 card.classList.add('opacity-50', 'cursor-wait');
 
                 const response = await fetch('http://localhost:8080/api/excel/descargar', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (response.ok) {
-                    const blob = await response.blob();
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'Participantes_Analisis.xlsx';
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                } else {
-                    alert("Error al descargar el archivo");
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Error de conexión");
+                if (!response.ok) throw new Error();
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Participantes_Analisis.xlsx';
+                a.click();
+                URL.revokeObjectURL(url);
+
+            } catch {
+                alert('Error al descargar el archivo');
             } finally {
-                const card = document.getElementById('card-excel');
                 card.classList.remove('opacity-50', 'cursor-wait');
             }
         }
