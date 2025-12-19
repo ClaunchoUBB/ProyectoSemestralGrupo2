@@ -69,7 +69,7 @@ public class ExcelService {
             "CarnesProcesadas_Menos3", "CarnesProcesadas_Max1",
             "FrutasVerduras_3oMas", "FrutasVerduras_5oMas",
             "CondimentosFrecAlta", "BebidasCalientes_AltaFrecuencia",
-            "AñadeSal_Comida", "Frituras_Frecuente",
+            "AnadeSal_Comida", "Frituras_Frecuente",
             "Pesticidas_Exposicion", "CompuestosQuimicos_Exposicion",
             "FuenteYTratamientoAgua", "Lena_Frecuente", "Lena_AlgunaExposicion",
             
