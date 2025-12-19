@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Registro - Choripan Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .step-active { @apply bg-indigo-500 text-white border-indigo-500; }
+        .step-inactive { @apply bg-white text-slate-500 border-slate-200; }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        .fade-in-field { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen py-8 px-4">
+
+    <div class="max-w-4xl mx-auto">
+        
+        <div class="flex items-center justify-between mb-8">
+            <button onclick="window.location.href='dashboard.html'" class="flex items-center text-slate-500 hover:text-indigo-600 transition-colors">
+                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                Volver
+            </button>
+            <h1 id="formTitle" class="text-2xl font-bold text-slate-700">Nuevo Registro</h1>
+        </div>
+
+        <div class="flex justify-between mb-8 relative">
+            <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-200 -z-10 transform -translate-y-1/2 rounded"></div>
+            <div id="step-indicator-1" class="step-active w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 transition-all">1</div>
+            <div id="step-indicator-2" class="step-inactive w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 transition-all">2</div>
+            <div id="step-indicator-3" class="step-inactive w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 transition-all">3</div>
+            <div id="step-indicator-4" class="step-inactive w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 transition-all">4</div>
+        </div>
+
+        <form id="mainForm" class="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/60 overflow-hidden relative">
+            
+            <div id="step-1" class="p-8 space-y-6">
+                <h2 class="text-xl font-semibold text-indigo-500 border-b border-indigo-100 pb-2">1. Datos Personales</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-100 p-3 rounded-xl border border-slate-200 opacity-75">
+                        <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Código Participante</label>
+                        <div class="flex items-center text-slate-500 italic">
+                            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            Generación Automática
+                        </div>
+                    </div>
+                    
+                    <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100">
+                        <label class="block text-xs font-bold text-indigo-400 mb-1 uppercase">Fecha Registro</label>
+                        <input type="text" id="fechaDisplay" disabled class="w-full bg-transparent text-indigo-700 font-mono text-sm focus:outline-none">
+                        <input type="hidden" name="fechaInclusion" id="fechaInclusionHidden">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Nombres</label>
+                        <input type="text" name="nombre1" placeholder="Primer Nombre" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Apellidos</label>
+                        <input type="text" name="apellido1" placeholder="Primer Apellido" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-1">Edad</label>
+                            <input type="number" name="edad" min="18" max="110" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-1">Sexo</label>
+                            <select name="sexo" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                                <option value="false">Femenino</option>
+                                <option value="true">Masculino</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Zona de Residencia</label>
+                        <select name="zona" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                            <option value="false">Urbana</option>
+                            <option value="true">Rural</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-200 mt-6">
+                        <input type="checkbox" name="viveHace5annos" class="w-5 h-5 text-indigo-500 rounded">
+                        <label class="text-sm text-slate-600">¿Vive aquí hace > 5 años?</label>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Nivel Educacional</label>
+                        <select name="nivelEducacional" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                            <option value="0">Básico</option>
+                            <option value="1">Medio</option>
+                            <option value="2">Universitario</option>
+                        </select>
+                    </div>
+
+                    <div class="col-span-1 md:col-span-2 space-y-3">
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Previsión de Salud</label>
+                        <select name="previsionSalud" id="selectPrevision" onchange="toggleOtro('selectPrevision', 'inputOtraPrevision', '4')" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                            <option value="0">Ninguna</option>
+                            <option value="1">Fonasa</option>
+                            <option value="2">Isapre</option>
+                            <option value="3">Capredena/Dipreca</option>
+                            <option value="4">Otra</option>
+                        </select>
+                        <input type="text" id="inputOtraPrevision" name="otraPrevision" placeholder="Especifique previsión..." class="hidden fade-in-field w-full p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-indigo-700 placeholder-indigo-300">
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-2" class="p-8 space-y-6 hidden">
+                <h2 class="text-xl font-semibold text-rose-400 border-b border-rose-100 pb-2">2. Físico y Hábitos</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="text-xs text-slate-500 font-medium block mb-1">Peso (kg)</label>
+                        <input type="number" step="0.1" name="peso" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-500 font-medium block mb-1">Estatura (m)</label>
+                        <input type="number" step="0.01" name="estatura" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-500 font-medium block mb-1">IMC (Auto)</label>
+                        <input type="text" id="imcCalc" disabled class="w-full p-3 bg-slate-200 border border-slate-200 rounded-xl text-slate-500 font-bold text-center">
+                    </div>
+                </div>
+
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-100">
+                    <h3 class="text-sm font-bold text-orange-400 mb-3">Tabaquismo</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="nuncaFumo" class="text-orange-400 rounded"> <span>Nunca fumó</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="fumadorActual" class="text-orange-400 rounded"> <span>Fuma actualmente</span>
+                        </label>
+                        
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium text-orange-400 mb-1">Promedio Diario</label>
+                            <select name="promedioFumaDiario" class="w-full p-2 rounded border border-orange-200 text-sm">
+                                <option value="">-- Seleccione --</option>
+                                <option value="0">1-9 (Poco)</option>
+                                <option value="1">10-19 (Moderado)</option>
+                                <option value="2">> 20 (Mucho)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-100">
+                    <h3 class="text-sm font-bold text-yellow-500 mb-3">Alcohol</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-yellow-600 mb-1">Frecuencia</label>
+                            <select name="frecuenciaConsumoAlcohol" class="w-full p-2 rounded border border-yellow-200 text-sm">
+                                <option value="">-- Seleccione --</option>
+                                <option value="0">Ocasional</option>
+                                <option value="2">Regular</option>
+                                <option value="3">Frecuente</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-yellow-600 mb-1">Cantidad x Ocasión</label>
+                            <select name="cantidadXOcasion" class="w-full p-2 rounded border border-yellow-200 text-sm">
+                                <option value="">-- Seleccione --</option>
+                                <option value="0">1-2 tragos</option>
+                                <option value="1">3-4 tragos</option>
+                                <option value="2">5+ tragos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-3" class="p-8 space-y-6 hidden">
+                <h2 class="text-xl font-semibold text-emerald-500 border-b border-emerald-100 pb-2">3. Ambiente y Dieta</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-xs font-medium text-slate-500 block mb-1">Carnes Procesadas (Semanal)</label>
+                        <select name="carnesProcesadas" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                            <option value="0">0-1 veces</option>
+                            <option value="1">2 veces</option>
+                            <option value="2">3+ veces</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-200 mt-6">
+                        <input type="checkbox" name="alimentosSalados" class="w-5 h-5 text-emerald-500 rounded">
+                        <label class="text-sm text-slate-600">Añade sal sin probar</label>
+                    </div>
+
+                    <div class="col-span-1 md:col-span-2 space-y-3">
+                        <label class="text-xs font-medium text-slate-500 block mb-1">Fuente de Agua Principal</label>
+                        <select name="fuentePrincipalAgua" id="selectAgua" onchange="toggleOtro('selectAgua', 'inputOtraFuente', '3')" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                            <option value="0">Red pública</option>
+                            <option value="1">Pozo</option>
+                            <option value="2">Camión aljibe</option>
+                            <option value="3">Otro</option>
+                        </select>
+                        <input type="text" id="inputOtraFuente" name="otraFuenteAgua" placeholder="Especifique fuente..." class="hidden fade-in-field w-full p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-700 placeholder-emerald-300">
+                    </div>
+
+                    <div class="col-span-1 md:col-span-2 bg-emerald-50 p-4 rounded-xl border border-emerald-100 space-y-3">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="pesticidas" class="text-emerald-500 rounded"> 
+                            <span class="text-sm font-medium text-emerald-700">Exposición a Pesticidas</span>
+                        </label>
+                        
+                        <div class="border-t border-emerald-200 pt-3">
+                            <label class="flex items-center space-x-2 mb-2">
+                                <input type="checkbox" name="otrosChemicos" id="checkOtrosQuimicos" onchange="toggleOtroCheckbox('checkOtrosQuimicos', 'inputTipoQuimicos')" class="text-emerald-500 rounded"> 
+                                <span class="text-sm font-medium text-emerald-700">Otros Químicos</span>
+                            </label>
+                            <input type="text" id="inputTipoQuimicos" name="tipoChemicos" placeholder="Especifique químicos..." class="hidden fade-in-field w-full p-2 bg-white border border-emerald-200 rounded-lg text-sm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-4" class="p-8 space-y-6 hidden">
+                <h2 class="text-xl font-semibold text-purple-500 border-b border-purple-100 pb-2">4. Antecedentes Clínicos</h2>
+                
+                <div class="space-y-4">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <label class="flex items-center space-x-2 bg-purple-50 p-3 rounded-lg w-full">
+                            <input type="checkbox" name="antCancerGastrico" class="text-purple-500 rounded"> 
+                            <span class="text-sm">Familia Cáncer Gástrico</span>
+                        </label>
+                        
+                        <div class="w-full bg-purple-50 p-3 rounded-lg space-y-2">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="antCancerOtro" id="checkCancerOtro" onchange="toggleOtroCheckbox('checkCancerOtro', 'inputNombreCancerOtro')" class="text-purple-500 rounded"> 
+                                <span class="text-sm">Familia Otro Cáncer</span>
+                            </label>
+                            <input type="text" id="inputNombreCancerOtro" name="cancerOtro" placeholder="¿Cuál?" class="hidden fade-in-field w-full p-2 bg-white border border-purple-200 rounded text-sm">
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 p-3 rounded-lg space-y-2">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="usoCronicoMedicamentosGastrolesivos" id="checkMeds" onchange="toggleOtroCheckbox('checkMeds', 'inputNombreMeds')" class="text-indigo-500 rounded"> 
+                            <span class="text-sm font-medium text-indigo-700">Uso Crónico Medicamentos (AINES, etc)</span>
+                        </label>
+                        <input type="text" id="inputNombreMeds" name="medicamentosGastroLesivos" placeholder="Especifique medicamentos..." class="hidden fade-in-field w-full p-2 bg-white border border-indigo-200 rounded text-sm">
+                    </div>
+
+                    <div id="section-cancer-only" class="hidden bg-rose-50 p-4 rounded-xl border border-rose-200">
+                        <h3 class="text-sm font-bold text-rose-500 mb-3 border-b border-rose-200 pb-1">Detalle del Tumor (Solo Casos)</h3>
+                        
+                        <div class="space-y-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="diagnosticoHistologicoAdenocarcinomaGastrico" class="text-rose-500 rounded"> 
+                                <span class="text-sm font-semibold">Confirmación Histológica Adenocarcinoma</span>
+                            </label>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="text-xs text-rose-400 font-bold">Tipo Histológico</label>
+                                    <select name="tipoHistologico" id="selectHisto" onchange="toggleOtro('selectHisto', 'inputOtroHisto', '3')" class="w-full p-2 bg-white rounded border border-rose-200 text-sm">
+                                        <option value="0">Intestinal</option>
+                                        <option value="1">Difuso</option>
+                                        <option value="2">Mixto</option>
+                                        <option value="3">Otro</option>
+                                    </select>
+                                    <input type="text" id="inputOtroHisto" name="otroTipoHistologico" placeholder="Especifique..." class="hidden fade-in-field w-full p-2 bg-white border border-rose-300 rounded text-sm">
+                                </div>
+
+                                <div>
+                                    <label class="text-xs text-rose-400 font-bold">Ubicación</label>
+                                    <select name="tumorUbicacion" class="w-full p-2 bg-white rounded border border-rose-200 text-sm">
+                                        <option value="0">Cardias</option>
+                                        <option value="1">Cuerpo</option>
+                                        <option value="2">Antro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <h3 class="text-sm font-bold text-slate-500 mb-2">H. Pylori</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-medium text-slate-500 block mb-1">Resultado</label>
+                                <select name="resultadoHel" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                                    <option value="">-- Seleccione --</option>
+                                    <option value="0">Negativo</option>
+                                    <option value="1">Positivo</option>
+                                    <option value="2">Desconocido</option>
+                                </select>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="text-xs font-medium text-slate-500 block mb-1">Método Diagnóstico</label>
+                                <select name="tipoTestHel" id="selectTestHel" onchange="toggleOtro('selectTestHel', 'inputOtroTestHel', '5')" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                                    <option value="">-- Seleccione --</option>
+                                    <option value="0">Aliento</option>
+                                    <option value="1">Antígeno</option>
+                                    <option value="2">Serología</option>
+                                    <option value="3">Test rápido ureasa</option>
+                                    <option value="4">Biopsia</option>
+                                    <option value="5">Otro</option>
+                                </select>
+                                <input type="text" id="inputOtroTestHel" name="otroTestHel" placeholder="Especifique test..." class="hidden fade-in-field w-full p-2 bg-white border border-slate-300 rounded text-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-indigo-50 p-4 rounded-xl text-center">
+                    <button type="submit" id="btnSubmit" class="bg-indigo-600 text-white px-8 py-3 rounded-xl shadow-lg hover:bg-indigo-700 transition-all font-semibold w-full md:w-auto">
+                        Guardar Participante
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 px-8 py-4 border-t border-slate-100 flex justify-between">
+                <button type="button" id="btnPrev" onclick="changeStep(-1)" class="px-6 py-2 rounded-lg text-slate-500 hover:bg-slate-200 transition-colors hidden">Anterior</button>
+                <button type="button" id="btnNext" onclick="changeStep(1)" class="px-6 py-2 rounded-lg bg-indigo-500 text-white hover:bg-indigo-600 shadow-md transition-colors ml-auto">Siguiente</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        let tipoRegistro = 'control';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            document.getElementById('fechaDisplay').value = now.toLocaleString();
+            document.getElementById('fechaInclusionHidden').value = now.toISOString();
+
+            const params = new URLSearchParams(window.location.search);
+            tipoRegistro = params.get('tipo') || 'control';
+
+            const title = document.getElementById('formTitle');
+            const cancerSection = document.getElementById('section-cancer-only');
+
+            if (tipoRegistro === 'caso') {
+                title.textContent = "Nuevo Caso (Cáncer)";
+                title.classList.add('text-rose-500');
+                cancerSection.classList.remove('hidden');
+            } else {
+                title.textContent = "Nuevo Control (Sano)";
+                title.classList.add('text-emerald-500');
+                cancerSection.classList.add('hidden');
+            }
+            showStep(currentStep);
+
+            // IMC
+            const pesoIn = document.querySelector('input[name="peso"]');
+            const alturaIn = document.querySelector('input[name="estatura"]');
+            function calcIMC() {
+                const p = parseFloat(pesoIn.value);
+                const a = parseFloat(alturaIn.value);
+                if(p > 0 && a > 0) document.getElementById('imcCalc').value = (p / (a*a)).toFixed(2);
+            }
+            pesoIn.addEventListener('input', calcIMC);
+            alturaIn.addEventListener('input', calcIMC);
+        });
+
+        function toggleOtro(selectId, inputId, valueTrigger) {
+            const select = document.getElementById(selectId);
+            const input = document.getElementById(inputId);
+            if (select.value === valueTrigger) {
+                input.classList.remove('hidden');
+                input.required = true;
+            } else {
+                input.classList.add('hidden');
+                input.value = '';
+                input.required = false;
+            }
+        }
+
+        function toggleOtroCheckbox(checkId, inputId) {
+            const checkbox = document.getElementById(checkId);
+            const input = document.getElementById(inputId);
+            if (checkbox.checked) {
+                input.classList.remove('hidden');
+                input.required = true;
+            } else {
+                input.classList.add('hidden');
+                input.value = '';
+                input.required = false;
+            }
+        }
+
+        function showStep(step) {
+            for(let i=1; i<=totalSteps; i++) {
+                document.getElementById(`step-${i}`).classList.add('hidden');
+                const indicator = document.getElementById(`step-indicator-${i}`);
+                if (i <= step) {
+                    indicator.classList.remove('step-inactive');
+                    indicator.classList.add('step-active');
+                } else {
+                    indicator.classList.remove('step-active');
+                    indicator.classList.add('step-inactive');
+                }
+            }
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            btnPrev.classList.toggle('hidden', step === 1);
+            btnNext.classList.toggle('hidden', step === totalSteps);
+        }
+
+        function changeStep(n) {
+            const currentDiv = document.getElementById(`step-${currentStep}`);
+            const inputs = currentDiv.querySelectorAll('input, select');
+            let valid = true;
+            if (n > 0) {
+                inputs.forEach(input => {
+                    if (!input.checkValidity()) {
+                        input.reportValidity();
+                        valid = false;
+                    }
+                });
+            }
+            if (valid) {
+                currentStep += n;
+                if (currentStep < 1) currentStep = 1;
+                if (currentStep > totalSteps) currentStep = totalSteps;
+                showStep(currentStep);
+            }
+        }
+
+        document.getElementById('mainForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            const payload = {
+                ...data,
+                fechaInclusion: document.getElementById('fechaInclusionHidden').value,
+                grupo: (tipoRegistro === 'caso' ? 1 : 0),
+                sexo: data.sexo === 'true',
+                zona: data.zona === 'true',
+                viveHace5annos: data.viveHace5annos === 'on',
+                alimentosSalados: data.alimentosSalados === 'on',
+                pesticidas: data.pesticidas === 'on',
+                otrosChemicos: data.otrosChemicos === 'on',
+                nuncaFumo: data.nuncaFumo === 'on',
+                fumadorActual: data.fumadorActual === 'on',
+                antCancerGastrico: data.antCancerGastrico === 'on',
+                antCancerOtro: data.antCancerOtro === 'on',
+                usoCronicoMedicamentosGastrolesivos: data.usoCronicoMedicamentosGastrolesivos === 'on',
+                cirugiaGastricaPrevia: data.cirugiaGastricaPrevia === 'on',
+                diagnosticoHistologicoAdenocarcinomaGastrico: data.diagnosticoHistologicoAdenocarcinomaGastrico === 'on',
+                edad: parseInt(data.edad) || 0,
+                peso: parseFloat(data.peso) || 0,
+                estatura: parseFloat(data.estatura) || 0,
+                imc: parseFloat(document.getElementById('imcCalc').value) || 0,
+                nivelEducacional: parseInt(data.nivelEducacional),
+                previsionSalud: parseInt(data.previsionSalud),
+                fuentePrincipalAgua: parseInt(data.fuentePrincipalAgua),
+                resultadoHel: data.resultadoHel ? parseInt(data.resultadoHel) : null,
+                tipoTestHel: data.tipoTestHel ? parseInt(data.tipoTestHel) : null,
+                tipoHistologico: data.tipoHistologico ? parseInt(data.tipoHistologico) : null,
+                tumorUbicacion: data.tumorUbicacion ? parseInt(data.tumorUbicacion) : null,
+            };
+
+            console.log("JSON listo para Backend:", payload);
+            alert("¡Registro guardado con éxito! (Simulado)");
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>
