@@ -169,7 +169,7 @@
             try {
                 card.classList.add('opacity-50', 'cursor-wait');
 
-                const response = await fetch('http://localhost:8080/api/excel/descargar', {
+                const response = await fetch('/api/excel/descargar', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
