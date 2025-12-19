@@ -12,7 +12,7 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         
-        /* Animación suave para el error */
+        /* Animación para error (vibración) */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
@@ -74,3 +74,99 @@
                 >
                     <span id="btnText">Ingresar</span>
                     <svg id="loadingSpinner" class="hidden animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <div class="bg-slate-50 px-8 py-4 border-t border-slate-100 flex justify-center">
+            <p class="text-xs text-slate-400">© 2024 Choripan Solutions</p>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        // URL de tu Backend
+        const API_URL = 'http://localhost:8080/auth/login';
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            setLoading(true);
+            hideError();
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (!response.ok) throw new Error('Credenciales inválidas');
+
+                const data = await response.json();
+                
+                // --- SECCIÓN DE GUARDADO DE DATOS ---
+                // Aquí guardamos el token, el rol y el nombre
+                if (data.token) {
+                    console.log("Login exitoso:", data); // Para depurar
+
+                    localStorage.setItem('jwt_token', data.token);
+                    
+                    // Asegúrate de que tu backend envíe estos campos con estos nombres:
+                    // "role" (ej: "MEDICO", "ADMIN")
+                    // "nombre" (ej: "Juan Pérez")
+                    localStorage.setItem('user_role', data.role || 'INVITADO'); 
+                    localStorage.setItem('user_name', data.nombre || 'Usuario');
+
+                    // Redirigir al dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    throw new Error('Respuesta del servidor incompleta');
+                }
+
+            } catch (error) {
+                console.error(error);
+                showError();
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Funciones UI
+        function setLoading(isLoading) {
+            if (isLoading) {
+                btnText.textContent = 'Verificando...';
+                loadingSpinner.classList.remove('hidden');
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            } else {
+                btnText.textContent = 'Ingresar';
+                loadingSpinner.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+            }
+        }
+
+        function showError() {
+            errorMessage.classList.remove('hidden');
+            errorMessage.classList.add('shake');
+            setTimeout(() => errorMessage.classList.remove('shake'), 500);
+        }
+
+        function hideError() {
+            errorMessage.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
