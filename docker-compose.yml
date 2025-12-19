@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   mysql:
-    image: mysql:8.4
+    image: mysql:8.0
     container_name: mysql
     restart: always
     environment:
@@ -20,11 +20,19 @@ services:
     depends_on:
       - mysql
     ports:
-      - "8041:8080"
+      - "8041:8080" # Tu backend corre en 8080 dentro del contenedor
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_exporter
       SPRING_DATASOURCE_USERNAME: app
       SPRING_DATASOURCE_PASSWORD: app
+    restart: always
+
+  frontend:
+    build: ./Frontend
+    container_name: frontend-app
+  
+    ports:
+      - "8042:80"    # Host 8042 mapea al 80 del contenedor
     restart: always
 
 volumes:
