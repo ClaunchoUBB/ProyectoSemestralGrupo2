@@ -93,7 +93,7 @@
     </div>
 
     <script>
-        const DEV_MODE = true;
+        const DEV_MODE = false;
 
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
@@ -144,9 +144,30 @@
 
                 const data = await response.json();
                 
-                // Guardamos el token (según AuthResponse.java que devuelve { "token": "..." })
+                // Guardamos el token
                 localStorage.setItem('jwt_token', data.token);
                 localStorage.setItem('user_rut', rutClean);
+
+                // Lógica para obtener el rol (desde respuesta JSON o decodificando JWT)
+                let roleInt = data.rol; 
+
+                // Si el rol no viene explícito en el JSON, intentamos decodificar el token
+                if (!roleInt && data.token) {
+                    try {
+                        const base64Url = data.token.split('.')[1];
+                        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                        const payload = JSON.parse(window.atob(base64));
+                        roleInt = payload.rol || payload.role; 
+                    } catch (e) {
+                        console.warn("No se pudo extraer rol del token");
+                    }
+                }
+
+                // Mapeo de roles (1: ADMIN, 2: INVESTIGADOR, 3: RECLUTADOR, 4: MEDICO)
+                const roleMap = { 1: 'ADMIN', 2: 'INVESTIGADOR', 3: 'RECLUTADOR', 4: 'MEDICO' };
+                const userRole = roleMap[roleInt] || 'INVITADO';
+                
+                localStorage.setItem('user_role', userRole);
 
                 window.location.href = 'dashboard.html';
 
