@@ -3,6 +3,8 @@ package choripan_solutions.db_exporter.Servicio;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -33,7 +35,7 @@ public class LogServicioTest {
     private Usuario usr2;
 
     @BeforeAll
-    void setUp(){
+    void setUp() {
         logRepo.deleteAll();
         usrRepo.deleteAll();
 
@@ -55,7 +57,7 @@ public class LogServicioTest {
         usr2.setCorreo("rhcp@test.cl");
         usr2.setActivo(true);
 
-        usrRepo.saveAll(List.of(usr1,usr2));
+        usrRepo.saveAll(List.of(usr1, usr2));
 
         Log log1 = new Log();
         log1.setDetalle("Login exitoso");
@@ -76,15 +78,34 @@ public class LogServicioTest {
         logRepo.saveAll(List.of(log1, log2, log3, log4));
     }
 
-
     @Test
-    void testObtenerTodosLosLogs(){
+    void testObtenerTodosLosLogs() {
 
         List<Log> listita = logServ.obtenerTodosLosLogs();
 
         assertEquals(listita.getFirst().getUsuario().getApellido1(), "Eriza");
-        assertEquals(listita.get(1).getUsuario().getNombre1(),"Dani");
+        assertEquals(listita.get(1).getUsuario().getNombre1(), "Dani");
+        assertEquals(listita.size(), 4);
+
+        Exception ex = assertThrows(RuntimeException.class, () -> listita.get(67));
+
+        assertEquals(ex.getMessage(), "Index 67 out of bounds for length 4");
+        // jaja 67
     }
-    
-    
+        
+    @Test
+    void testObtenerLogsPorUsuario() {
+        List<Log> listita = logServ.obtenerLogsPorUsuario(2222222);
+
+        assertEquals(listita.getFirst().getDetalle(),"Creación de participante");
+        assertTrue(listita.getFirst().getUsuario().getRut() != 2);
+    }
+
+    @Test
+    void testObtenerLogsUSRNulo(){
+        List<Log> list = logServ.obtenerLogsPorUsuario(null);
+
+        assertTrue(list.isEmpty());
+    }
+
 }
