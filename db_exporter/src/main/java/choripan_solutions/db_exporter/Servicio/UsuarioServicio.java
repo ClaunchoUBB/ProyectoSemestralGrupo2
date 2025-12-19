@@ -118,6 +118,10 @@ public class UsuarioServicio {
         return actualizarUsuarioActivo(rut, false);
     }
 
+    public Boolean existsUsuario(Integer rut){
+        return usuarioRepositorio.existsById(rut);
+    }
+
     public Usuario activarUsuario(Integer rut) {
         return actualizarUsuarioActivo(rut, true);
     }

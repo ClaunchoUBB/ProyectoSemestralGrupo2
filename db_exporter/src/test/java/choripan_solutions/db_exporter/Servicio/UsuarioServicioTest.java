@@ -1,12 +1,13 @@
 package choripan_solutions.db_exporter.Servicio;
 
-
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -20,7 +21,7 @@ import jakarta.transaction.Transactional;
 @SpringBootTest
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class UsuarioServicioTest{
+public class UsuarioServicioTest {
 
     @Autowired
     private UsuarioRepositorio repo;
@@ -32,7 +33,7 @@ public class UsuarioServicioTest{
     private Usuario usr2;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         repo.deleteAll();
 
         usr1 = new Usuario();
@@ -58,12 +59,12 @@ public class UsuarioServicioTest{
     }
 
     @AfterEach
-    void cleanUp(){
+    void cleanUp() {
         repo.deleteAll();
     }
 
     @Test
-    void testCrearUsuarioRutRepetido(){
+    void testCrearUsuarioRutRepetido() {
         Usuario usrRepeat = new Usuario();
         usrRepeat.setRut(2222222);
         usrRepeat.setNombre1("Kurt");
@@ -73,21 +74,62 @@ public class UsuarioServicioTest{
         usrRepeat.setCorreo("nirvana@test.cl");
         usrRepeat.setActivo(false);
 
-        Exception ax = assertThrows(RuntimeException.class, ()->service.crearUsuario(usrRepeat));
+        Exception ax = assertThrows(RuntimeException.class, () -> service.crearUsuario(usrRepeat));
         assertEquals(ax.getMessage(), "Error: Ya existe un usuario con el RUT: 2222222");
 
         List<Usuario> list = service.obtenerTodosLosUsuarios();
-        
-        Exception ex = assertThrows(RuntimeException.class,()->list.get(67));
+
+        Exception ex = assertThrows(RuntimeException.class, () -> list.get(67));
         assertEquals(ex.getMessage(), "Index 67 out of bounds for length 2");
 
     }
 
-
-
     @Test
-    void testBuscarUsuarioPorRut(){
-        Optional<Usuario> usr = service.obtenerUsuarioPorRut(1111111);
+    void testBuscarUsuarioPorRut() {
+        Optional<Usuario> usrExistente = service.obtenerUsuarioPorRut(1111111);
+        assertTrue(usrExistente.isPresent());
+        Optional<Usuario> usrnon = service.obtenerUsuarioPorRut(67);
+        assertFalse(usrnon.isPresent());
 
     }
+
+    @Test
+    void testActualizar() {
+        Optional<Usuario> opt = service.obtenerUsuarioPorRut(1111111);
+        Usuario reemplazo;
+        if (opt.isPresent()) {
+            reemplazo = opt.get();
+            reemplazo.setApellido1("Troleador");
+            service.actualizarUsuarioParcial(1111111, reemplazo);
+        }
+        Optional<Usuario> test = service.obtenerUsuarioPorRut(1111111);
+        Usuario testeoreal;
+        if (test.isPresent()) {
+            testeoreal = test.get();
+            assertEquals(testeoreal.getApellido1(), "Troleador");
+        }
+    }
+
+    @Test
+    void testActivo(){ 
+        Optional<Usuario> opt = service.obtenerUsuarioPorRut(1111111);
+        Usuario reemplazo;
+        if (opt.isPresent()) {
+            reemplazo = opt.get();
+            reemplazo.setActivo(false);
+        }
+        Optional<Usuario> test = service.obtenerUsuarioPorRut(1111111);
+        Usuario testeoreal;
+        if (test.isPresent()) {
+            testeoreal = test.get();
+            assertFalse(testeoreal.getActivo());
+        }
+    }
+
+    @Test
+    void testEliminar(){
+        service.eliminarUsuario(1111111);
+        assertFalse(service.existsUsuario(1111111));
+    }
+
 }
