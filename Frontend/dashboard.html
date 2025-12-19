@@ -94,63 +94,24 @@
         
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('jwt_token');
-            // IMPORTANTE: Asegúrate de que tu Login.html guarde el rol. 
-            // Si no lo tienes, hardcodealo aquí para probar: 
-            // localStorage.setItem('user_role', 'MEDICO'); 
-            
-            const role = localStorage.getItem('user_role'); 
-            const name = localStorage.getItem('user_name') || 'Usuario';
+            const rut = localStorage.getItem('user_rut');
 
-            // 1. Verificar Sesión
             if (!token) {
-                window.location.href = 'login.html';
+                window.location.href = 'Login.html'; // Protege la ruta
                 return;
             }
 
-            // 2. Mostrar datos de usuario en Navbar
-            document.getElementById('userNameDisplay').textContent = name;
-            document.getElementById('userRoleDisplay').textContent = role || 'Invitado';
-
-            // 3. Lógica de Roles (Mostrar/Ocultar tarjetas)
-            // Roles esperados: 'MEDICO', 'RECLUTADOR', 'INVESTIGADOR', 'ADMIN'
-            
-            const cards = {
-                caso: document.getElementById('card-caso'),
-                control: document.getElementById('card-control'),
-                misRegistros: document.getElementById('card-mis-registros'),
-                admin: document.getElementById('card-admin'),
-                excel: document.getElementById('card-excel')
-            };
-
-            if (role === 'MEDICO') {
-                show(cards.caso);
-                show(cards.control);
-                show(cards.misRegistros);
-            } 
-            else if (role === 'RECLUTADOR') {
-                show(cards.control);
-                show(cards.misRegistros);
-                show(cards.excel);
-            } 
-            else if (role === 'INVESTIGADOR') {
-                show(cards.excel);
-            } 
-            else if (role === 'ADMIN') {
-                show(cards.caso);
-                show(cards.control);
-                show(cards.misRegistros); // Opcional si usa el panel admin para todo
-                show(cards.admin);
-                show(cards.excel);
-            }
+            // Mostrar el RUT del usuario en el panel
+            document.getElementById('userNameDisplay').textContent = "Usuario " + rut;
         });
-
-        function show(element) {
-            element.classList.remove('hidden');
-        }
 
         function logout() {
             localStorage.clear();
-            window.location.href = 'login.html';
+            window.location.href = 'Login.html';
+        }
+
+        function show(element) {
+            element.classList.remove('hidden');
         }
 
         async function descargarExcel() {
