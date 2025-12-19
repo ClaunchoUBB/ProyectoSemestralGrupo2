@@ -6,7 +6,6 @@
     <title>Login - Choripan Solutions</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
@@ -88,12 +87,13 @@
         </div>
 
         <div class="bg-slate-50 px-8 py-4 border-t border-slate-100 flex justify-center">
-            <p class="text-xs text-slate-400">© 2024 Choripan Solutions</p>
+            <p class="text-xs text-slate-400">© 2025 Choripan Solutions</p>
         </div>
     </div>
 
     <script>
-        const DEV_MODE = false;
+        // Cambia a true si quieres probar la UI sin tener el backend encendido
+        const DEV_MODE = false; 
 
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
@@ -106,91 +106,98 @@
             hideError();
             setLoading(true);
 
+            // Limpieza básica del RUT (quitar puntos y guiones si el usuario los pone)
             const rutRaw = document.getElementById('rut').value;
             const rutClean = parseInt(rutRaw.replace(/[^0-9]/g, ''));
             const password = document.getElementById('password').value;
 
+            // --- LÓGICA MODO DESARROLLADOR (Dummy) ---
             if (DEV_MODE) {
-                console.warn("LOGIN EN MODO DEV");
-
+                console.warn("LOGIN EN MODO DEV (Simulado)");
                 setTimeout(() => {
-                    localStorage.setItem('jwt_token', 'DEV_FAKE_TOKEN');
-                    localStorage.setItem('user_rut', rutClean || 11111111);
-                    localStorage.setItem('user_role', 'ADMIN'); // si lo necesitas
-
+                    localStorage.setItem('jwt_token', 'TOKEN_FALSO_DEV');
+                    localStorage.setItem('user_rut', rutClean);
+                    localStorage.setItem('user_role', 'ADMIN'); // Cambia esto para probar otros roles
+                    localStorage.setItem('user_name', 'Usuario Developer'); 
                     window.location.href = 'dashboard.html';
-                }, 600);
-
+                }, 800);
                 return;
             }
 
-
+            // --- LÓGICA REAL (Conexión a Backend) ---
             try {
-                const response = await fetch('http://localhost:8080/api/auth/login', {
+                const response = await fetch('http://localhost:8080/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ rut: rutClean, password: password })
                 });
 
                 if (!response.ok) {
-                    // Si el status es 401, las credenciales están mal
-                    if (response.status === 401) {
-                        showError("RUT o contraseña incorrectos.");
+                    if (response.status === 401 || response.status === 403) {
+                        showError("Credenciales incorrectas.");
                     } else {
-                        showError("Error en el servidor (" + response.status + ")");
+                        showError("Error del servidor (" + response.status + ")");
                     }
-                    return; // Salimos del try para no intentar procesar el JSON
+                    setLoading(false);
+                    return;
                 }
 
                 const data = await response.json();
                 
-                // Guardamos el token
-                localStorage.setItem('jwt_token', data.token);
-                localStorage.setItem('user_rut', rutClean);
-
-                // Lógica para obtener el rol (desde respuesta JSON o decodificando JWT)
-                let roleInt = data.rol; 
-
-                // Si el rol no viene explícito en el JSON, intentamos decodificar el token
-                if (!roleInt && data.token) {
-                    try {
-                        const base64Url = data.token.split('.')[1];
-                        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                        const payload = JSON.parse(window.atob(base64));
-                        roleInt = payload.rol || payload.role; 
-                    } catch (e) {
-                        console.warn("No se pudo extraer rol del token");
-                    }
+                // 1. Guardar Token
+                if (data.token) {
+                    localStorage.setItem('jwt_token', data.token);
+                } else {
+                    throw new Error("Token no recibido");
                 }
 
-                // Mapeo de roles (1: ADMIN, 2: INVESTIGADOR, 3: RECLUTADOR, 4: MEDICO)
-                const roleMap = { 1: 'ADMIN', 2: 'INVESTIGADOR', 3: 'RECLUTADOR', 4: 'MEDICO' };
+                // 2. Guardar RUT
+                localStorage.setItem('user_rut', rutClean);
+
+                // 3. Determinar y Guardar ROL
+                // Tu backend devuelve rol numérico (1,2,3,4) según Usuario.java
+                // Mapeamos a los strings que usa dashboard.html
+                let roleInt = data.rol; 
+                const roleMap = { 
+                    1: 'ADMIN', 
+                    2: 'INVESTIGADOR', 
+                    3: 'RECLUTADOR', 
+                    4: 'MEDICO' 
+                };
                 const userRole = roleMap[roleInt] || 'INVITADO';
-                
                 localStorage.setItem('user_role', userRole);
 
+                // 4. Guardar NOMBRE (Para el saludo "Hola Juan")
+                // Si el backend envía "nombre" o "nombre1" lo usamos
+                const nombreUsuario = data.nombre || data.nombre1 || "Usuario";
+                localStorage.setItem('user_name', nombreUsuario);
+
+                // 5. Redirección al Dashboard Inteligente
+                // Redirigimos siempre a dashboard.html porque ese archivo contiene 
+                // la lógica (simularRol/aplicarPermisos) que lee el localStorage 
+                // y muestra la vista correcta para cada perfil.
                 window.location.href = 'dashboard.html';
 
             } catch (error) {
-                console.error("Error capturado:", error);
-                // Si el backend está apagado o hay error de red, fetch lanza TypeError
+                console.error("Error de login:", error);
                 if (error instanceof TypeError) {
-                    showError("No se pudo conectar con el servidor. ¿Está el backend encendido?");
+                    showError("No se pudo conectar con el servidor.");
                 } else {
                     showError("Ocurrió un error inesperado.");
                 }
-            } finally {
-                // ESTO ES LO MÁS IMPORTANTE: 
-                // Siempre se ejecuta, fallé o no, quitando el estado "Verificando"
                 setLoading(false);
             }
         });
+
+        // --- Funciones de UI ---
 
         function setLoading(isLoading) {
             submitBtn.disabled = isLoading;
             loadingSpinner.classList.toggle('hidden', !isLoading);
             btnText.textContent = isLoading ? 'Verificando...' : 'Ingresar';
             submitBtn.style.opacity = isLoading ? '0.7' : '1';
+            if(isLoading) submitBtn.classList.add('cursor-not-allowed');
+            else submitBtn.classList.remove('cursor-not-allowed');
         }
 
         function showError(msg) {
