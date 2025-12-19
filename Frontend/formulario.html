@@ -440,42 +440,108 @@
 
         document.getElementById('mainForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // 1. Verificar Autenticación
+            const token = localStorage.getItem('jwt_token');
+            if (!token) {
+                alert("Sesión expirada o no iniciada.");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btnSubmit');
+            const originalText = btnSubmit.textContent;
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = "Guardando...";
+
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
 
+            // 2. Construir Payload con tipos de datos correctos
             const payload = {
-                ...data,
-                fechaInclusion: document.getElementById('fechaInclusionHidden').value,
+                // Datos básicos
+                nombre1: data.nombre1,
+                nombre2: data.nombre2 || null,
+                apellido1: data.apellido1,
+                apellido2: data.apellido2 || null,
+                correo: data.correo || null,
+                numero: data.numero || null,
+                
+                // Lógica de negocio
                 grupo: (tipoRegistro === 'caso' ? 1 : 0),
+                fechaInclusion: new Date().toISOString(),
+                
+                // Booleanos y Checkboxes
                 sexo: data.sexo === 'true',
                 zona: data.zona === 'true',
                 viveHace5annos: data.viveHace5annos === 'on',
                 alimentosSalados: data.alimentosSalados === 'on',
                 pesticidas: data.pesticidas === 'on',
                 otrosChemicos: data.otrosChemicos === 'on',
+                tipoChemicos: data.tipoChemicos || null,
                 nuncaFumo: data.nuncaFumo === 'on',
                 fumadorActual: data.fumadorActual === 'on',
                 antCancerGastrico: data.antCancerGastrico === 'on',
                 antCancerOtro: data.antCancerOtro === 'on',
+                cancerOtro: data.cancerOtro || null,
                 usoCronicoMedicamentosGastrolesivos: data.usoCronicoMedicamentosGastrolesivos === 'on',
-                cirugiaGastricaPrevia: data.cirugiaGastricaPrevia === 'on',
+                medicamentosGastroLesivos: data.medicamentosGastroLesivos || null,
                 diagnosticoHistologicoAdenocarcinomaGastrico: data.diagnosticoHistologicoAdenocarcinomaGastrico === 'on',
-                edad: parseInt(data.edad) || 0,
-                peso: parseFloat(data.peso) || 0,
-                estatura: parseFloat(data.estatura) || 0,
-                imc: parseFloat(document.getElementById('imcCalc').value) || 0,
-                nivelEducacional: parseInt(data.nivelEducacional),
-                previsionSalud: parseInt(data.previsionSalud),
-                fuentePrincipalAgua: parseInt(data.fuentePrincipalAgua),
+                
+                // Numéricos (Int/Float)
+                edad: data.edad ? parseInt(data.edad) : null,
+                peso: data.peso ? parseFloat(data.peso) : null,
+                estatura: data.estatura ? parseFloat(data.estatura) : null,
+                // imc: El backend lo calcula, pero podemos enviarlo si se requiere
+                
+                // Selects (Integers)
+                nivelEducacional: data.nivelEducacional ? parseInt(data.nivelEducacional) : null,
+                previsionSalud: data.previsionSalud ? parseInt(data.previsionSalud) : null,
+                otraPrevision: data.otraPrevision || null,
+                
+                promedioFumaDiario: data.promedioFumaDiario ? parseInt(data.promedioFumaDiario) : null,
+                frecuenciaConsumoAlcohol: data.frecuenciaConsumoAlcohol ? parseInt(data.frecuenciaConsumoAlcohol) : null,
+                cantidadXOcasion: data.cantidadXOcasion ? parseInt(data.cantidadXOcasion) : null,
+                carnesProcesadas: data.carnesProcesadas ? parseInt(data.carnesProcesadas) : null,
+                
+                fuentePrincipalAgua: data.fuentePrincipalAgua ? parseInt(data.fuentePrincipalAgua) : null,
+                otraFuenteAgua: data.otraFuenteAgua || null,
+                
                 resultadoHel: data.resultadoHel ? parseInt(data.resultadoHel) : null,
                 tipoTestHel: data.tipoTestHel ? parseInt(data.tipoTestHel) : null,
+                otroTestHel: data.otroTestHel || null,
                 tipoHistologico: data.tipoHistologico ? parseInt(data.tipoHistologico) : null,
+                otroTipoHistologico: data.otroTipoHistologico || null,
                 tumorUbicacion: data.tumorUbicacion ? parseInt(data.tumorUbicacion) : null,
             };
 
-            console.log("JSON listo para Backend:", payload);
-            alert("¡Registro guardado con éxito! (Simulado)");
-            window.location.href = 'dashboard.html';
+            // 3. Enviar al Backend
+            try {
+                const response = await fetch('http://localhost:8080/api/participantes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`¡Registro guardado con éxito!\nCódigo asignado: ${result.codigo}`);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    const errorText = await response.text();
+                    console.error("Error backend:", errorText);
+                    alert(`Error al guardar: ${errorText}`);
+                }
+            } catch (error) {
+                console.error('Error de red:', error);
+                alert('No se pudo conectar con el servidor.');
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = originalText;
+            }
         });
     </script>
 </body>

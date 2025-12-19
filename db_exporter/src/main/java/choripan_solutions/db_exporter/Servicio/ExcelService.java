@@ -23,6 +23,10 @@ public class ExcelService {
         
         List<Participante> participantes = participanteRepository.findAll();
 
+        if (participantes.isEmpty()) {
+            throw new IllegalStateException("No existen participantes para exportar");
+        }
+
         // --- Cálculos estadísticos ---
         double edadPromedio = calcularPromedio(participantes, "edad");
         double edadMediana = calcularMediana(participantes, "edad");

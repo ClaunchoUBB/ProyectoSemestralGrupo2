@@ -75,6 +75,7 @@ public class ParticipanteServicio {
         String prefijo = participante.getGrupo() == 1 ? "K" : "C";
     
         // Contar cuántos hay en ese grupo
+        
         long count = participanteRepositorio.countByGrupo(participante.getGrupo());
     
         // Generar el código (p.ej. C-001)
@@ -90,6 +91,19 @@ public class ParticipanteServicio {
     
         // 5. Guardar el participante
         return participanteRepositorio.save(participante);
+    }
+
+    public List<Participante> obtenerMisRegistros() {
+
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    if (auth == null || !auth.isAuthenticated()) {
+        throw new SecurityException("Usuario no autenticado");
+    }
+
+    Integer rutUsuario = Integer.parseInt(auth.getName());
+
+        return participanteRepositorio.findByUsuario_Rut(rutUsuario);
     }
 
     @SuppressWarnings("null")

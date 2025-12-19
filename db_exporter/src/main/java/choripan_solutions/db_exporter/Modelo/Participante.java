@@ -20,6 +20,7 @@ public class Participante {
     @Id
     @Column(name = "codigo", length = 10)
     private String codigo;
+    
 
     @Column(name = "nombre1", length = 40)
     private String nombre1;
