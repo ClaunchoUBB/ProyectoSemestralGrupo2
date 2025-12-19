@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Principal - Choripan Solutions (Test)</title>
+    <title>Panel Principal - Choripan Solutions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -25,7 +25,7 @@
                         <p id="userNameDisplay" class="text-sm font-semibold text-slate-700">Usuario de Prueba</p>
                         <p id="userRoleDisplay" class="text-xs text-indigo-400 font-medium uppercase tracking-wider">ADMIN</p>
                     </div>
-                    <button class="p-2 rounded-full hover:bg-red-50 text-slate-400 hover:text-red-400 transition-colors" title="Cerrar Sesión (Simulado)">
+                    <button onclick="logout()" class="p-2 rounded-full hover:bg-red-50 text-slate-400 hover:text-red-400 transition-colors" title="Cerrar Sesión">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
@@ -39,7 +39,7 @@
         
         <div class="mb-10">
             <h1 class="text-3xl font-light text-slate-700">Panel de Control</h1>
-            <p class="text-slate-400 mt-2">Bienvenido al entorno de pruebas de interfaz.</p>
+            <p class="text-slate-400 mt-2">Bienvenido. Selecciona una acción para comenzar.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -68,20 +68,20 @@
                 <p class="text-sm text-slate-400 mt-2">Ver y editar los participantes que has ingresado.</p>
             </div>
 
-            <div id="card-admin" class="hidden group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-purple-100 transition-all duration-300 cursor-pointer hover:-translate-y-1">
+            <div id="card-admin" onclick="window.location.href='admin_panel.html'" class="hidden group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-purple-100 transition-all duration-300 cursor-pointer hover:-translate-y-1">
                 <div class="h-12 w-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 text-purple-500 group-hover:scale-110 transition-transform">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 </div>
                 <h3 class="text-lg font-semibold text-slate-700">Administración</h3>
-                <p class="text-sm text-slate-400 mt-2">Acceso total a todos los CRFs y configuraciones.</p>
+                <p class="text-sm text-slate-400 mt-2">Registrar usuarios y auditar sistema.</p>
             </div>
 
-            <div id="card-excel" class="hidden group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-emerald-100 transition-all duration-300 cursor-pointer hover:-translate-y-1" onclick="alert('Funcionalidad simulada: Descargando Excel...')">
+            <div id="card-excel" onclick="alert('Simulando descarga...')" class="hidden group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-emerald-100 transition-all duration-300 cursor-pointer hover:-translate-y-1">
                 <div class="h-12 w-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4 text-emerald-600 group-hover:scale-110 transition-transform">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                 </div>
                 <h3 class="text-lg font-semibold text-slate-700">Base de Datos</h3>
-                <p class="text-sm text-slate-400 mt-2">Descargar datos procesados para análisis (Excel).</p>
+                <p class="text-sm text-slate-400 mt-2">Descargar datos procesados (Excel).</p>
             </div>
 
         </div>
@@ -116,20 +116,16 @@
             excel: document.getElementById('card-excel')
         };
 
-        // Función para limpiar la vista antes de cambiar de rol
         function ocultarTodo() {
             Object.values(cards).forEach(card => card.classList.add('hidden'));
         }
 
-        // Función Principal: Aplica la lógica de roles
-        function aplicarPermisos(rol) {
+        // Simulación de Roles (Lógica de vista)
+        function simularRol(rol) {
             ocultarTodo();
-            
-            // Actualizar textos del Navbar
             document.getElementById('userRoleDisplay').textContent = rol;
             document.getElementById('userNameDisplay').textContent = "Usuario " + rol.charAt(0) + rol.slice(1).toLowerCase();
 
-            // Lógica de visualización según documento
             if (rol === 'MEDICO') {
                 cards.caso.classList.remove('hidden');
                 cards.control.classList.remove('hidden');
@@ -152,17 +148,15 @@
             }
         }
 
-        // Función para los botones del panel de pruebas
-        function simularRol(rol) {
-            console.log("Simulando rol:", rol);
-            aplicarPermisos(rol);
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
         }
 
-        // Inicialización: Arrancar como ADMIN por defecto para ver todo
+        // Inicializar como ADMIN para ver todas las opciones al abrir
         document.addEventListener('DOMContentLoaded', () => {
             simularRol('ADMIN');
         });
-
     </script>
 </body>
 </html>
