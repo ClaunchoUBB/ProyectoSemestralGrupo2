@@ -39,12 +39,18 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
-                    <input 
-                        type="text" 
-                        id="username" 
+                    <input
+                        type="text"
+                        id="rut"
                         required
-                        class="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 transition-all duration-200 text-slate-700" 
-                        placeholder="Nombre de usuario"
+                        inputmode="numeric"
+                        autocomplete="username"
+                        class="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl leading-5
+                            bg-slate-50 placeholder-slate-400
+                            focus:outline-none focus:bg-white focus:ring-2
+                            focus:ring-indigo-200 focus:border-indigo-400
+                            transition-all duration-200 text-slate-700"
+                        placeholder="RUT (ej: 11111111)"
                     >
                 </div>
 
@@ -93,72 +99,65 @@
         const btnText = document.getElementById('btnText');
         const loadingSpinner = document.getElementById('loadingSpinner');
 
-        // URL de tu Backend
-        const API_URL = 'http://localhost:8080/auth/login';
-
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            hideError();
+            setLoading(true);
 
-            const username = document.getElementById('username').value;
+            const rutRaw = document.getElementById('rut').value;
+            // El Backend espera un Integer (ej: 11111111), limpiamos puntos y guion
+            const rutClean = parseInt(rutRaw.replace(/[^0-9]/g, ''));
             const password = document.getElementById('password').value;
 
-            setLoading(true);
-            hideError();
-
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch('http://localhost:8080/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
+                    body: JSON.stringify({ rut: rutClean, password: password })
                 });
 
-                if (!response.ok) throw new Error('Credenciales inválidas');
+                if (!response.ok) {
+                    // Si el status es 401, las credenciales están mal
+                    if (response.status === 401) {
+                        showError("RUT o contraseña incorrectos.");
+                    } else {
+                        showError("Error en el servidor (" + response.status + ")");
+                    }
+                    return; // Salimos del try para no intentar procesar el JSON
+                }
 
                 const data = await response.json();
                 
-                // --- SECCIÓN DE GUARDADO DE DATOS ---
-                // Aquí guardamos el token, el rol y el nombre
-                if (data.token) {
-                    console.log("Login exitoso:", data); // Para depurar
+                // Guardamos el token (según AuthResponse.java que devuelve { "token": "..." })
+                localStorage.setItem('jwt_token', data.token);
+                localStorage.setItem('user_rut', rutClean);
 
-                    localStorage.setItem('jwt_token', data.token);
-                    
-                    // Asegúrate de que tu backend envíe estos campos con estos nombres:
-                    // "role" (ej: "MEDICO", "ADMIN")
-                    // "nombre" (ej: "Juan Pérez")
-                    localStorage.setItem('user_role', data.role || 'INVITADO'); 
-                    localStorage.setItem('user_name', data.nombre || 'Usuario');
-
-                    // Redirigir al dashboard
-                    window.location.href = 'dashboard.html';
-                } else {
-                    throw new Error('Respuesta del servidor incompleta');
-                }
+                window.location.href = 'dashboard.html';
 
             } catch (error) {
-                console.error(error);
-                showError();
+                console.error("Error capturado:", error);
+                // Si el backend está apagado o hay error de red, fetch lanza TypeError
+                if (error instanceof TypeError) {
+                    showError("No se pudo conectar con el servidor. ¿Está el backend encendido?");
+                } else {
+                    showError("Ocurrió un error inesperado.");
+                }
             } finally {
+                // ESTO ES LO MÁS IMPORTANTE: 
+                // Siempre se ejecuta, fallé o no, quitando el estado "Verificando"
                 setLoading(false);
             }
         });
 
-        // Funciones UI
         function setLoading(isLoading) {
-            if (isLoading) {
-                btnText.textContent = 'Verificando...';
-                loadingSpinner.classList.remove('hidden');
-                submitBtn.disabled = true;
-                submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
-            } else {
-                btnText.textContent = 'Ingresar';
-                loadingSpinner.classList.add('hidden');
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
-            }
+            submitBtn.disabled = isLoading;
+            loadingSpinner.classList.toggle('hidden', !isLoading);
+            btnText.textContent = isLoading ? 'Verificando...' : 'Ingresar';
+            submitBtn.style.opacity = isLoading ? '0.7' : '1';
         }
 
-        function showError() {
+        function showError(msg) {
+            if (msg) errorMessage.textContent = msg;
             errorMessage.classList.remove('hidden');
             errorMessage.classList.add('shake');
             setTimeout(() => errorMessage.classList.remove('shake'), 500);
