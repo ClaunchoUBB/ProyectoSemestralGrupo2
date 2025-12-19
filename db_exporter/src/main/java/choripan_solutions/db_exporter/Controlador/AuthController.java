@@ -44,11 +44,29 @@ public class AuthController {
         Usuario usuario = (Usuario) authentication.getPrincipal();
         Log loginLog = new Log();
         loginLog.setUsuario(usuario);
-        loginLog.setDetalle(String.format("Usuario '%s' (RUT: %d) inició sesión.", usuario.getNombre1(), usuario.getRut()));
+        loginLog.setDetalle(
+                String.format("Usuario '%s' (RUT: %d) inició sesión.", usuario.getNombre1(), usuario.getRut()));
         logServicio.guardarLog(loginLog);
         // --- FIN DE REGISTRO ---
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        AuthResponse response = new AuthResponse(
+                jwt,
+                mapRol(usuario.getRol()),
+                usuario.getRut(),
+                usuario.getNombre1());
+
+        return ResponseEntity.ok(response);
     }
+
+    private String mapRol(int rol) {
+        return switch (rol) {
+            case 1 -> "ADMIN";
+            case 2 -> "INVESTIGADOR";
+            case 3 -> "RECLUTADOR";
+            case 4 -> "MEDICO";
+            default -> "INVITADO";
+        };
+    }
+
 }

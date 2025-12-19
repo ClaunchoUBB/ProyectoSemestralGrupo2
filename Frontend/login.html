@@ -1,29 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Choripan Solutions</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
         /* Animación para error (vibración) */
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-            20%, 40%, 60%, 80% { transform: translateX(4px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-4px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(4px);
+            }
         }
-        .shake { animation: shake 0.4s ease-in-out; }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="bg-white/80 backdrop-blur-md w-full max-w-md rounded-2xl shadow-xl border border-white/60 overflow-hidden">
-        
+<body
+    class="bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 min-h-screen flex items-center justify-center p-4">
+
+    <div
+        class="bg-white/80 backdrop-blur-md w-full max-w-md rounded-2xl shadow-xl border border-white/60 overflow-hidden">
+
         <div class="p-8">
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-slate-700 mb-2">Bienvenido</h1>
@@ -31,56 +57,50 @@
             </div>
 
             <form id="loginForm" class="space-y-6">
-                
+
                 <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-indigo-300 group-focus-within:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        <svg class="h-5 w-5 text-indigo-300 group-focus-within:text-indigo-500 transition-colors"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
-                    <input
-                        type="text"
-                        id="rut"
-                        required
-                        inputmode="numeric"
-                        autocomplete="username"
-                        class="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl leading-5
+                    <input type="text" id="rut" required inputmode="numeric" autocomplete="username" class="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl leading-5
                             bg-slate-50 placeholder-slate-400
                             focus:outline-none focus:bg-white focus:ring-2
                             focus:ring-indigo-200 focus:border-indigo-400
-                            transition-all duration-200 text-slate-700"
-                        placeholder="RUT (ej: 11111111)"
-                    >
+                            transition-all duration-200 text-slate-700" placeholder="RUT (ej: 11111111)">
                 </div>
 
                 <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-indigo-300 group-focus-within:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        <svg class="h-5 w-5 text-indigo-300 group-focus-within:text-indigo-500 transition-colors"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
                     </div>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        required
-                        class="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 transition-all duration-200 text-slate-700" 
-                        placeholder="Contraseña"
-                    >
+                    <input type="password" id="password" required
+                        class="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 transition-all duration-200 text-slate-700"
+                        placeholder="Contraseña">
                 </div>
 
-                <div id="errorMessage" class="hidden bg-red-50 text-red-500 text-xs py-3 px-4 rounded-lg text-center border border-red-100">
+                <div id="errorMessage"
+                    class="hidden bg-red-50 text-red-500 text-xs py-3 px-4 rounded-lg text-center border border-red-100">
                     Usuario o contraseña incorrectos
                 </div>
 
-                <button 
-                    type="submit" 
-                    id="submitBtn"
-                    class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-md text-sm font-medium text-white bg-indigo-400 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 transition-all duration-300 transform hover:-translate-y-0.5"
-                >
+                <button type="submit" id="submitBtn"
+                    class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-md text-sm font-medium text-white bg-indigo-400 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 transition-all duration-300 transform hover:-translate-y-0.5">
                     <span id="btnText">Ingresar</span>
-                    <svg id="loadingSpinner" class="hidden animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg id="loadingSpinner" class="hidden animate-spin ml-2 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
                     </svg>
                 </button>
             </form>
@@ -93,7 +113,7 @@
 
     <script>
         // Cambia a true si quieres probar la UI sin tener el backend encendido
-        const DEV_MODE = true;
+        const DEV_MODE = false;
 
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
@@ -118,7 +138,7 @@
                     localStorage.setItem('jwt_token', 'TOKEN_FALSO_DEV');
                     localStorage.setItem('user_rut', rutClean);
                     localStorage.setItem('user_role', 'ADMIN'); // Cambia esto para probar otros roles
-                    localStorage.setItem('user_name', 'Usuario Developer'); 
+                    localStorage.setItem('user_name', 'Usuario Developer');
                     window.location.href = 'dashboard.html';
                 }, 800);
                 return;
@@ -143,7 +163,9 @@
                 }
 
                 const data = await response.json();
-                
+
+                console.log("Respuesta login:", data);
+
                 // 1. Guardar Token
                 if (data.token) {
                     localStorage.setItem('jwt_token', data.token);
@@ -152,30 +174,37 @@
                 }
 
                 // 2. Guardar RUT
-                localStorage.setItem('user_rut', rutClean);
+                localStorage.setItem('usr_id', rutClean);
 
                 // 3. Determinar y Guardar ROL
                 // Tu backend devuelve rol numérico (1,2,3,4) según Usuario.java
                 // Mapeamos a los strings que usa dashboard.html
-                let roleInt = data.rol; 
-                const roleMap = { 
-                    1: 'ADMIN', 
-                    2: 'INVESTIGADOR', 
-                    3: 'RECLUTADOR', 
-                    4: 'MEDICO' 
-                };
-                const userRole = roleMap[roleInt] || 'INVITADO';
-                localStorage.setItem('user_role', userRole);
+                let roleInt = data.rol;
+                //const roleMap = {
+                //    1: 'ADMIN',
+                //    2: 'INVESTIGADOR',
+                //    3: 'RECLUTADOR',
+                //    4: 'MEDICO'
+                //};
+                //const userRole = roleMap[roleInt] || 'INVITADO';
+                localStorage.setItem('usr_r', data.rol);
 
                 // 4. Guardar NOMBRE (Para el saludo "Hola Juan")
                 // Si el backend envía "nombre" o "nombre1" lo usamos
                 const nombreUsuario = data.nombre || data.nombre1 || "Usuario";
-                localStorage.setItem('user_name', nombreUsuario);
+                localStorage.setItem('usr_n', nombreUsuario);
 
                 // 5. Redirección al Dashboard Inteligente
                 // Redirigimos siempre a dashboard.html porque ese archivo contiene 
                 // la lógica (simularRol/aplicarPermisos) que lee el localStorage 
                 // y muestra la vista correcta para cada perfil.
+                console.log("ANTES DE REDIRIGIR", {
+                    token: localStorage.getItem('jwt_token'),
+                    rol: localStorage.getItem('user_role'),
+                    rut: localStorage.getItem('user_rut'),
+                    nombre: localStorage.getItem('user_name')
+                });
+
                 window.location.href = 'dashboard.html';
 
             } catch (error) {
@@ -196,7 +225,7 @@
             loadingSpinner.classList.toggle('hidden', !isLoading);
             btnText.textContent = isLoading ? 'Verificando...' : 'Ingresar';
             submitBtn.style.opacity = isLoading ? '0.7' : '1';
-            if(isLoading) submitBtn.classList.add('cursor-not-allowed');
+            if (isLoading) submitBtn.classList.add('cursor-not-allowed');
             else submitBtn.classList.remove('cursor-not-allowed');
         }
 
@@ -212,4 +241,5 @@
         }
     </script>
 </body>
+
 </html>
