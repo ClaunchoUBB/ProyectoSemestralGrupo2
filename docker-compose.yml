@@ -15,7 +15,7 @@ services:
       - ./SQL/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
-    image: backend-app
+    build: ./db_exporter
     container_name: backend
     depends_on:
       - mysql
