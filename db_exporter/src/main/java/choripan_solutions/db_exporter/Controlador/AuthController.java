@@ -17,6 +17,8 @@ import choripan_solutions.db_exporter.auth.AuthResponse;
 import choripan_solutions.db_exporter.auth.JwtTokenProvider;
 import choripan_solutions.db_exporter.auth.LoginRequest;
 import choripan_solutions.db_exporter.Servicio.LogServicio;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -33,30 +35,34 @@ public class AuthController {
     private LogServicio logServicio;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> authenticateUser(
+            @Valid @RequestBody LoginRequest loginRequest,
+            HttpServletResponse response) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getRut().toString(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getRut().toString(),
+                        loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // --- REGISTRO DE LOG DE LOGIN ---
         Usuario usuario = (Usuario) authentication.getPrincipal();
-        Log loginLog = new Log();
-        loginLog.setUsuario(usuario);
-        loginLog.setDetalle(
-                String.format("Usuario '%s' (RUT: %d) inició sesión.", usuario.getNombre1(), usuario.getRut()));
-        logServicio.guardarLog(loginLog);
-        // --- FIN DE REGISTRO ---
 
         String jwt = tokenProvider.generateToken(authentication);
-        AuthResponse response = new AuthResponse(
-                jwt,
-                mapRol(usuario.getRol()),
-                usuario.getRut(),
-                usuario.getNombre1());
 
-        return ResponseEntity.ok(response);
+        Cookie cookie = new Cookie("jwt", jwt);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false); // true en prod HTTPS
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 8); // 8 horas
+
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(
+                new AuthResponse(
+                        mapRol(usuario.getRol()),
+                        usuario.getRut(),
+                        usuario.getNombre1()));
     }
 
     private String mapRol(int rol) {

@@ -1,5 +1,7 @@
 package choripan_solutions.db_exporter.Config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import choripan_solutions.db_exporter.Repositorio.UsuarioRepositorio;
 import choripan_solutions.db_exporter.auth.JwtTokenProvider;
@@ -41,11 +45,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(request -> {
-                    CorsConfiguration config = new CorsConfiguration();
-                    config.applyPermitDefaultValues();
-                    return config;
-                }))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
@@ -59,8 +59,21 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:8042"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
+    @Bean
     public UserDetailsService userDetailsService() {
-        // Esto define la lógica que se ejecutará CADA VEZ que un usuario intente autenticarse.
+        // Esto define la lógica que se ejecutará CADA VEZ que un usuario intente
+        // autenticarse.
         // Spring le pasará el 'username' (nuestro RUT) a esta expresión lambda.
         return username -> usuarioRepositorio.findById(Integer.parseInt(username))
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con RUT: " + username));
@@ -68,13 +81,15 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // IMPORTANTE: Debes usar BCrypt para codificar las contraseñas en tu base de datos.
+        // IMPORTANTE: Debes usar BCrypt para codificar las contraseñas en tu base de
+        // datos.
         // Si no lo haces, la autenticación fallará.
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }

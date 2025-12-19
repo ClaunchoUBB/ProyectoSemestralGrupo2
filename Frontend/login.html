@@ -135,7 +135,6 @@
             if (DEV_MODE) {
                 console.warn("LOGIN EN MODO DEV (Simulado)");
                 setTimeout(() => {
-                    localStorage.setItem('jwt_token', 'TOKEN_FALSO_DEV');
                     localStorage.setItem('user_rut', rutClean);
                     localStorage.setItem('user_role', 'ADMIN'); // Cambia esto para probar otros roles
                     localStorage.setItem('user_name', 'Usuario Developer');
@@ -148,9 +147,11 @@
             try {
                 const response = await fetch('http://localhost:8080/api/auth/login', {
                     method: 'POST',
+                    credentials: 'include', 
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ rut: rutClean, password: password })
                 });
+
 
                 if (!response.ok) {
                     if (response.status === 401 || response.status === 403) {
@@ -166,15 +167,8 @@
 
                 console.log("Respuesta login:", data);
 
-                // 1. Guardar Token
-                if (data.token) {
-                    localStorage.setItem('jwt_token', data.token);
-                } else {
-                    throw new Error("Token no recibido");
-                }
-
                 // 2. Guardar RUT
-                localStorage.setItem('usr_id', rutClean);
+                localStorage.setItem('user_rut', rutClean);
 
                 // 3. Determinar y Guardar ROL
                 // Tu backend devuelve rol numérico (1,2,3,4) según Usuario.java
@@ -187,23 +181,17 @@
                 //    4: 'MEDICO'
                 //};
                 //const userRole = roleMap[roleInt] || 'INVITADO';
-                localStorage.setItem('usr_r', data.rol);
+                localStorage.setItem('user_role', data.rol);
 
                 // 4. Guardar NOMBRE (Para el saludo "Hola Juan")
                 // Si el backend envía "nombre" o "nombre1" lo usamos
                 const nombreUsuario = data.nombre || data.nombre1 || "Usuario";
-                localStorage.setItem('usr_n', nombreUsuario);
+                localStorage.setItem('user_name', nombreUsuario);
 
                 // 5. Redirección al Dashboard Inteligente
                 // Redirigimos siempre a dashboard.html porque ese archivo contiene 
                 // la lógica (simularRol/aplicarPermisos) que lee el localStorage 
                 // y muestra la vista correcta para cada perfil.
-                console.log("ANTES DE REDIRIGIR", {
-                    token: localStorage.getItem('jwt_token'),
-                    rol: localStorage.getItem('user_role'),
-                    rut: localStorage.getItem('user_rut'),
-                    nombre: localStorage.getItem('user_name')
-                });
 
                 window.location.href = 'dashboard.html';
 

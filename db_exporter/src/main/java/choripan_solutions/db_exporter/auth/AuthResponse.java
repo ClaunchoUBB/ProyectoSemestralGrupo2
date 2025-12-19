@@ -7,13 +7,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-@AllArgsConstructor
-@Getter
-@Setter
 public class AuthResponse {
-    private String token;
+
     private String rol;
     private Integer rut;
     private String nombre;
 
+    public AuthResponse(String rol, Integer rut, String nombre) {
+        this.rol = rol;
+        this.rut = rut;
+        this.nombre = nombre;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public Integer getRut() {
+        return rut;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
 }

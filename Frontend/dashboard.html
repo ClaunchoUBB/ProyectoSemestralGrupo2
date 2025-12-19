@@ -95,14 +95,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('jwt_token');
-            const rol   = localStorage.getItem('usr_r');
-            const rut   = localStorage.getItem('usr_id');
+            const rol   = localStorage.getItem('user_role');
+            const rut   = localStorage.getItem('user_rut');
 
             // 1️⃣ Protección de ruta
             if (!token || !rol) {
                 console.log("Hay un error aquí.")
-                console.log(token)
                 console.log(rol)
                 console.log(rut)
                 window.location.href = 'login.html';
