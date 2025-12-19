@@ -14,7 +14,7 @@ import choripan_solutions.db_exporter.Repositorio.UsuarioRepositorio;
 
 public class CustomUserDetails implements UserDetailsService{
 
-     @Autowired
+    @Autowired
     private UsuarioRepositorio usuarioRepo;
 
     @Override

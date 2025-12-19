@@ -1,14 +1,18 @@
 package choripan_solutions.db_exporter.Servicio;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import jakarta.transaction.Transactional;
+
+
+@SpringBootTest
+@Transactional
 @DisplayName("Pruebas Unitarias Puras para ParticipanteServicio (Lógica sin DB)")
 class ParticipanteServicioTest {
 

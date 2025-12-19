@@ -1,17 +1,16 @@
 package choripan_solutions.db_exporter.Servicio;
 
-import choripan_solutions.db_exporter.Modelo.Usuario;
-import choripan_solutions.db_exporter.Repositorio.UsuarioRepositorio;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import jakarta.persistence.EntityManager; // Asegúrate que sea "jakarta.persistence"
-import jakarta.persistence.PersistenceContext;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional; // Asegúrate que sea "jakarta.persistence"
 
-import java.util.List;
-import java.util.Optional;
+import choripan_solutions.db_exporter.Modelo.Usuario;
+import choripan_solutions.db_exporter.Repositorio.UsuarioRepositorio;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 public class UsuarioServicio {
