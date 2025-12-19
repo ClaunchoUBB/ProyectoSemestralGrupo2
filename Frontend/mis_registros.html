@@ -121,6 +121,7 @@
         </div>
     </main>
 
+    <!--
     <script>
         document.addEventListener('DOMContentLoaded', loadRegistros);
 
@@ -222,6 +223,130 @@
                 }
             };
             window.requestAnimationFrame(step);
+        }
+    </script>
+    -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', loadRegistros);
+
+        async function loadRegistros() {
+            const tableBody = document.getElementById('tableBody');
+            const rut = localStorage.getItem('user_rut');
+
+            if (!rut) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/api/participantes/mis-registros?rut=${rut}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                            // Authorization si luego usas JWT
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error('Error al obtener registros');
+                }
+
+                const data = await response.json();
+
+                renderTable(data);
+                updateStats(data);
+
+            } catch (error) {
+                console.error(error);
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="p-8 text-center text-red-400">
+                            Error al cargar registros
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="p-8 text-center text-slate-400">
+                            No tienes registros aún.
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('count-display').textContent = 0;
+                return;
+            }
+
+            data.forEach(p => {
+                const isCaso = p.grupo === 1;
+                const badgeClass = isCaso
+                    ? 'bg-rose-100 text-rose-600 border-rose-200'
+                    : 'bg-emerald-100 text-emerald-600 border-emerald-200';
+                const label = isCaso ? 'Caso' : 'Control';
+
+                const row = document.createElement('tr');
+                row.className = "hover:bg-slate-50 transition-colors";
+
+                row.innerHTML = `
+                    <td class="p-5 font-mono text-xs font-semibold text-slate-500">
+                        ${p.id}
+                    </td>
+                    <td class="p-5 text-slate-600">
+                        ${p.fechaRegistro}
+                    </td>
+                    <td class="p-5">
+                        <div class="font-medium text-slate-700">
+                            ${p.nombre} ${p.apellido}
+                        </div>
+                    </td>
+                    <td class="p-5 text-center">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold border ${badgeClass}">
+                            ${label}
+                        </span>
+                    </td>
+                    <td class="p-5 text-center">
+                        <span class="text-xs text-slate-400">—</span>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+
+            document.getElementById('count-display').textContent = data.length;
+        }
+
+        function updateStats(data) {
+            const total = data.length;
+            const casos = data.filter(d => d.grupo === 1).length;
+            const controles = data.filter(d => d.grupo === 0).length;
+
+            animateValue("stat-total", 0, total, 600);
+            animateValue("stat-casos", 0, casos, 600);
+            animateValue("stat-controles", 0, controles, 600);
+        }
+
+        function animateValue(id, start, end, duration) {
+            const el = document.getElementById(id);
+            let startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                el.textContent = Math.floor(progress * (end - start) + start);
+                if (progress < 1) requestAnimationFrame(step);
+            }
+
+            requestAnimationFrame(step);
         }
     </script>
 </body>
