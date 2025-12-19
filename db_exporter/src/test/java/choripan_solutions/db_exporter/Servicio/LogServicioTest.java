@@ -2,10 +2,11 @@ package choripan_solutions.db_exporter.Servicio;
 
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,8 @@ public class LogServicioTest {
     private Usuario usr1;
     private Usuario usr2;
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
-        logRepo.deleteAll();
-        usrRepo.deleteAll();
-
         usr1 = new Usuario();
         usr1.setRut(1111111);
         usr1.setNombre1("Valentina");
@@ -76,6 +74,13 @@ public class LogServicioTest {
         log4.setUsuario(null);
 
         logRepo.saveAll(List.of(log1, log2, log3, log4));
+    }
+    
+
+    @AfterEach
+    void cleanUp(){
+        logRepo.deleteAll();
+        usrRepo.deleteAll();
     }
 
     @Test
