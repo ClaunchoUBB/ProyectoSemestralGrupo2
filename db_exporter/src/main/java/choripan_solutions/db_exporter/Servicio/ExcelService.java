@@ -2,10 +2,7 @@ package choripan_solutions.db_exporter.Servicio;
 
 import choripan_solutions.db_exporter.Modelo.Participante;
 import choripan_solutions.db_exporter.Repositorio.ParticipanteRepo;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,250 +21,268 @@ public class ExcelService {
 
     public ByteArrayInputStream crearExcelDeParticipantes() throws IOException {
         
-        // 1. Obtener todos los participantes primero para cálculos estadísticos
         List<Participante> participantes = participanteRepository.findAll();
 
-        // 2. Calcular Promedios y Medianas globales requeridos por el documento
+        // --- Cálculos estadísticos ---
         double edadPromedio = calcularPromedio(participantes, "edad");
         double edadMediana = calcularMediana(participantes, "edad");
-        
         double pesoPromedio = calcularPromedio(participantes, "peso");
         double pesoMediana = calcularMediana(participantes, "peso");
-        
         double estaturaPromedio = calcularPromedio(participantes, "estatura");
         double estaturaMediana = calcularMediana(participantes, "estatura");
-        
         double imcPromedio = calcularPromedio(participantes, "imc");
         double imcMediana = calcularMediana(participantes, "imc");
 
-        // 3. Definir Encabezados según el documento DOCX
         String[] columns = {
-            "Código del participante", // ID
+            "Código del participante", // 0
             
-            // Sociodemográficas
+            // Sociodemográficas (1-12)
             "Edad", "Edad_promedio", "Edad_mediana", "Edad_50", "Edad_60", 
             "Sexo", "Residencia_Urbana5", "Residencia_Rural5a", 
             "NivelEduc_Basico", "NivelEduc_BasicoMedio", 
             "Prevision_FonasaVsOtros", "Prevision_IsapreVsOtros",
 
-            // Clínicos
+            // Clínicos (13-17)
             "CA_FamiliaGastrico", "CA_FamiliaOtros", "EnfermedadesRelevantes", 
             "UsoCronico_Medicamentos", "CirugiaGastricaPrevia",
 
-            // Antropométricas
+            // Antropométricas (18-27)
             "Peso", "peso_promedio", "peso_mediana",
             "Estatura", "estatura_promedio", "estatura_mediana",
             "IMC", "imc_promedio", "imc_mediana", "IMC_Menor25",
 
-            // Tabaquismo (Simplificado a categorías disponibles en Entidad)
+            // Tabaquismo (28-30)
             "tabaco_nunca_vs_otros", "tabaco_actual", "tabaco_carga_alta",
 
-            // Alcohol
+            // Alcohol (31-32)
             "alcohol_alguna_vez", "alcohol_frecuencia_alta",
 
-            // Dietarios y Ambientales
+            // Dietarios y Ambientales (33-45)
             "CarnesProcesadas_Menos3", "CarnesProcesadas_Max1",
             "FrutasVerduras_3oMas", "FrutasVerduras_5oMas",
             "CondimentosFrecAlta", "BebidasCalientes_AltaFrecuencia",
-            "AnadeSal_Comida", "Frituras_Frecuente",
+            "AñadeSal_Comida", "Frituras_Frecuente",
             "Pesticidas_Exposicion", "CompuestosQuimicos_Exposicion",
             "FuenteYTratamientoAgua", "Lena_Frecuente", "Lena_AlgunaExposicion",
             
-            // H. Pylori
+            // H. Pylori (46)
             "HPylori_AlgunaVezPositivo"
         };
 
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             Sheet sheet = workbook.createSheet("Variables Análisis");
-            Row headerRow = sheet.createRow(0);
+            
+            // --- DEFINICIÓN DE ESTILOS (ENCABEZADO vs DATOS) ---
+            // Usamos un color "Fuerte" para el encabezado y uno "Pastel/Claro" para los datos
 
-            // Crear encabezados
+            // ID: Gris
+            CellStyle idHeader = crearEstilo(workbook, IndexedColors.GREY_40_PERCENT, true);
+            CellStyle idData   = crearEstilo(workbook, IndexedColors.GREY_25_PERCENT, false);
+
+            // Sociodemográficas: Azul Cielo -> Azul Pálido
+            CellStyle socioHeader = crearEstilo(workbook, IndexedColors.SKY_BLUE, true);
+            CellStyle socioData   = crearEstilo(workbook, IndexedColors.PALE_BLUE, false);
+
+            // Clínicos: Coral/Rojo Suave -> Rosa
+            CellStyle clinicoHeader = crearEstilo(workbook, IndexedColors.CORAL, true);
+            CellStyle clinicoData   = crearEstilo(workbook, IndexedColors.ROSE, false);
+
+            // Antropométricas: Lima/Verde -> Verde Claro
+            CellStyle antroHeader = crearEstilo(workbook, IndexedColors.LIME, true);
+            CellStyle antroData   = crearEstilo(workbook, IndexedColors.LIGHT_GREEN, false);
+
+            // Tabaquismo: Bronceado (Tan) -> Amarillo Claro (simulando tabaco/seco)
+            CellStyle tabacoHeader = crearEstilo(workbook, IndexedColors.TAN, true);
+            CellStyle tabacoData   = crearEstilo(workbook, IndexedColors.LEMON_CHIFFON, false);
+
+            // Alcohol: Oro -> Amarillo muy claro
+            CellStyle alcoholHeader = crearEstilo(workbook, IndexedColors.GOLD, true);
+            CellStyle alcoholData   = crearEstilo(workbook, IndexedColors.LIGHT_YELLOW, false);
+
+            // Dieta: Violeta -> Lavanda
+            CellStyle dietaHeader = crearEstilo(workbook, IndexedColors.VIOLET, true);
+            CellStyle dietaData   = crearEstilo(workbook, IndexedColors.LAVENDER, false);
+
+            // H. Pylori: Turquesa -> Turquesa Claro
+            CellStyle hpHeader = crearEstilo(workbook, IndexedColors.TURQUOISE, true);
+            CellStyle hpData   = crearEstilo(workbook, IndexedColors.LIGHT_TURQUOISE, false);
+
+
+            // --- CREAR ENCABEZADO ---
+            Row headerRow = sheet.createRow(0);
             for (int col = 0; col < columns.length; col++) {
                 Cell cell = headerRow.createCell(col);
                 cell.setCellValue(columns[col]);
+                cell.setCellStyle(obtenerEstiloPorColumna(col, true, 
+                        idHeader, socioHeader, clinicoHeader, antroHeader, 
+                        tabacoHeader, alcoholHeader, dietaHeader, hpHeader));
             }
 
+            // --- LLENAR DATOS ---
             int rowIdx = 1;
             for (Participante p : participantes) {
                 Row row = sheet.createRow(rowIdx++);
                 int col = 0;
 
-                // --- ID ---
-                row.createCell(col++).setCellValue(p.getCodigo());
+                // Auxiliar para crear celda y asignar estilo automáticamente
+                // Nota: Java evalua los argumentos de izquierda a derecha, así que 'col' se incrementará si lo pasamos como col++
+                
+                // ID
+                crearCelda(row, col++, p.getCodigo(), idData);
 
-                // --- SOCIODEMOGRÁFICAS ---
+                // SOCIODEMOGRÁFICAS
                 Integer edad = p.getEdad() != null ? p.getEdad() : 0;
+                crearCelda(row, col++, edad, socioData);
+                crearCelda(row, col++, (edad > edadPromedio ? 1 : 0), socioData);
+                crearCelda(row, col++, (edad > edadMediana ? 1 : 0), socioData);
+                crearCelda(row, col++, (edad >= 50 ? 1 : 0), socioData);
+                crearCelda(row, col++, (edad >= 60 ? 1 : 0), socioData);
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getSexo()) ? 1 : 0), socioData);
                 
-                // 1. Edad (cuantitativa)
-                row.createCell(col++).setCellValue(edad);
-                // 2. Edad_promedio (> promedio)
-                row.createCell(col++).setCellValue(edad > edadPromedio ? 1 : 0);
-                // 3. Edad_mediana (> mediana)
-                row.createCell(col++).setCellValue(edad > edadMediana ? 1 : 0);
-                // 4. Edad_50 (>= 50)
-                row.createCell(col++).setCellValue(edad >= 50 ? 1 : 0);
-                // 5. Edad_60 (>= 60)
-                row.createCell(col++).setCellValue(edad >= 60 ? 1 : 0);
-                
-                // 6. Sexo (Participante: 0=Fem, 1=Masc. Doc: Categoría 0=Mujer, 1=Hombre. Coincide)
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getSexo()) ? 1 : 0);
-
-                // 7. Residencia_Urbana5 (Vive en zona urbana >=5 años o rural <5 años)
-                // Zona: 0=Urbana, 1=Rural. ViveHace5: 1=Si, 0=No.
                 boolean esUrbana = Boolean.FALSE.equals(p.getZona()); 
                 boolean masDe5 = Boolean.TRUE.equals(p.getViveHace5annos());
-                // Riesgo (1): Urbana y >5 (esUrbana && masDe5) O Rural y <5 (!esUrbana && !masDe5)
-                row.createCell(col++).setCellValue((esUrbana && masDe5) || (!esUrbana && !masDe5) ? 1 : 0);
-
-                // 8. Residencia_Rural5a (Inverso lógico del anterior según doc)
-                row.createCell(col++).setCellValue((!esUrbana && masDe5) || (esUrbana && !masDe5) ? 1 : 0);
-
-                // 9. NivelEduc_Basico (0=Básico vs Medio/Sup)
-                // Entidad: 0=básico, 1=medio, 2=univ
-                // Doc Cat 0: Básico, Cat 1: Medio/Sup. OJO: Doc dice Cat 0 es riesgo.
-                // Asumiremos lógica binaria simple: 0 = Basico, 1 = Medio/Sup
+                crearCelda(row, col++, ((esUrbana && masDe5) || (!esUrbana && !masDe5) ? 1 : 0), socioData);
+                crearCelda(row, col++, ((!esUrbana && masDe5) || (esUrbana && !masDe5) ? 1 : 0), socioData);
+                
                 Integer educ = p.getNivelEducacional();
-                row.createCell(col++).setCellValue((educ != null && educ > 0) ? 1 : 0);
-
-                // 10. NivelEduc_BasicoMedio (Basico/Medio vs Superior)
-                row.createCell(col++).setCellValue((educ != null && educ == 2) ? 1 : 0);
-
-                // 11. Prevision_FonasaVsOtros
-                // Entidad: 0=ninguna, 1=fonasa, 2=isapre, 3=capre/dipre, 4=otra
-                // Doc Cat 1: Isapre/Otras. Cat 0: Fonasa/Sin prev.
+                crearCelda(row, col++, ((educ != null && educ > 0) ? 1 : 0), socioData);
+                crearCelda(row, col++, ((educ != null && educ == 2) ? 1 : 0), socioData);
+                
                 Integer prev = p.getPrevisionSalud();
                 boolean esFonasaOSin = (prev != null && (prev == 0 || prev == 1));
-                row.createCell(col++).setCellValue(esFonasaOSin ? 0 : 1);
-
-                // 12. Prevision_IsapreVsOtros
+                crearCelda(row, col++, (esFonasaOSin ? 0 : 1), socioData);
                 boolean esIsapre = (prev != null && prev == 2);
-                row.createCell(col++).setCellValue(esIsapre ? 0 : 1);
+                crearCelda(row, col++, (esIsapre ? 0 : 1), socioData);
 
-                // --- CLÍNICOS ---
-                // 1. Familia Gastrico
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getAntCancerGastrico()) ? 1 : 0);
-                // 2. Familia Otros
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getAntCancerOtro()) ? 1 : 0);
-                // 3. Enfermedades Relevantes (se usa 'otrasEnfermedades' como proxy si no es null/vacio)
+                // CLÍNICOS
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getAntCancerGastrico()) ? 1 : 0), clinicoData);
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getAntCancerOtro()) ? 1 : 0), clinicoData);
                 boolean tieneEnf = p.getOtrasEnfermedades() != null && !p.getOtrasEnfermedades().isEmpty();
-                row.createCell(col++).setCellValue(tieneEnf ? 1 : 0);
-                // 4. Uso Cronico Medicamentos
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getUsoCronicoMedicamentosGastrolesivos()) ? 1 : 0);
-                // 5. Cirugia Previa
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getCirugiaGastricaPrevia()) ? 1 : 0);
+                crearCelda(row, col++, (tieneEnf ? 1 : 0), clinicoData);
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getUsoCronicoMedicamentosGastrolesivos()) ? 1 : 0), clinicoData);
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getCirugiaGastricaPrevia()) ? 1 : 0), clinicoData);
 
-                // --- ANTROPOMÉTRICAS ---
+                // ANTROPOMÉTRICAS
                 Float peso = p.getPeso() != null ? p.getPeso() : 0f;
                 Float estatura = p.getEstatura() != null ? p.getEstatura() : 0f;
                 Float imc = p.getImc() != null ? p.getImc() : 0f;
 
-                row.createCell(col++).setCellValue(peso);
-                row.createCell(col++).setCellValue(peso > pesoPromedio ? 1 : 0);
-                row.createCell(col++).setCellValue(peso > pesoMediana ? 1 : 0);
+                crearCelda(row, col++, peso, antroData);
+                crearCelda(row, col++, (peso > pesoPromedio ? 1 : 0), antroData);
+                crearCelda(row, col++, (peso > pesoMediana ? 1 : 0), antroData);
+                crearCelda(row, col++, estatura, antroData);
+                crearCelda(row, col++, (estatura >= estaturaPromedio ? 0 : 1), antroData);
+                crearCelda(row, col++, (estatura >= estaturaMediana ? 0 : 1), antroData);
+                crearCelda(row, col++, imc, antroData);
+                crearCelda(row, col++, (imc > imcPromedio ? 1 : 0), antroData);
+                crearCelda(row, col++, (imc > imcMediana ? 1 : 0), antroData);
+                crearCelda(row, col++, (imc >= 25 ? 1 : 0), antroData);
 
-                row.createCell(col++).setCellValue(estatura);
-                row.createCell(col++).setCellValue(estatura >= estaturaPromedio ? 0 : 1); // Lógica invertida según doc
-                row.createCell(col++).setCellValue(estatura >= estaturaMediana ? 0 : 1);  // Lógica invertida según doc
-
-                row.createCell(col++).setCellValue(imc);
-                row.createCell(col++).setCellValue(imc > imcPromedio ? 1 : 0);
-                row.createCell(col++).setCellValue(imc > imcMediana ? 1 : 0);
-                // IMC Menor 25 (Cat 0 < 25, Cat 1 >= 25)
-                row.createCell(col++).setCellValue(imc >= 25 ? 1 : 0);
-
-                // --- TABAQUISMO ---
-                // Mapeo aproximado basado en campos disponibles
-                // 1. Nunca fumó vs Otros
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getNuncaFumo()) ? 0 : 1);
-                // 2. Actual
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getFumadorActual()) ? 1 : 0);
-                // 3. Carga Alta (Promedio diario 2 = >20 cigarrillos)
+                // TABAQUISMO
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getNuncaFumo()) ? 0 : 1), tabacoData);
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getFumadorActual()) ? 1 : 0), tabacoData);
                 Integer fumaDiario = p.getPromedioFumaDiario();
-                row.createCell(col++).setCellValue((fumaDiario != null && fumaDiario == 2) ? 1 : 0);
+                crearCelda(row, col++, ((fumaDiario != null && fumaDiario == 2) ? 1 : 0), tabacoData);
 
-                // --- ALCOHOL ---
-                // 1. Alguna vez (Si estado != null y no es 0/Nunca) - Ajustar según lógica de negocio exacta
+                // ALCOHOL
                 Integer estadoAlcohol = p.getEstadoConsumoAlcohol();
-                // Asumiendo lógica genérica donde 0 suele ser abstemio en encuestas
-                row.createCell(col++).setCellValue((estadoAlcohol != null && estadoAlcohol > 0) ? 1 : 0);
-                
-                // 2. Frecuencia alta (frecuenciaConsumoAlcohol: 2=regular, 3=frecuente)
+                crearCelda(row, col++, ((estadoAlcohol != null && estadoAlcohol > 0) ? 1 : 0), alcoholData);
                 Integer frecAlcohol = p.getFrecuenciaConsumoAlcohol();
-                row.createCell(col++).setCellValue((frecAlcohol != null && frecAlcohol >= 3) ? 1 : 0);
+                crearCelda(row, col++, ((frecAlcohol != null && frecAlcohol >= 3) ? 1 : 0), alcoholData);
 
-
-                // --- DIETARIOS ---
-                // Carnes Procesadas (0=<=1, 1=2, 2=>=3)
+                // DIETARIOS Y AMBIENTALES
                 Integer carnes = p.getCarnesProcesadas();
-                // Menos3: Cat 0 (<=2 veces) vs Cat 1 (>=3 veces). En Java valor 2 es >=3.
-                row.createCell(col++).setCellValue((carnes != null && carnes == 2) ? 1 : 0);
-                // Max1: Cat 0 (<=1 vez) vs Cat 1 (>=2 veces). En Java valor 1 y 2 son >=2.
-                row.createCell(col++).setCellValue((carnes != null && carnes >= 1) ? 1 : 0);
-
-                // Frutas y Verduras (0=<=2, 1=3-4, 2=>=5)
+                crearCelda(row, col++, ((carnes != null && carnes == 2) ? 1 : 0), dietaData);
+                crearCelda(row, col++, ((carnes != null && carnes >= 1) ? 1 : 0), dietaData);
                 Integer frutas = p.getFrutasVerduras();
-                // 3oMas: Cat 0 (3-4 o >=5) vs Cat 1 (<=2). OJO: Doc dice Cat 0 es Protector (>3).
-                // Java valor 1 y 2 son >=3 porciones.
-                row.createCell(col++).setCellValue((frutas != null && frutas >= 1) ? 0 : 1); // 0 es protector
-                
-                // 5oMas: Cat 0 (>=5) vs Cat 1 (<5). Java valor 2 es >=5.
-                row.createCell(col++).setCellValue((frutas != null && frutas == 2) ? 0 : 1);
-
-                // Condimentos (0=nunca, 1=1-2, 2=>=3)
+                crearCelda(row, col++, ((frutas != null && frutas >= 1) ? 0 : 1), dietaData);
+                crearCelda(row, col++, ((frutas != null && frutas == 2) ? 0 : 1), dietaData);
                 Integer condimentos = p.getConsumoAlimentosMuyCondimentados();
-                // Doc: Alta Frec (>=3 veces). Java valor 2.
-                row.createCell(col++).setCellValue((condimentos != null && condimentos == 2) ? 1 : 0);
-
-                // Bebidas Calientes (0=nunca, 1=1-2, 2=>=3)
+                crearCelda(row, col++, ((condimentos != null && condimentos == 2) ? 1 : 0), dietaData);
                 Integer calientes = p.getBebidaCaliente();
-                // Doc: Alta Frec (>=3). Java valor 2.
-                row.createCell(col++).setCellValue((calientes != null && calientes == 2) ? 1 : 0);
-
-                // Sal
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getAlimentosSalados()) ? 1 : 0);
-
-                // Frituras
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getFrituras()) ? 1 : 0);
-
-                // Exposiciones
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getPesticidas()) ? 1 : 0);
-                row.createCell(col++).setCellValue(Boolean.TRUE.equals(p.getOtrosChemicos()) ? 1 : 0);
-
-                // Agua (0=red, 1=pozo, 2=aljibe, 3=otro)
-                // Tratamiento (0=ninguno, 1=hervir, 2=filtro, 3=cloro)
-                // Doc: Cat 0 (Red/Pozo + Tratamiento). Cat 1 (Pozo/Otro + Sin tratamiento)
-                // Simplificación lógica: Si fuente es pozo/otro Y tratamiento es ninguno -> Riesgo 1.
+                crearCelda(row, col++, ((calientes != null && calientes == 2) ? 1 : 0), dietaData);
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getAlimentosSalados()) ? 1 : 0), dietaData);
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getFrituras()) ? 1 : 0), dietaData);
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getPesticidas()) ? 1 : 0), dietaData);
+                crearCelda(row, col++, (Boolean.TRUE.equals(p.getOtrosChemicos()) ? 1 : 0), dietaData);
+                
                 Integer fuente = p.getFuentePrincipalAgua();
                 Integer trat = p.getTratamientoAgua();
-                boolean fuenteRiesgosa = (fuente != null && fuente != 0); // No es red pública
+                boolean fuenteRiesgosa = (fuente != null && fuente != 0);
                 boolean sinTratamiento = (trat != null && trat == 0);
-                row.createCell(col++).setCellValue((fuenteRiesgosa && sinTratamiento) ? 1 : 0);
-
-                // Leña Frecuente (Humo Lena: 0=no, 1=estacional, 2=diario)
+                crearCelda(row, col++, ((fuenteRiesgosa && sinTratamiento) ? 1 : 0), dietaData);
+                
                 Integer lena = p.getHumoLenna();
-                // Doc: Frecuente = Diario (Java 2)
-                row.createCell(col++).setCellValue((lena != null && lena == 2) ? 1 : 0);
-                // Doc: Alguna vez = Estacional o Diario (Java 1 o 2)
-                row.createCell(col++).setCellValue((lena != null && lena > 0) ? 1 : 0);
+                crearCelda(row, col++, ((lena != null && lena == 2) ? 1 : 0), dietaData);
+                crearCelda(row, col++, ((lena != null && lena > 0) ? 1 : 0), dietaData);
 
-                // --- H PYLORI ---
-                // Alguna vez positivo (resultPositivHelPasado: 1=si, resultadoHel: 1=si)
+                // H PYLORI
                 boolean hpPasado = (p.getResultPositivHelPasado() != null && p.getResultPositivHelPasado() == 1);
                 boolean hpActual = (p.getResultadoHel() != null && p.getResultadoHel() == 1);
-                row.createCell(col++).setCellValue((hpPasado || hpActual) ? 1 : 0);
+                crearCelda(row, col++, ((hpPasado || hpActual) ? 1 : 0), hpData);
             }
+
+            // Autoajustar ancho de columnas (opcional, puede ser lento con muchos datos)
+            // for(int i=0; i<columns.length; i++) sheet.autoSizeColumn(i);
 
             workbook.write(out);
             return new ByteArrayInputStream(out.toByteArray());
         }
     }
 
-    // --- Métodos Auxiliares para Estadísticas ---
+    // --- MÉTODOS AUXILIARES DE ESTILO Y CELDAS ---
 
+    private void crearCelda(Row row, int colIndex, Object valor, CellStyle estilo) {
+        Cell cell = row.createCell(colIndex);
+        if (valor instanceof Number) {
+            cell.setCellValue(((Number) valor).doubleValue());
+        } else if (valor instanceof String) {
+            cell.setCellValue((String) valor);
+        } else if (valor instanceof Boolean) {
+            cell.setCellValue((Boolean) valor);
+        } else {
+            cell.setCellValue(valor != null ? valor.toString() : "");
+        }
+        cell.setCellStyle(estilo);
+    }
+
+    private CellStyle crearEstilo(Workbook workbook, IndexedColors color, boolean esHeader) {
+        CellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(color.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+
+        if (esHeader) {
+            style.setAlignment(HorizontalAlignment.CENTER);
+            Font font = workbook.createFont();
+            font.setBold(true);
+            style.setFont(font);
+        }
+        return style;
+    }
+
+    private CellStyle obtenerEstiloPorColumna(int col, boolean esHeader, 
+                                              CellStyle id, CellStyle socio, CellStyle clinico, 
+                                              CellStyle antro, CellStyle tabaco, CellStyle alcohol, 
+                                              CellStyle dieta, CellStyle hp) {
+        if (col == 0) return id;
+        if (col <= 12) return socio;
+        if (col <= 17) return clinico;
+        if (col <= 27) return antro;
+        if (col <= 30) return tabaco;
+        if (col <= 32) return alcohol;
+        if (col <= 45) return dieta;
+        return hp;
+    }
+
+    // --- MÉTODOS ESTADÍSTICOS (Sin cambios) ---
     private double calcularPromedio(List<Participante> lista, String campo) {
         return lista.stream()
                 .mapToDouble(p -> obtenerValorNumerico(p, campo))
-                .filter(val -> val > 0) // Ignorar ceros o nulos en promedio
+                .filter(val -> val > 0)
                 .average()
                 .orElse(0.0);
     }
@@ -280,7 +295,6 @@ public class ExcelService {
                 .collect(Collectors.toList());
 
         if (valores.isEmpty()) return 0.0;
-
         int size = valores.size();
         if (size % 2 == 0) {
             return (valores.get(size / 2 - 1) + valores.get(size / 2)) / 2.0;
